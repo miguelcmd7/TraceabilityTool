@@ -16,7 +16,7 @@ OrdererOrgs:
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
   {{#orderers}}  
-      Specs:
+    Specs:
       - Hostname: {{ordererId}}
   {{/orderers}}
 # ---------------------------------------------------------------------------

@@ -23,8 +23,8 @@ services:
       - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerOrg1
 
-  Orderer.mired.com:
-    container_name: Orderer.mired.com
+  Orderer.:
+    container_name: Orderer.
     image: hyperledger/fabric-orderer
     environment:
       - FABRIC_LOGGING_SPEC=debug
