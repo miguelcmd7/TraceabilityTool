@@ -1,4 +1,7 @@
 let Organization = require('./organization');
+let peerConf = require('../lib/common/peerConfigGenerator');
+let ordererConf = require('../lib/common/ordererConfigGenerator');
+let caConf = require('../lib/common/caConfigGenerator');
 class Network {
     /** 
    *@param {string} name 
@@ -58,6 +61,17 @@ class Network {
        this.orderers.set(orderer.getId()+'.'+this.domain,orderer)
    } 
 
+    configtxJSON(){
+        var configJson= {}
+        for (var [key,value] of  this.orderers.entries()){
+            configJson.orderers=[]
+            console.log(value)
+            configJson.orderers.push( Object.assign(value.toJSON(),ordererConf(value)))
+        }
+
+    }
+
+
    toJSON(){
        var networkJson= {}
        networkJson.netDomain= this.domain
@@ -67,7 +81,7 @@ class Network {
         //console.log(map.get(key));
 
         //console.log(networkJson)
-        networkJson.casByOrg.push(value.toJSON())
+        networkJson.casByOrg.push(Object.assign(value.toJSON(),caConf(value.getDomain())))
         }
         
         for (var [key,value] of  this.peerByOrgs.entries()){
@@ -78,21 +92,17 @@ class Network {
             //     networkJson.peerByOrgs[key].peers=[]
             // }
             for(var peerInOrg of value){
-                //console.log(this.peers.get(peerInOrg))
-                //console.log(peerInOrg)
-                //console.log(this.peers)
-               // console.log(this.peerByOrgs)
-                org.peers.push(this.peers.get(peerInOrg).toJSON())
-                //networkJson.peerByOrgs[key].peers[peerInOrg] = this.peers.get(peerInOrg).toJSON()
-                //console.log(networkJson.peerByOrgs[key].peers[peerInOrg])
+                var peer = this.peers.get(peerInOrg);
+
+                org.peers.push(Object.assign(peer.toJSON(),peerConf(peer)))
             }
             networkJson.peerByOrgs.push(org);
         }
         
         for (var [key,value] of  this.orderers.entries()){
             networkJson.orderers=[]
-            
-            networkJson.orderers.push( value.toJSON())
+            console.log(value)
+            networkJson.orderers.push( Object.assign(value.toJSON(),ordererConf(value)))
         }
         
         // this.orgs.forEach(eachOrg);

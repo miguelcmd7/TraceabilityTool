@@ -15,10 +15,11 @@ OrdererOrgs:
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
-  {{#orderers}}  
+    
     Specs:
+    {{#orderers}}
       - Hostname: {{ordererId}}
-  {{/orderers}}
+    {{/orderers}}
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------

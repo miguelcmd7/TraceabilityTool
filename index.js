@@ -1,12 +1,15 @@
 var fs = require('fs');
 var path = require('path');
 
+
 const { execSync } = require('child_process');
 
 const Peer = require('./src/peer');
 const Network = require('./src/network');
 const Organization = require('./src/organization');
 const Orderer = require('./src/orderer');
+
+process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TFG'
 
 var gen= require('./lib/generator/yalmGenerator');
 var crypto = require('./lib/generator/cryptoYaml');
@@ -29,7 +32,7 @@ let myred = new Network('myred','mired.com');
 
 
 //  constructor(name,extPort, intPort, extra){
-let orderer= new Orderer('Orderer','orderer', 5247,6374);
+let orderer= new Orderer('Orderer','orderer','mired.com', 5247,6374);
 
 // constructor(name, orgId,ca_name, mspId,domain){
 let org1 = new Organization('Digibank', 'digi', 'digiCA','DigibankMSP','digibank.mired.com');
@@ -48,6 +51,7 @@ myred.addOrderer(orderer)
 //console.log(json)
 //TODO funcion para crear rutas de proyecto
 //var peerjson= gen(peer1,'peer');
+
 cryptoYaml= crypto(myred)
 fs.writeFileSync('./crypto-config.yaml',cryptoYaml);  
 try{
@@ -58,18 +62,10 @@ try{
 const cryptotx = execSync('cryptogen generate --config=crypto-config.yaml --output=crypto-config');
 
 //console.log(myred.toJSON())
-var key;
-var list = fs.readdirSync("./crypto-config/peerOrganizations/"+org1.getDomain()+"/ca/");
-    for(var i=0; i<list.length; i++)
-    {
-        if(!( path.extname(list[i]).includes(org1.getDomain())))
-        {
-            key = list[i]
-        }
-        console.log(list[i])
-    }
 
-console.log(key)
+
+
+console.log()
 
     
 myYaml = gen(myred)
