@@ -2,42 +2,42 @@
 const Base = require('./base');
 
 class Orderer extends Base {
-     /** 
-    *@param {string} name
-    *@param {int} extPort 
-    *@param {int} intPort 
-    *@param {string} extra
-    */
+    /** 
+     *@param {string} name
+     *@param {int} extPort 
+     *@param {int} intPort 
+     *@param {string} extra
+     */
 
-    constructor(name,id,domain,extPort, intPort, extra=''){
+    constructor(name, id, domain, extPort, intPort, extra = '') {
         super(extPort, intPort, extra);
-        this.name=name;
-        this.id=id;
-        this.domain= domain;
+        this.name = name;
+        this.id = id;
+        this.domain = domain;
     }
 
-    getId(){
+    getId() {
         return this.id
     }
-    getName(){
+    getName() {
         return this.name;
     }
-    getDomain(){
+    getDomain() {
         return this.domain;
     }
-    getAllId(){
-        return this.id+'.'+this.domain;
+    getAllId() {
+        return this.id + '.' + this.domain;
     }
 
-    toJSON(){
-        return  {
+    toJSON() {
+        return {
             ordererId: this.id,
-            domain:this.domain,
+            domain: this.domain,
             ExtPort: this.extPort,
             IntPort: this.intPort,
-            extra:this.extra
+            extra: this.extra
         }
     }
 
 }
-module.exports=Orderer;
+module.exports = Orderer;

@@ -26,23 +26,23 @@ Organizations:
         ID: {{ordererMSP}}
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: {{ordererMSPDIR}}
+        MSPDir: {{{ordererMSPDIR}}}
     
     
-    {{#org}}
+    {{#orgs}}
     - &{{orgName}}
         Name: {{orgName}}
 
         ID: {{orgMSP}}
 
-        MSPDir: {{orgMSPDIR}}
+        MSPDir: {{{orgMSPDIR}}}
         
         AnchorPeers:
             {{#peers}}
             - Host: {{peerId}}
               Port: {{peerIntPort}}
             {{/peers}}
-    {{/org}}
+    {{/orgs}}
         
 
 ################################################################################
