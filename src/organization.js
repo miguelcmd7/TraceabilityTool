@@ -1,47 +1,49 @@
-const Peer = require ('./peer')
-const Orderer =  require ('./orderer')
-class Organization{
 
-    
+class Organization {
+
+
     /**
      * @param  {string} name
      * @param  {Peer[]} peers
      * @param  {} ca_name
      * @param  {} mspId
      */
-    constructor(name, orgId,ca_name, mspId,domain){
-        this.name=name;
-        this.orgId=orgId;
-        this.ca_name=ca_name;
-        this.mspId= mspId;
-        this.domain=domain;
+    constructor(name, orgId, ca_name, mspId, domain) {
+        this.name = name;
+        this.orgId = orgId;
+        this.ca_name = ca_name;
+        this.mspId = mspId;
+        this.domain = domain;
     }
-    getName(){
+    getName() {
         return this.name;
     }
-    getOrgId(){
+    getOrgId() {
         return this.orgId;
     }
-    getDomain(){
+    getDomain() {
         return this.domain;
     }
-    getCa_name(){
+    getCa_name() {
         return this.ca_name;
     }
-    getAllId(){
-        return this.orgId+'.'+this.domain
+    getAllId() {
+        return this.orgId + '.' + this.domain
     }
 
-    getMspId(){
+    getMspId() {
         return this.mspId;
     }
 
-    toJSON(){
+    toJSON() {
         return {
-            orgname:this.name,
-            domain:this.domain,
-            cas:[{casId:this.ca_name,caName:this.ca_name }],
-            orgMSP:this.mspId
+            orgname: this.name,
+            domain: this.domain,
+            cas: [{
+                casId: this.ca_name,
+                caName: this.ca_name
+            }],
+            orgMSP: this.mspId
         }
     }
 
@@ -49,4 +51,4 @@ class Organization{
 }
 
 
-module.exports= Organization;
+module.exports = Organization;

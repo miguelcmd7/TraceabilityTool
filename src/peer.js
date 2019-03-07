@@ -13,10 +13,11 @@ class Peer extends Base {
     *@param {string} extra
      **/
 
-    constructor(id,domain,extPort, intPort, extra=''){
+    constructor(id,domain,extPort, intPort,anchor = false, extra=''){
         super(extPort, intPort, extra);
         this.id=id;
         this.domain=domain;
+        this.anchor= anchor;
     }
 
     getId(){
@@ -27,6 +28,10 @@ class Peer extends Base {
     }
     getAllId(){
         return this.id +'.'+this.domain; 
+    }
+    
+    isAnchor(){
+        return this.anchor;
     }
 
     toJSON(){
