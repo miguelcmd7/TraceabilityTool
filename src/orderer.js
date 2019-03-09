@@ -40,8 +40,4 @@ class Orderer extends Base {
     }
 
 }
-<<<<<<< HEAD
-module.exports=Orderer;
-=======
 module.exports = Orderer;
->>>>>>> tmp

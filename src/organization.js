@@ -37,12 +37,13 @@ class Organization {
 
     toJSON() {
         return {
-            orgname: this.name,
+            orgName: this.name,
             domain: this.domain,
             cas: [{
                 casId: this.ca_name,
                 caName: this.ca_name
             }],
+            orgId:this.orgId,
             orgMSP: this.mspId
         }
     }

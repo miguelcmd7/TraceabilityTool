@@ -25,7 +25,7 @@ OrdererOrgs:
 # ---------------------------------------------------------------------------
 PeerOrgs:
   {{#peerByOrgs}}
-  - Name: {{orgname}}
+  - Name: {{orgName}}
     Domain: {{domain}}
     EnableNodeOUs: true
     Specs:

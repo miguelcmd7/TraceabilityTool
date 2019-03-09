@@ -23,26 +23,22 @@ Organizations:
         Name: OrdererOrg
 
         # ID to load the MSP definition as
-        ID: {{ordererMSP}}
+        ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: {{{ordererMSPDIR}}}
+        MSPDir: crypto-config/ordererOrganizations/mired.com/msp
     
     
-    {{#orgs}}
-    - &{{orgName}}
-        Name: {{orgName}}
+    - &Digibank
+        Name: Digibank
 
-        ID: {{orgMSP}}
+        ID: DigibankMSP
 
-        MSPDir: crypto-config/peerOrganizations/{{orgId}}.{{domain}}/msp
+        MSPDir: crypto-config/peerOrganizations/digi.digibank.mired.com/msp
         
         AnchorPeers:
-            {{#anchoPeers}}
-            - Host: {{PeerAllId}}
-              Port: {{IntPort}}
-            {{/anchoPeers}}
-    {{/orgs}}
+            - Host: peer1.digibank.mired.com
+              Port: 5698
         
 
 ################################################################################
@@ -74,9 +70,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        {{#orderers}}
-        - {{ordererId}}.{{domain}}:{{ordererIntPort}}
-        {{/orderers}}
+        - orderer.mired.com:
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -124,16 +118,10 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    {{#orgs}}
-                    - *{{orgName}}
-                    {{/orgs}}
-    {{#channels}}
+                    - *Digibank
     OneOrgChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                {{#orgs}}
-                - *{{orgName}}
-                {{/orgs}}
-    {{/channels}}
+                - *Digibank

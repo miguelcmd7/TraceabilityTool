@@ -41,7 +41,9 @@ class Peer extends Base {
             Domain: this.domain,
             ExtPort: this.extPort,
             IntPort: this.intPort,
+            isAnchor: this.anchor,
             extra:this.extra
+
         }
     }
 
