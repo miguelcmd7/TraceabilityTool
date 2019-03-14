@@ -10,7 +10,7 @@ const Organization = require('./src/organization');
 const Orderer = require('./src/orderer');
 const Channel = require('./src/channel');
 
-process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TFG'
+process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TFG/TraceabilityTool'
 
 var gen= require('./lib/generator/yalmGenerator');
 var crypto = require('./lib/generator/cryptoYaml');
@@ -59,15 +59,19 @@ console.log(myred.configtxJSON())
 
 let configYaml = config(myred);
 //console.log(configYaml)
-// cryptoYaml= crypto(myred)
- fs.writeFileSync('./configtx.yaml',configYaml);  
-// try{
-//     const rm = execSync('rm -r crypto-config');
-// }catch(error){
+let   cryptoYaml= crypto(myred)
+fs.writeFileSync('./configtx.yaml',configYaml);  
+fs.writeFileSync('./crypto-config.yaml',cryptoYaml); 
 
-// }
-// const cryptotx = execSync('cryptogen generate --config=crypto-config.yaml --output=crypto-config');
+try{
+    const rm = execSync('rm -r crypto-config');
+}catch(error){
 
+}
+const cryptotx = execSync('cryptogen generate --config=crypto-config.yaml --output=crypto-config');
+
+let networkYaml = gen(myred);
+fs.writeFileSync('./docker-compose.yaml',networkYaml); 
 //console.log(myred.toJSON())
 
 

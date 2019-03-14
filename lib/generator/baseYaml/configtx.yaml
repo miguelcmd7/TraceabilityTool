@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
----
 ################################################################################
 #
 #   Section: Organizations
@@ -31,11 +30,11 @@ Organizations:
     
     {{#orgs}}
     - &{{orgName}}
-        Name: {{orgName}}
+        Name: {{orgMSP}}
 
         ID: {{orgMSP}}
 
-        MSPDir: crypto-config/peerOrganizations/{{orgId}}.{{domain}}/msp
+        MSPDir: crypto-config/peerOrganizations/{{domain}}/msp
         
         AnchorPeers:
             {{#anchoPeers}}
@@ -75,7 +74,7 @@ Orderer: &OrdererDefaults
 
     Addresses:
         {{#orderers}}
-        - {{ordererId}}.{{domain}}:{{ordererIntPort}}
+        - {{ordererId}}.{{domain}}:{{IntPort}}
         {{/orderers}}
 
     # Batch Timeout: The amount of time to wait before creating a batch

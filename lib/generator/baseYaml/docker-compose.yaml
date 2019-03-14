@@ -48,7 +48,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderers
     command: orderer
     ports:
-      - 7050:7050
+      - {{ExtPort}}:{{IntPort}}
     volumes:
       {{#volumes}}
       - {{{external}}}:{{{internal}}}

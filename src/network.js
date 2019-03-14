@@ -104,6 +104,31 @@ class Network {
 
     }
 
+    cryptoJSON() {
+        var networkJson = {}
+        networkJson.netDomain = this.domain
+        for ( [key, value] of this.peerByOrgs.entries()) {
+            networkJson.peerByOrgs = []
+            var org = this.orgs.get(key).toJSON()
+            org.peers = []
+            // if (value != []){
+            //     networkJson.peerByOrgs[key].peers=[]
+            // }
+            for (var peerInOrg of value) {
+                var peer = this.peers.get(peerInOrg);
+
+                org.peers.push(peer.toJSON())
+            }
+            networkJson.peerByOrgs.push(org);
+        }
+
+        for (var [key, value] of this.orderers.entries()) {
+            networkJson.orderers = []
+           // console.log(value)
+            networkJson.orderers.push(value.toJSON())
+        }
+        return networkJson;
+    }
 
     toJSON() {
         var networkJson = {}
