@@ -34,10 +34,29 @@ class Network {
         return this.peers.values();
 
     }
+    getOrgs(){
+        return this.orgs.values()
+    }
     getOrderers() {
         return this.orderers.values();
     }
-
+    getOrgsMsp(){
+        let msps=[]
+        for (let  org in this.orgs.values())
+            msps.push(org.getMspId())
+        return msps;
+    }
+    getChannels(){
+        return this.channels;
+    }
+    getChannelOrgs(channel){
+        let msps=[]
+       
+        for (let  orgId of channel.getOrgs()){
+            msps.push(this.orgs.get(orgId).getMspId())
+        }
+        return msps;
+    }
     addPeer(peer, orgId) {
         var peerid = peer.getAllId()
 
@@ -152,7 +171,7 @@ class Network {
             for (var peerInOrg of value) {
                 var peer = this.peers.get(peerInOrg);
 
-                org.peers.push(Object.assign(peer.toJSON(), peerConf(peer)))
+                org.peers.push(Object.assign(peer.toJSON(), peerConf(peer, Array.from(this.orderers.keys()))))
             }
             networkJson.peerByOrgs.push(org);
         }

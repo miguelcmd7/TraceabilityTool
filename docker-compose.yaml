@@ -12,7 +12,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=digiCA
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/digiCA.digibank.mired.com.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/9145dfeb23919cdede3380fa67c3a0d728b73db63089a012bf683f8bf5ec4b57_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/7b52beef4390847eb06da310e9d1698a7d1d2b0efa77e8f7c3bdbbe50128dc85_sk
     #  - FABRIC_CA_SERVER_TLS_ENABLED=true
     #  - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/digiCA.le.com-cert.pem
     #   FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0e729224e8b3f31784c8a93c5b8ef6f4c1c91d9e6e577c45c33163609fe40011_sk
@@ -43,6 +43,7 @@ services:
     command: orderer
     ports:
       - 5247:6374
+     
     volumes:
       - ./crypto-config/ordererOrganizations/mired.com/orderers/orderer.mired.com/:/etc/hyperledger/msp/orderer
       - ./config:/etc/hyperledger/configtx
@@ -56,9 +57,9 @@ services:
       - CORE_CHAINCODE_LOGGING_LEVEL=info
       - CORE_PEER_ID=.digibank.mired.com
       - CORE_PEER_LOCALMSPID=DigibankMSP
-      - CORE_PEER_ADDRESS=peer1.digibank.mired.com:5698
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.digibank.mired.com:5698      
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.digibank.mired.com:5698
+      - CORE_PEER_ADDRESS=peer1.digibank.mired.com:7050
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.digibank.mired.com:7051      
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.digibank.mired.com:7051
 
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
@@ -72,8 +73,8 @@ services:
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     ports:
-      - 4583:5698
-      - 4584:5699
+      - 7050:7050
+      - 7051:7051
     volumes:
       - ./crypto-config/peerOrganizations/digibank.mired.com/peers/peer1.digibank.mired.com/msp:/etc/hyperledger/msp/peer
       - ./crypto-config/peerOrganizations/digibank.mired.com/users:/etc/hyperledger/msp/users

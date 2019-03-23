@@ -9,6 +9,7 @@ const Network = require('./src/network');
 const Organization = require('./src/organization');
 const Orderer = require('./src/orderer');
 const Channel = require('./src/channel');
+const PeerConfig = require('./src/peerConf');
 
 process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TFG/TraceabilityTool'
 
@@ -22,8 +23,12 @@ var config = require('./lib/generator/configtxYaml');
 //     console.log('stderr:', stderr);
 //   }
 
-//constructor(id,domain,extPort, intPort,anchor = false, extra=''){
-var peer1=new Peer('peer1','digibank.mired.com',4583,5698,true);
+
+let configPeer  = new PeerConfig({
+    extPort:7050,
+    anchor: true
+});
+var peer1=new Peer('peer1','digibank.mired.com', configPeer);
 //console.log(peer1.toJSON());
 
 var nuevo={};
@@ -37,10 +42,10 @@ let myred = new Network('myred','mired.com');
 let orderer= new Orderer('Orderer','orderer','mired.com', 5247,6374);
 
 // constructor(name, orgId,ca_name, mspId,domain){
-let org1 = new Organization('Digibank', 'digi', 'digiCA','DigibankMSP','digibank.mired.com');
+let org1 = new Organization('Digibank', 'digibank', 'digiCA','DigibankMSP','mired.com');
 
 //constructor(name,consortium,orgs=[],peers=[],orderers=[])b
-let channel = new Channel('mycc','SampleConsortium',['digi.digibank.mired.com'],['peer1.digibank.mired.com'],['orderer.mired.com'])
+let channel = new Channel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com'],['orderer.mired.com'])
 //console.log(org1)
 
 myred.addOrg(org1)
@@ -50,7 +55,8 @@ myred.addPeer(peer1,org1.getAllId())
 myred.addChannel(channel);
 
 
-console.log(myred.configtxJSON())
+
+//console.log(myred.configtxJSON())
 
 //console.log([[peer1,peer1].)
 //console.log(json)
@@ -70,13 +76,21 @@ try{
 }
 const cryptotx = execSync('cryptogen generate --config=crypto-config.yaml --output=crypto-config');
 
+execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block')
+ 
+for (let chann of myred.getChannels())
+    execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ./config/channel.tx -channelID '+ chann.getName())
+    for (let orgMsp of myred.getChannelOrgs(channel)){
+        execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID '+channel.getName()+' -asOrg '+orgMsp )
+    }    
+
 let networkYaml = gen(myred);
 fs.writeFileSync('./docker-compose.yaml',networkYaml); 
 //console.log(myred.toJSON())
 
 
+execSync('docker-compose -f docker-compose.yaml up -d')
 
-console.log(configYaml.orgs)
 
     
 // myYaml = gen(myred)

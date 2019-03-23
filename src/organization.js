@@ -22,7 +22,7 @@ class Organization {
         return this.orgId;
     }
     getDomain() {
-        return this.domain;
+        return this.orgId+'.'+this.domain;
     }
     getCa_name() {
         return this.ca_name;
@@ -38,7 +38,7 @@ class Organization {
     toJSON() {
         return {
             orgName: this.name,
-            domain: this.domain,
+            domain: this.orgId+'.'+this.domain,
             cas: [{
                 casId: this.ca_name,
                 caName: this.ca_name

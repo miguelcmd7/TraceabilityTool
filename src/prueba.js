@@ -1,28 +1,30 @@
 const Peer = require ('./peer')
 
+const PeerConf = require('./peerConf')
 var prueba = new Map();
 
-var peer1=new Peer('peer1','meta.com',4583,5698);
+// var peer1=new Peer('peer1','meta.com',4583,5698);
 
 
-prueba.set("Hola", peer1);
+// prueba.set("Hola", peer1);
 
 
-    /** 
-   *@param {Peer} value 
-   **/
+//     /** 
+//    *@param {Peer} value 
+//    **/
 
-console.log(prueba.entries())
-for (var [key,value] of prueba.entries()){
-    console.log(value.getId());
+// console.log(prueba.entries())
+// for (var [key,value] of prueba.entries()){
+//     console.log(value.getId());
 
-}
+// }
 
-var hola = {}
-hola.nuevo={}
-hola.nuevo.nuevo2 = 6
+// var hola = {}
+// hola.nuevo={}
+// hola.nuevo.nuevo2 = 6
 //hola['nuevo']['nuevo']=6
-console.log(hola)
+var peerConf  = new PeerConf({anchor:true});
+console.log(peerConf.anchor)
 // console.log(prueba);
 // var mapIter = prueba.entries();
 

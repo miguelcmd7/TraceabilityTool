@@ -37,7 +37,7 @@ Organizations:
         
         AnchorPeers:
             - Host: peer1.digibank.mired.com
-              Port: 5698
+              Port: 7050
         
 
 ################################################################################

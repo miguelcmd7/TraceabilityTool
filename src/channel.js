@@ -6,9 +6,15 @@ class Channel{
         this.consortium = consortium;
         this.orgs=orgs;
     }
+    
+    getName(){
+        return this.name;
+    }
+    
     getOrgs(){
         return this.orgs;
     }
+    
     getPeers(){
         return this.peers;
     }

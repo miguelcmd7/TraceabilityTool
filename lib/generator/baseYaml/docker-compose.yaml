@@ -40,7 +40,7 @@ services:
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
-      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/crypto/{{ordererId}}/msp
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
     #  - ORDERER_GENERAL_TLS_ENABLED=true
     #  - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/crypto/{{ordererId}}/tls/server.key
     #  - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/crypto/{{ordererId}}/tls/server.crt
@@ -49,6 +49,7 @@ services:
     command: orderer
     ports:
       - {{ExtPort}}:{{IntPort}}
+     
     volumes:
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
@@ -59,9 +60,7 @@ services:
   {{#peers}}
   {{PeerId}}.{{domain}}:
     container_name: {{PeerId}}.{{domain}}
-    extends:
-      file:   base.yaml
-      service: peer-base
+    image: hyperledger/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=info
@@ -69,8 +68,8 @@ services:
       - CORE_PEER_ID={{PeeId}}.{{domain}}
       - CORE_PEER_LOCALMSPID={{orgMSP}}
       - CORE_PEER_ADDRESS={{PeerId}}.{{domain}}:{{IntPort}}
-      - CORE_PEER_GOSSIP_BOOTSTRAP={{PeerId}}.{{domain}}:{{IntPort}}      
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT={{PeerId}}.{{domain}}:{{IntPort}}
+      - CORE_PEER_GOSSIP_BOOTSTRAP={{PeerId}}.{{domain}}:{{IntGossipPort}}      
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT={{PeerId}}.{{domain}}:{{IntGossipPort}}
 
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
@@ -85,12 +84,14 @@ services:
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     ports:
       - {{ExtPort}}:{{IntPort}}
-      - {{ExtPort}}:{{IntPort}}
+      - {{ExtGossipPort}}:{{IntGossipPort}}
     volumes:
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
       {{/volumes}}
     depends_on:
-      - orderer.example.com
+    {{#depends_on}}
+      - {{.}}
+    {{/depends_on}}
     {{/peers}}
     {{/peerByOrgs}}

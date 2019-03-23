@@ -20,14 +20,14 @@ class Base {
      * @returns {boolean}
      */
     hasMSP(){
-        retrun (this.mspRoute==null||this.mspRoute=='');
+        return (this.mspRoute==null||this.mspRoute=='');
     }
 
     /**
      * @returns {boolean}
      */
     hasTLS(){
-        retrun (this.tlsRoute==null||this.tlsRoute.Route=='');
+        return (this.tlsRoute==null||this.tlsRoute.Route=='');
     }
     
     getExtPort(){
