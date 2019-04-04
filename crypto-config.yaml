@@ -11,12 +11,13 @@ OrdererOrgs:
   # Orderer
   # ---------------------------------------------------------------------------  
   - Name: Orderer
-    Domain: 
+    Domain: mired.com
     # ---------------------------------------------------------------------------
     # "Specs" - See PeerOrgs below for complete description
     # ---------------------------------------------------------------------------
-      Specs:
-      - Hostname: Orderer
+    
+    Specs:
+      - Hostname: orderer
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
 # ---------------------------------------------------------------------------
@@ -26,5 +27,6 @@ PeerOrgs:
     EnableNodeOUs: true
     Specs:
       - Hostname: peer1 # implicitly "foo.org1.example.com"
+      - Hostname: peer2 # implicitly "foo.org1.example.com"
     Users:
       Count: 1

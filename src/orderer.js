@@ -1,36 +1,43 @@
 'use strict';
-var read = require('read-yaml');
 const Base = require('./base');
 
 class Orderer extends Base {
-     /** 
-    *@param {string} name
-    *@param {int} extPort 
-    *@param {int} intPort 
-    *@param {string} extra
-    */
+    /** 
+     *@param {string} name
+     *@param {int} extPort 
+     *@param {int} intPort 
+     *@param {string} extra
+     */
 
-    constructor(name,id,extPort, intPort, extra=''){
+    constructor(name, id, domain, extPort, intPort, extra = '') {
         super(extPort, intPort, extra);
-        this.name=name;
-        this.id=id;
+        this.name = name;
+        this.id = id;
+        this.domain = domain;
     }
 
-    getId(){
+    getId() {
         return this.id
     }
-    getName(){
+    getName() {
         return this.name;
     }
-    
-    toJSON(){
-        return  {
-            ordererId: this.name,
+    getDomain() {
+        return this.domain;
+    }
+    getAllId() {
+        return this.id + '.' + this.domain;
+    }
+
+    toJSON() {
+        return {
+            ordererId: this.id,
+            domain: this.domain,
             ExtPort: this.extPort,
             IntPort: this.intPort,
-            extra:this.extra
+            extra: this.extra
         }
     }
 
 }
-module.exports=Orderer;
+module.exports = Orderer;

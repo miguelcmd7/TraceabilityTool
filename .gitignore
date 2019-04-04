@@ -5,6 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+crypto-config
 # Runtime data
 pids
 *.pid
@@ -78,3 +79,8 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+.eslintrc.json
+config/Org1MSPanchors.tx
+config/channel.tx
+config/genesis.block
+docker-compose.yaml
