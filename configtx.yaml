@@ -37,7 +37,9 @@ Organizations:
         
         AnchorPeers:
             - Host: peer1.digibank.mired.com
-              Port: 7050
+              Port: 7051
+            - Host: peer2.digibank.mired.com
+              Port: 7051
         
 
 ################################################################################
@@ -69,7 +71,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.mired.com:6374
+        - orderer.mired.com:7060
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s

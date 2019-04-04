@@ -5,6 +5,9 @@
 #
 version: '2'
 
+networks:
+  {{netName}}:
+
 services:
   {{#casByOrg}}
   {{#cas}}
@@ -28,6 +31,8 @@ services:
       {{/volumes}}
     container_name: {{casId}}.{{domain}}
    {{/cas}}
+    networks: 
+      - {{netName}}
   {{/casByOrg}}
 
   {{#orderers}}
@@ -37,6 +42,7 @@ services:
     environment:
       - FABRIC_LOGGING_SPEC=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+      - ORDERER_GENERAL_LISTENPORT={{IntPort}}
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
@@ -54,6 +60,8 @@ services:
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
       {{/volumes}}
+    networks: 
+      - {{netName}}
   {{/orderers}}
   
   {{#peerByOrgs}}
@@ -65,11 +73,12 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - FABRIC_LOGGING_SPEC=info
       - CORE_CHAINCODE_LOGGING_LEVEL=info
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ID={{PeeId}}.{{domain}}
       - CORE_PEER_LOCALMSPID={{orgMSP}}
       - CORE_PEER_ADDRESS={{PeerId}}.{{domain}}:{{IntPort}}
-      - CORE_PEER_GOSSIP_BOOTSTRAP={{PeerId}}.{{domain}}:{{IntGossipPort}}      
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT={{PeerId}}.{{domain}}:{{IntGossipPort}}
+      - CORE_PEER_GOSSIP_BOOTSTRAP={{PeerId}}.{{domain}}:{{IntPort}}      
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT={{PeerId}}.{{domain}}:{{IntPort}}
 
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
@@ -86,9 +95,12 @@ services:
       - {{ExtPort}}:{{IntPort}}
       - {{ExtGossipPort}}:{{IntGossipPort}}
     volumes:
+      - /var/run/:/host/var/run/
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
       {{/volumes}}
+    networks: 
+      - {{netName}}
     depends_on:
     {{#depends_on}}
       - {{.}}

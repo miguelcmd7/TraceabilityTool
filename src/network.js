@@ -151,6 +151,7 @@ class Network {
 
     toJSON() {
         var networkJson = {}
+        networkJson.netName= this.name;
         networkJson.netDomain = this.domain
         networkJson.casByOrg = []
         for ( [key, value] of this.orgs.entries()) {
@@ -179,7 +180,7 @@ class Network {
         for (var [key, value] of this.orderers.entries()) {
             networkJson.orderers = []
            // console.log(value)
-            networkJson.orderers.push(Object.assign(value.toJSON(), ordererConf(value)))
+            networkJson.orderers.push(Object.assign(value.toJSON(), ordererConf(value, this.peers.values())))
         }
 
         // this.orgs.forEach(eachOrg);

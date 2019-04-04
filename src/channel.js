@@ -40,5 +40,12 @@ class Channel{
             return true;
         }
     }
+    removePeer(peerId){
+        
+        this.peers= this.peers.filter((value,index,array)=>{
+            return value != peerId;
+        })
+
+    }
 }
 module.exports = Channel;
