@@ -1,7 +1,7 @@
 let Organization = require('./organization');
-let peerConf = require('../lib/common/peerConfigGenerator');
-let ordererConf = require('../lib/common/ordererConfigGenerator');
-let caConf = require('../lib/common/caConfigGenerator');
+let peerConf = require('../../lib/common/peerConfigGenerator');
+let ordererConf = require('../../lib/common/ordererConfigGenerator');
+let caConf = require('../../lib/common/caConfigGenerator');
 class Network {
     /** 
      *@param {string} name 
@@ -13,6 +13,13 @@ class Network {
      **/
 
     constructor(name, domain) {
+        if (!!Network.instance) {
+            return Network.instance;
+        }
+
+        Network.instance = this;
+
+        
         this.name = name;
         this.domain = domain;
         this.peers = new Map();
@@ -20,9 +27,16 @@ class Network {
         this.orgs = new Map();
         this.orderers = new Map();
         this.channels = [];
-
+        return this;
+    
     }
-
+    static getInstance(){
+        if (!!Network.instance) {
+            return Network.instance;
+        }else
+            return null
+    }
+    
     getName() {
         return this.name;
     }
@@ -34,11 +48,20 @@ class Network {
         return this.peers.values();
 
     }
+    getPeer(peerId){
+        return this.peers.get(peerId);
+    }
     getOrgs(){
         return this.orgs.values()
     }
+    getOrg(orgId){
+        return this.orgs.get(orgId);
+    }
     getOrderers() {
         return this.orderers.values();
+    }
+    getOrderer(ordererId){
+        return this.orderers.get(ordererId);
     }
     getOrgsMsp(){
         let msps=[]
@@ -49,6 +72,11 @@ class Network {
     getChannels(){
         return this.channels;
     }
+    getChannel(channelId){
+        return this.channels.filter((value,index,array)=>{
+            return value.getName()==channelId;
+        });
+    }
     getChannelOrgs(channel){
         let msps=[]
        
@@ -57,17 +85,57 @@ class Network {
         }
         return msps;
     }
+
+    setName(name){
+        this.name=name;
+    }
+
     addPeer(peer, orgId) {
         var peerid = peer.getAllId()
 
         if (this.peers.get(peerid) == null) {
-            this.peers.set(peerid, peer)
             var orgPeers = this.peerByOrgs.get(orgId);
-            //console.log(orgPeers);
-            orgPeers.push(peerid)
-            this.peerByOrgs.set(orgId, orgPeers);
-        }
+            if(orgPeers != null){
+                this.peers.set(peerid, peer)
+            
+                //console.log(orgPeers);
+                orgPeers.push(peerid)
+                this.peerByOrgs.set(orgId, orgPeers);
+            }else
+                throw "Org not created"
+        }else  
+            throw "Peer already exists"
 
+    }
+    updatePeer(peerId,peerConf,anchor){
+        peer=this.peers.get(peerId) 
+        if(peer!=null){
+            peer.setPeerConf(peerConf);
+            return peer;
+        }else{
+            throw "Peer doesn't exist"
+        }
+    }
+    deletePeer(peerId,orgId){
+        peer=this.peers.get(peerId) 
+        var isIn = false;
+        if(peer!=null){           
+            neworgs=this.peerByOrgs.get(orgId).filter((value,index,array)=>{
+                if (value != peerId)
+                    return true;
+                else{
+                    isIn=true;
+                    return false;
+                } 
+             })
+            if (isIn){
+                this.peerByOrgs.set(orgId, neworgs)
+                this.peers.delete(peerId);
+            }else
+                throw "That peer not belongs to this Org"
+        }else{
+            throw "Peer doesn't exist"
+        }
     }
 
     //TODO Implementar exceptions, error al añadir existente.
@@ -75,6 +143,28 @@ class Network {
         this.orgs.set(org.getAllId(), org);
         this.peerByOrgs.set(org.getAllId(), [])
     }
+    updateOrg(orgId,orgName,orgCa,orgMspId ){
+        org=this.orgs.get(orgId);
+        if (org==null)
+            throw "Organization doesn't exist"
+        else{
+            org.setName(orgName);
+            org.setCaName(orgCa);
+            org.setMspId(orgMspId);
+            return org;
+        }
+    }
+    deleteOrg(orgId){
+        if (this.orgs.delete(orgId)){
+            peers = this.peerByOrgs.get(orgId)
+            for (var peer of peers)
+                this.peers.delete(peer);
+            this.peerByOrgs.delete(orgId);
+        }
+        else
+            throw "Organization doesn't exist"
+    }
+
     addChannel(channel){
         if(!this.channels.includes(channel)){
             this.channels.push(channel);
@@ -82,6 +172,22 @@ class Network {
 
     }
 
+    updateChannel(channelid){
+        if(this.channels.includes(channel)){
+
+        }else{
+            throw "This channel doesn't exist"
+        }
+
+    }
+
+    deleteChannel(channelName){
+
+        this.channels = this.channels.filter((value,index,arra)=>{
+            return value.getName() != channelName;
+        })
+
+    }
     addOrderer(orderer) {
         this.orderers.set(orderer.getId() + '.' + this.domain, orderer)
     }
@@ -154,6 +260,7 @@ class Network {
         networkJson.netName= this.name;
         networkJson.netDomain = this.domain
         networkJson.casByOrg = []
+        networkJson.channels = this.channels;
         for ( [key, value] of this.orgs.entries()) {
             //console.log(value.getDomain());
             //console.log(map.get(key));

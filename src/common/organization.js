@@ -35,6 +35,18 @@ class Organization {
         return this.mspId;
     }
 
+    setName(name){
+        this.name=name;
+    }
+
+    setMspId(mspId){
+        this.mspId=mspId;
+    }
+
+    setCaName(caName){
+        this.ca_name=caName;
+    }
+
     toJSON() {
         return {
             orgName: this.name,

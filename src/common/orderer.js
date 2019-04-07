@@ -1,5 +1,5 @@
 'use strict';
-const Base = require('./base');
+const Base = require('../base');
 
 class Orderer extends Base {
     /** 

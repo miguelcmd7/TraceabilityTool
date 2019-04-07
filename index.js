@@ -4,13 +4,13 @@ var path = require('path');
 
 const { execSync,exec } = require('child_process');
 
-const Peer = require('./src/peer');
-const Network = require('./src/network');
-const Organization = require('./src/organization');
-const Orderer = require('./src/orderer');
-const Channel = require('./src/channel');
-const PeerConfig = require('./src/peerConf');
 
+const Organization = require('./src/common/organization');
+const Orderer = require('./src/common/orderer');
+const Channel = require('./src/common/channel');
+const PeerConfig = require('./src/common/peerConf');
+const Model = require('./src/model/modelNetwork.js/index.js');
+const ModelChannel = require('./src/model/modelChannel.js');
 process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TraceabilityTool'
 
 var gen= require('./lib/generator/yalmGenerator');
@@ -38,33 +38,35 @@ let configPeer2  = new PeerConfig({
     extGossipPort:7073,
     intGossipPort:7053
 });
-var peer1=new Peer('peer1','digibank.mired.com', configPeer);
-var peer2=new Peer('peer2','digibank.mired.com', configPeer2);
+let myred = Model.createNetwork('myred','mired.com');
+//let myred2 = Model.createNetwork('MYRED','miredDPM.com');
+ModelChannel.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
+console.log(Model.getNetwork());
+//console.log(myred.toJSON())
+//console.log(myred2.toJSON())
+let org1 = Model.createOrg('Digibank', 'digibank', 'digiCA','DigibankMSP','mired.com');
+let orderer= Model.createOrderer('Orderer','orderer','mired.com', 5247,7060);
+var peer1=Model.createPeer('peer1','digibank.mired.com', configPeer);
+var peer2=Model.createPeer('peer2','digibank.mired.com', configPeer2);
 //console.log(peer1.toJSON());
-
+let channel = Model.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
 var nuevo={};
 nuevo["PeerID"]="ostra";
 //console.log(nuevo);
 
-let myred = new Network('myred','mired.com');
+
 
 
 //  constructor(name,extPort, intPort, extra){
-let orderer= new Orderer('Orderer','orderer','mired.com', 5247,7060);
+
 
 // constructor(name, orgId,ca_name, mspId,domain){
-let org1 = new Organization('Digibank', 'digibank', 'digiCA','DigibankMSP','mired.com');
+
 
 //constructor(name,consortium,orgs=[],peers=[],orderers=[])b
-let channel = new Channel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
+
 //console.log(org1)
 
-myred.addOrg(org1)
-
-myred.addOrderer(orderer)
-myred.addPeer(peer1,org1.getAllId())
-myred.addPeer(peer2,org1.getAllId())
-myred.addChannel(channel);
 
 
 
@@ -81,33 +83,33 @@ let   cryptoYaml= crypto(myred)
 fs.writeFileSync('./configtx.yaml',configYaml);  
 fs.writeFileSync('./crypto-config.yaml',cryptoYaml); 
 
-try{
-    execSync('docker-compose -f docker-compose.yaml down ')
-    execSync('rm -r crypto-config');
-}catch(error){
+// try{
+//     execSync('docker-compose -f docker-compose.yaml down ')
+//     execSync('rm -r crypto-config');
+// }catch(error){
 
-}
+// }
 
-    exec('cryptogen generate --config=crypto-config.yaml >>/dev/null',(err,stdout,stederr)=>{
-        if(err)
-            console.log('Error cryptogen');
-        else
-            exec('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block',(err,stdout,stederr)=>{
-                if(err)
-                    console.log('Error cryptogen');
-                else{
-                    for (let chann of myred.getChannels())
-                        execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ./config/channel.tx -channelID '+ chann.getName())
-                        for (let orgMsp of myred.getChannelOrgs(channel))
-                             execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID '+channel.getName()+' -asOrg '+orgMsp )
+//     exec('cryptogen generate --config=crypto-config.yaml >>/dev/null',(err,stdout,stederr)=>{
+//         if(err)
+//             console.log('Error cryptogen');
+//         else
+//             exec('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block',(err,stdout,stederr)=>{
+//                 if(err)
+//                     console.log('Error cryptogen');
+//                 else{
+//                     for (let chann of myred.getChannels())
+//                         execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ./config/channel.tx -channelID '+ chann.getName())
+//                         for (let orgMsp of myred.getChannelOrgs(channel))
+//                              execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID '+channel.getName()+' -asOrg '+orgMsp )
                         
-                    let networkYaml = gen(myred);
-                    fs.writeFileSync('./docker-compose.yaml',networkYaml); 
-                    execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block')
-                    execSync('docker-compose -f docker-compose.yaml up ');
-                    }
-                }) 
-            })
+//                     let networkYaml = gen(myred);
+//                     fs.writeFileSync('./docker-compose.yaml',networkYaml); 
+//                     execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block')
+//                     execSync('docker-compose -f docker-compose.yaml up ');
+//                     }
+//                 }) 
+//             })
 
 
     

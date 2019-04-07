@@ -47,5 +47,15 @@ class Channel{
         })
 
     }
+    toJSON(){
+        var json ={}
+        json.orderers = this.orderers;
+        json.orgs = this.orgs;
+        json.peers = this.peers
+        json.consortium = this.consortium;
+        json.name = this.name;
+        return json;
+
+    }
 }
 module.exports = Channel;

@@ -42,6 +42,13 @@ class Peer  {
 
         }
     }
+    setAnchor(anchor){
+        this.anchor= anchor;
+    }
+
+    setConfig(config){
+        this.config=config;
+    }
 
 }
 module.exports=Peer;
