@@ -3,7 +3,7 @@ const ModelPeer = require('../../src/models/modelPeer.js')
 //GET - Return all Homestates in the DB
 exports.findAllPeers = function(req, res) {
     try {
-        res.status(200).send(ModelPeer.getAllPeers(req.params.orgId))
+        res.status(200).send(ModelPeer.getAllPeers())
     }catch(err){
         res.status(500).send(err);
     }
@@ -21,7 +21,7 @@ exports.findPeer = function(req, res) {
 //POST - Insert a new HomeState in the DB
 exports.createPeer = function(req, res) {
 	try{
-        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body-orgId,req.body.domain,req.body.config))
+        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body.orgId,req.body.domain,req.body.config))
     }catch(err){
         res.status(500).send(err);
     }

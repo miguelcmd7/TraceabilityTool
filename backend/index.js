@@ -1,28 +1,49 @@
 const express = require('express');
 const app = express();
 const bodyParser  = require("body-parser");
-const port = 19769;
+const port = 8080;
 var image;
 var image2;
 var number=0;
 const NetworkCtrl = require('./controllers/NetworkController.js');
 const PeerCtrl= require('./controllers/PeerController.js');
 const ChannelCtrl= require('./controllers/ChannelController.js');
-
+const OrgCtrl= require('./controllers/OrganizationController.js');
+const OrdererCtrl= require('./controllers/OrdererController.js');
 var fs = require('fs');
 
 app.use(bodyParser.urlencoded({ limit: '50mb',extended: true }));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 var orgs = express.Router();
 var channels = express.Router();
+var orderers = express.Router();
+
+orderers.route('/').post(OrdererCtrl.createOrderer)
+.get(OrdererCtrl.findAllOrderers)
+
+orderers.route('/:ordererId')
+
+orgs.route('/').post(OrgCtrl.createOrg)
+.get(OrgCtrl.findAllOrgs)
+
+orgs.route('/:orgId').put(OrgCtrl.updateOrg)
+.get(OrgCtrl.findOrg)
+.delete(OrgCtrl.deleteOrg);
 
 orgs.route('/:orgId/peers/:peerId')
     .get(PeerCtrl.findPeer)
     .put(PeerCtrl.updatePeer)
     .delete(PeerCtrl.deletePeer);
+
+orgs.route('/peers').
+get(OrgCtrl.peersByOrg);
 
 orgs.route('/:orgId/peers')
   .get(PeerCtrl.findAllPeers)

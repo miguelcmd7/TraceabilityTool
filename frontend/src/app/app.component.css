@@ -1,0 +1,15 @@
+.navbar {
+    width: 100%;
+    background-color: #555;
+    overflow: auto;
+    padding-left: 5em;
+  }
+  
+  .navbar a {
+    float: left;
+    padding: 1em;
+    color: white;
+    text-decoration: none;
+    font-size: 17px;
+  }
+  

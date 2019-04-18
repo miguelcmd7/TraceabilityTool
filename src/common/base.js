@@ -39,6 +39,15 @@ class Base {
     getExtra(){
         return this.extra;  
     }
+    setExtra(extra){
+        this.extra= extra;
+    }
+    setExtPort(extPort){
+        this.extPort= extPort;
+    }
+    setIntPort(intPort){
+        this.intPort = intPort;
+    }
 
    
 }

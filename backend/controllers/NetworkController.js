@@ -7,6 +7,13 @@ exports.createNetwork = function(req, res) {
         res.status(500).send(err);
     }
 };
+exports.getNetworkDomain= function(req, res) {
+    try {
+        res.status(200).send(ModelNetwork.getDomain())
+    }catch(err){
+        res.status(500).send(err);
+    }
+};
 
 //GET - Return a HomeState with specified ID
 exports.build = function(req, res) {

@@ -12,10 +12,6 @@ function getInstance(){
         throw "Network not created"
 }
 
-exports.getNetwork= function(){
-    return network.toJSON()
-
-}
 
 exports.createChannel= function (name,consortium,orgs=[],peers=[],orderers=[]){
     if(network == null)

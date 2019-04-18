@@ -15,17 +15,19 @@ exports.createOrderer=function (name,id,domai,extPort,intPort,extra=''){
     getInstance();
     orderer = new Orderer(name,id,domai,extPort,intPort,extra)
 
-        network.addOrderer(orderer);
-        return orderer.toJSON()
+    network.addOrderer(orderer);
+    return orderer.toJSON()
 
 
 }
 
-exports.updateOrderer = function(){
-    getInstance();
+exports.updateOrderer = function(ordererId, name, intPort,extPort,extra=''){
     
+    getInstance();
+    let orderer  = network.updateOrderer(ordererId, name, intPort,extPort,extra='');
+    return orderer.toJSON()
 }
-exports.deleteOrderer = function(){
-
+exports.deleteOrderer = function(ordererId){
+    network.deleteOrderer(ordererId);
     
 }

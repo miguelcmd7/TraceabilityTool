@@ -22,6 +22,9 @@ class Orderer extends Base {
     getName() {
         return this.name;
     }
+    setName(name){
+        this.name= name;
+    }
     getDomain() {
         return this.domain;
     }
@@ -31,6 +34,7 @@ class Orderer extends Base {
 
     toJSON() {
         return {
+            ordererName:this.name,
             ordererId: this.id,
             domain: this.domain,
             ExtPort: this.extPort,

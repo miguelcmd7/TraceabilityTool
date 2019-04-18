@@ -51,6 +51,23 @@ class Network {
     getPeer(peerId){
         return this.peers.get(peerId);
     }
+    getPeersByOrg(){
+        var json={}
+        for ( [key, value] of this.peerByOrgs.entries()) {
+            json.peerByOrgs = []
+            var org = this.orgs.get(key).toJSON()
+            org.peers = []
+            // if (value != []){
+            //     networkJson.peerByOrgs[key].peers=[]
+            // }
+            for (var peerInOrg of value) {
+                var peer = this.peers.get(peerInOrg);
+
+                org.peers.push(Object.assign(peer.toJSON(), peerConf(peer, Array.from(this.orderers.keys()))))
+            }
+            json.peerByOrgs.push(org);
+        }
+    }
     getOrgs(){
         return this.orgs.values()
     }
@@ -190,6 +207,19 @@ class Network {
     }
     addOrderer(orderer) {
         this.orderers.set(orderer.getId() + '.' + this.domain, orderer)
+    }
+    updateOrderer(ordererId, name, intPort,extPort,extra=''){
+        var orderer = this.orderers.get(ordererId+'.'+this.domain);
+        orderer.setName(name);
+        orderer.setIntPort(intPort);
+        orderer.setExtPort(extPort);
+        orderer.setExtra(extra)
+
+        return orderer;
+
+    }
+    deleteOrderer(ordererId){
+        this.orderers.delete(ordererId+'.'+this.domain);
     }
 
     configtxJSON() {
