@@ -8,6 +8,7 @@ import { PeerDetailComponent } from './peer-detail/peer-detail.component';
 import { OrdererDetailComponent } from './orderer-detail/orderer-detail.component';
 import { ChannelDetailComponent } from './channel-detail/channel-detail.component';
 import { OrgDetailComponent } from './org-detail/org-detail.component';
+import { NewNetworkComponent } from './new-network/new-network.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/addOrg', pathMatch: 'full' },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'retire-element', component: OrdererDetailComponent },
   { path: 'retire-element', component: ChannelDetailComponent },
   { path: 'retire-element', component: OrgDetailComponent },
+  { path: 'newNetwork', component: NewNetworkComponent },
 ];
 
 @NgModule({

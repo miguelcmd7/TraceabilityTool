@@ -36,6 +36,7 @@ exports.getOrg= function(orgId){
 exports.createOrg= function(name, orgId, ca_name, mspId, domain){
     getInstance()
     org = new Organization(name, orgId, ca_name, mspId, domain)
+    console.log('Creating org...'+orgId)
     network.addOrg(org);
     return org.toJSON()
 

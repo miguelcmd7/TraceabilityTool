@@ -2,18 +2,24 @@ var fs = require('fs');
 var path = require('path');
 
 
-const { execSync,exec } = require('child_process');
+const { execSync, exec } = require('child_process');
 
 
-const Organization = require('./src/common/organization');
+const Network = require('./src/common/network');
 const Orderer = require('./src/common/orderer');
 const Channel = require('./src/common/channel');
 const PeerConfig = require('./src/common/peerConf');
-const Model = require('./src/model/modelNetwork.js/index.js');
-const ModelChannel = require('./src/model/modelChannel.js');
-process.env.DEST_DIRECTORY='/home/miguel/Proyectos/TraceabilityTool'
+const modelNetwork = require('./src/models/modelNetwork.js');
+const modelOrg = require('./src/models/modelOrganization.js');
+const modelPeer = require('./src/models/modelPeer.js');
+const modelOrderer = require('./src/models/modelOrderer.js');
+const ModelChannel = require('./src/models/modelChannel.js');
+const _ = require('./lib/util/util');
 
-var gen= require('./lib/generator/yalmGenerator');
+
+process.env.DEST_DIRECTORY = '/home/miguel/Hyperledger/ejemplo'
+
+var gen = require('./lib/generator/yalmGenerator');
 var crypto = require('./lib/generator/cryptoYaml');
 var config = require('./lib/generator/configtxYaml');
 
@@ -24,34 +30,39 @@ var config = require('./lib/generator/configtxYaml');
 //   }
 
 
-let configPeer  = new PeerConfig({
-    extPort:7060,
+
+
+let configPeer = new PeerConfig({
+    extPort: 7060,
     anchor: true,
-    intPort:7051,
-    extGossipPort:7063,
-    intGossipPort:7053
+    intPort: 7051,
+    extGossipPort: 7063,
+    intGossipPort: 7053
 });
-let configPeer2  = new PeerConfig({
-    extPort:7070,
+let configPeer2 = new PeerConfig({
+    extPort: 7070,
     anchor: true,
-    intPort:7051,
-    extGossipPort:7073,
-    intGossipPort:7053
+    intPort: 7051,
+    extGossipPort: 7073,
+    intGossipPort: 7053
 });
-let myred = Model.createNetwork('myred','mired.com');
+let myred = modelNetwork.createNetwork('myred', 'mired.com');
 //let myred2 = Model.createNetwork('MYRED','miredDPM.com');
-ModelChannel.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
-console.log(Model.getNetwork());
+
+console.log(modelNetwork.getNetwork());
 //console.log(myred.toJSON())
 //console.log(myred2.toJSON())
-let org1 = Model.createOrg('Digibank', 'digibank', 'digiCA','DigibankMSP','mired.com');
-let orderer= Model.createOrderer('Orderer','orderer','mired.com', 5247,7060);
-var peer1=Model.createPeer('peer1','digibank.mired.com', configPeer);
-var peer2=Model.createPeer('peer2','digibank.mired.com', configPeer2);
+let org1 = modelOrg.createOrg('Digibank', 'digibank', 'digiCA', 'DigibankMSP', 'mired.com');
+//console.log(modelNetwork.getNetwork()).getPeersByOrgs();
+let orderer = modelOrderer.createOrderer('Orderer', 'orderer', 'mired.com', 5247, 7060);
+
+var peer1 = modelPeer.createPeer('peer1','digibank', 'digibank.mired.com', configPeer);
+var peer2 = modelPeer.createPeer('peer2','digibank', 'digibank.mired.com', configPeer2);
+//ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], ['peer1.digibank.mired.com', 'peer2.digibank.mired.com'], ['orderer.mired.com'])
 //console.log(peer1.toJSON());
-let channel = Model.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
-var nuevo={};
-nuevo["PeerID"]="ostra";
+//let channel = Model.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
+//var nuevo={};
+//nuevo["PeerID"]="ostra";
 //console.log(nuevo);
 
 
@@ -77,47 +88,55 @@ nuevo["PeerID"]="ostra";
 //TODO funcion para crear rutas de proyecto
 //var peerjson= gen(peer1,'peer');
 
-let configYaml = config(myred);
+let configYaml = config(Network.getInstance());
 //console.log(configYaml)
-let   cryptoYaml= crypto(myred)
-fs.writeFileSync('./configtx.yaml',configYaml);  
-fs.writeFileSync('./crypto-config.yaml',cryptoYaml); 
+let cryptoYaml = crypto(Network.getInstance())
+fs.writeFileSync(_(['configtx.yaml']), configYaml);
+fs.writeFileSync(_(['crypto-config.yaml']), cryptoYaml);
 
-// try{
-//     execSync('docker-compose -f docker-compose.yaml down ')
-//     execSync('rm -r crypto-config');
-// }catch(error){
+try {
+    execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' down ')
+    execSync('rm -r ' + _(['crypto-config']));
+} catch (error) {
 
-// }
+}
+try{
+    fs.mkdirSync(_(['config']));
+    fs.mkdirSync(_(['crypto-config']))
+}catch{
+    //throw "Error trying create direcotries"
+}
+console.log('cryptogen generate --config=' + _(['crypto-config.yaml']))
+//execSync('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config'])); 
+exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config']) , (err, stdout, stederr) => {
+    if (err)
+        console.log('Error cryptogen');
+    else
+        exec('configtxgen -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
+            if (err) 
+                console.log('Error cryptogen');
+            else {
+                for (let channel of Network.getInstance().getChannels()){
+                    execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())
 
-//     exec('cryptogen generate --config=crypto-config.yaml >>/dev/null',(err,stdout,stederr)=>{
-//         if(err)
-//             console.log('Error cryptogen');
-//         else
-//             exec('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block',(err,stdout,stederr)=>{
-//                 if(err)
-//                     console.log('Error cryptogen');
-//                 else{
-//                     for (let chann of myred.getChannels())
-//                         execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ./config/channel.tx -channelID '+ chann.getName())
-//                         for (let orgMsp of myred.getChannelOrgs(channel))
-//                              execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ./config/Org1MSPanchors.tx -channelID '+channel.getName()+' -asOrg '+orgMsp )
-                        
-//                     let networkYaml = gen(myred);
-//                     fs.writeFileSync('./docker-compose.yaml',networkYaml); 
-//                     execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ./config/genesis.block')
-//                     execSync('docker-compose -f docker-compose.yaml up ');
-//                     }
-//                 }) 
-//             })
+                    for (let orgMsp of Network.getInstance().getChannelOrgs(channel))
+                        execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ' + _(['config', 'Org1MSPanchors.tx']) + ' -channelID ' + channel.getName() + ' -asOrg ' + orgMsp)
+                }
+                let networkYaml = gen(Network.getInstance());
+                fs.writeFileSync(_(['docker-compose.yaml']), networkYaml);
+                execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+                execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' up -d ');
+            }
+        })
+})
 
 
-    
+
     //exec('cryptogen generate --config=crypto-config.yaml >>/dev/null');
 
 
- 
-    
+
+
 
 
 //console.log(myred.toJSON())
@@ -126,6 +145,6 @@ fs.writeFileSync('./crypto-config.yaml',cryptoYaml);
 
 
 
-    
+
 // myYaml = gen(myred)
 // fs.writeFileSync('./org.yaml', myYaml); 

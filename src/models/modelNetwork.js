@@ -4,6 +4,7 @@ const Peer = require('../common/peer.js');
 const PeerConf = require('../common/peerConf.js');
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
+var fs = require('fs');
 var network = null;
 
 exports.setOutPutDir= function(){
@@ -13,7 +14,6 @@ exports.setOutPutDir= function(){
 
 exports.getNetwork= function(){
     return network.toJSON()
-
 }
 exports.getDomain = function(){
     return {domain:network.getDomain()};
@@ -29,6 +29,18 @@ exports.createNetwork = function(name, domain) {
     
     
 }
-this.createNetwork('myred','mired.com');
 
+exports.setDestDirectory= function(directory){
+    console.log("El directorio es "+directory)
+    if(!fs.existsSync(directory)){
+        throw "Directory doesn't exists"    
+        console.log("Directorio no existe")
+    }
+        
+    else
+         process.env.DEST_DIRECTORY= directory;
+    return directory;
+}
+
+//this.createNetwork('myred','mired.com');
 //module.exports=[createChannel,createNetwork,createOrderer,createOrg,createPeer]

@@ -1,42 +1,70 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { OrgService } from '../org.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, Validators, FormGroup } from "@angular/forms";
+
+import { NetworkService } from "../network.service";
 
 @Component({
-  selector: 'app-new-network',
-  templateUrl: './new-network.component.html',
-  styleUrls: ['./new-network.component.css']
+  selector: "app-new-network",
+  templateUrl: "./new-network.component.html",
+  styleUrls: ["./new-network.component.css"]
 })
 export class NewNetworkComponent implements OnInit {
-  registerForm: any;
-  submitted: boolean;
+  registerForm: FormGroup;
+  submitted = false;
+  private domain: string;
+  folder: string;
 
-  constructor(private formBuilder: FormBuilder,private orgService:OrgService) {}
-
-  ngOnInit() {
-    this.registerForm = this.formBuilder.group(
-      {
-        name: ["asdf", Validators.required],
-        domain: ["asdf", Validators.required]
-      }
-    );
+  constructor(
+    private formBuilder: FormBuilder,
+    private networkService: NetworkService
+  ) {
+    this.domain = null;
+    this.folder = null;
   }
 
+  ngOnInit() {
+    this.registerForm = this.formBuilder.group({
+      directory: ["/home/miguel/Hyperledger/ejemplo", Validators.required],
+      domain: ["asdf", Validators.required],
+      name: ["asdf", [Validators.required]]
+    });
+  }
   get f() {
     return this.registerForm.controls;
   }
 
   onSubmit() {
-   console.log(this.registerForm.value);
-    this.orgService.addOrg(this.registerForm.value).subscribe((data)=>{
-      this.submitted= true;
-      alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
-    },(err)=>{
-      alert("Error!! :-)\n\n" + err);
-    }
-      
-    )
+    console.log(this.registerForm.value);
 
+    this.networkService.createNetwork(this.registerForm.value).subscribe(
+      data => {
+        this.submitted = true;
+        this.domain = data.domain;
+        // TODO navigate to main page
+      },
+      err => {
+        alert("Error creating network!! :-)\n\n" + err);
+      }
+    );
   }
 
+  selectFolder(e) {
+    console.log(e);
+    var theFiles = e.target.files;
+    console.log(theFiles);
+    var relativePath = theFiles[0].mozFullPath;
+    console.log(relativePath);
+    //var folder = relativePath.split("/");
+    alert(relativePath);
+  }
+
+  // browse() {
+  //   remote.dialog.showOpenDialog({title: 'Select a folder', properties: ['openDirectory']}, (folderPath) => {
+  //       if (folderPath === undefined){
+  //           console.log("You didn't select a folder");
+  //           return;
+  //       }
+  //       this.folder = folderPath.toString();
+  //   });
+  // }
 }

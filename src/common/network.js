@@ -111,13 +111,14 @@ class Network {
         var peerid = peer.getAllId()
 
         if (this.peers.get(peerid) == null) {
-            var orgPeers = this.peerByOrgs.get(orgId);
+            // console.log(this.)
+            var orgPeers = this.peerByOrgs.get(orgId+'.'+this.domain);
             if(orgPeers != null){
                 this.peers.set(peerid, peer)
             
                 //console.log(orgPeers);
                 orgPeers.push(peerid)
-                this.peerByOrgs.set(orgId, orgPeers);
+                this.peerByOrgs.set(orgId+'.'+this.domain, orgPeers);
             }else
                 throw "Org not created"
         }else  
@@ -137,7 +138,7 @@ class Network {
         peer=this.peers.get(peerId) 
         var isIn = false;
         if(peer!=null){           
-            neworgs=this.peerByOrgs.get(orgId).filter((value,index,array)=>{
+            neworgs=this.peerByOrgs.get(orgId+'.'+this.domain).filter((value,index,array)=>{
                 if (value != peerId)
                     return true;
                 else{
@@ -146,7 +147,7 @@ class Network {
                 } 
              })
             if (isIn){
-                this.peerByOrgs.set(orgId, neworgs)
+                this.peerByOrgs.set(orgId+'.'+this.domain, neworgs)
                 this.peers.delete(peerId);
             }else
                 throw "That peer not belongs to this Org"
@@ -157,8 +158,10 @@ class Network {
 
     //TODO Implementar exceptions, error al añadir existente.
     addOrg(org) {
+        console.log('Adding ORG'+org.getAllId());
         this.orgs.set(org.getAllId(), org);
         this.peerByOrgs.set(org.getAllId(), [])
+
     }
     updateOrg(orgId,orgName,orgCa,orgMspId ){
         org=this.orgs.get(orgId);
@@ -262,6 +265,8 @@ class Network {
     cryptoJSON() {
         var networkJson = {}
         networkJson.netDomain = this.domain
+        console.log(this.peerByOrgs.entries())
+        console.log(this.orgs.entries());
         for ( [key, value] of this.peerByOrgs.entries()) {
             networkJson.peerByOrgs = []
             var org = this.orgs.get(key).toJSON()

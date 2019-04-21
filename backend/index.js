@@ -61,7 +61,7 @@ channels.route('/')
 app.post('/directory', NetworkCtrl.setDestDirectory);
 app.post('/build',NetworkCtrl.build);
 app.post('/network',NetworkCtrl.createNetwork)
-
+app.get('/network',NetworkCtrl.getNetworkDomain)
 app.use('/orgs', orgs);
 app.use('/channels', channels);
 
