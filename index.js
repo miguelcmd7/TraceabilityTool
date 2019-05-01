@@ -58,7 +58,7 @@ let orderer = modelOrderer.createOrderer('Orderer', 'orderer', 'mired.com', 5247
 
 var peer1 = modelPeer.createPeer('peer1','digibank', 'digibank.mired.com', configPeer);
 var peer2 = modelPeer.createPeer('peer2','digibank', 'digibank.mired.com', configPeer2);
-//ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], ['peer1.digibank.mired.com', 'peer2.digibank.mired.com'], ['orderer.mired.com'])
+ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], ['peer1.digibank.mired.com', 'peer2.digibank.mired.com'], ['orderer.mired.com'])
 //console.log(peer1.toJSON());
 //let channel = Model.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
 //var nuevo={};
@@ -112,9 +112,11 @@ exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(
     if (err)
         console.log('Error cryptogen');
     else
-        exec('configtxgen -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
-            if (err) 
-                console.log('Error cryptogen');
+        exec('configtxgen -configPath '+ _(['configtx.yaml'])+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
+            if (err) {
+                console.log('configtxgen -configPath '+_(['configtx.yaml'])+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+                console.log('Error configtxgen');
+            }
             else {
                 for (let channel of Network.getInstance().getChannels()){
                     execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())

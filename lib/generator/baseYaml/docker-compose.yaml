@@ -74,7 +74,7 @@ services:
       - FABRIC_LOGGING_SPEC=info
       - CORE_CHAINCODE_LOGGING_LEVEL=info
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
-      - CORE_PEER_ID={{PeeId}}.{{domain}}
+      - CORE_PEER_ID={{PeerId}}.{{domain}}
       - CORE_PEER_LOCALMSPID={{orgMSP}}
       - CORE_PEER_ADDRESS={{PeerId}}.{{domain}}:{{IntPort}}
       - CORE_PEER_GOSSIP_BOOTSTRAP={{PeerId}}.{{domain}}:{{IntPort}}      
