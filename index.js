@@ -4,7 +4,7 @@ var path = require('path');
 
 const { execSync, exec } = require('child_process');
 
-
+const ChannelBuilder = require("./create-channel.js")
 const Network = require('./src/common/network');
 const Orderer = require('./src/common/orderer');
 const Channel = require('./src/common/channel');
@@ -126,6 +126,11 @@ exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(
                 fs.writeFileSync(_(['docker-compose.yaml']), networkYaml);
                 execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
                 execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' up -d ');
+                setTimeout(()=>{
+                    for (let channel of Network.getInstance().getChannels()){
+                        ChannelBuilder.initChannel(channel,Network.getInstance());
+                    }
+                },15)
             }
         })
 })

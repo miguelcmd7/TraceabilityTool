@@ -27,7 +27,13 @@ class Peer  {
     isAnchor(){
         return this.config.anchor;
     }
-
+    getExtPort(){
+        return this.config.extPort;
+    }
+    getIntPort(){
+        return this.config.intPort;
+    }
+    
     toJSON(){
         return  {
             PeerId: this.id,

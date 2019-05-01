@@ -119,8 +119,10 @@ class Network {
                 //console.log(orgPeers);
                 orgPeers.push(peerid)
                 this.peerByOrgs.set(orgId+'.'+this.domain, orgPeers);
+                
             }else
                 throw "Org not created"
+            
         }else  
             throw "Peer already exists"
 
