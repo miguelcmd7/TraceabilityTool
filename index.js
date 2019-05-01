@@ -112,21 +112,21 @@ exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(
     if (err)
         console.log('Error cryptogen');
     else
-        exec('configtxgen -configPath '+ _(['configtx.yaml'])+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
+        exec('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
             if (err) {
-                console.log('configtxgen -configPath '+_(['configtx.yaml'])+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+                console.log('configtxgen -configPath '+process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
                 console.log('Error configtxgen');
             }
             else {
                 for (let channel of Network.getInstance().getChannels()){
-                    execSync('configtxgen -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())
+                    execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())
 
                     for (let orgMsp of Network.getInstance().getChannelOrgs(channel))
-                        execSync('configtxgen -profile OneOrgChannel -outputAnchorPeersUpdate ' + _(['config', 'Org1MSPanchors.tx']) + ' -channelID ' + channel.getName() + ' -asOrg ' + orgMsp)
+                        execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputAnchorPeersUpdate ' + _(['config', 'Org1MSPanchors.tx']) + ' -channelID ' + channel.getName() + ' -asOrg ' + orgMsp)
                 }
                 let networkYaml = gen(Network.getInstance());
                 fs.writeFileSync(_(['docker-compose.yaml']), networkYaml);
-                execSync('configtxgen -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+                execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
                 execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' up -d ');
                 setTimeout(()=>{
                     for (let channel of Network.getInstance().getChannels()){
