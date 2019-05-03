@@ -66,8 +66,11 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], [
 //console.log(nuevo);
 
 
-modelNetwork.build()
+// modelNetwork.build().then(()=>{
+//     modelNetwork.launch()
+// })
 
+modelNetwork.launch()
 //  constructor(name,extPort, intPort, extra){
 
 

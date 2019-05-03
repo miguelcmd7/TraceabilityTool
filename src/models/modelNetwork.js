@@ -4,7 +4,7 @@ const Peer = require('../common/peer.js');
 const PeerConf = require('../common/peerConf.js');
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
-const build = require('../../lib/util/builder');
+const {build, launch} = require('../../lib/util/builder');
 var fs = require('fs');
 var network = null;
 
@@ -33,7 +33,15 @@ exports.createNetwork = function(name, domain) {
 exports.build = function (){
     let net = Network.getInstance()
     if (net != null){
-        build(net)
+        return build(net)
+    }else{
+        throw "Network not created!"
+    }
+}
+exports.launch = function (){
+    let net = Network.getInstance()
+    if (net != null){
+        return launch(net)
     }else{
         throw "Network not created!"
     }
