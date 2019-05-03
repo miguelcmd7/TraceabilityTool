@@ -4,7 +4,7 @@ var path = require('path');
 
 const { execSync, exec } = require('child_process');
 
-const ChannelBuilder = require("./create-channel.js")
+const ChannelBuilder = require("./lib/util/channelCreator")
 const Network = require('./src/common/network');
 const Orderer = require('./src/common/orderer');
 const Channel = require('./src/common/channel');
@@ -66,7 +66,7 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], [
 //console.log(nuevo);
 
 
-
+modelNetwork.build()
 
 //  constructor(name,extPort, intPort, extra){
 
@@ -88,54 +88,44 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], [
 //TODO funcion para crear rutas de proyecto
 //var peerjson= gen(peer1,'peer');
 
-let configYaml = config(Network.getInstance());
-//console.log(configYaml)
-let cryptoYaml = crypto(Network.getInstance())
-fs.writeFileSync(_(['configtx.yaml']), configYaml);
-fs.writeFileSync(_(['crypto-config.yaml']), cryptoYaml);
+// let configYaml = config(Network.getInstance());
+// //console.log(configYaml)
+// let cryptoYaml = crypto(Network.getInstance())
+// fs.writeFileSync(_(['configtx.yaml']), configYaml);
+// fs.writeFileSync(_(['crypto-config.yaml']), cryptoYaml);
 
-try {
-    execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' down ')
-    execSync('rm -r ' + _(['crypto-config']));
-} catch (error) {
 
-}
-try{
-    fs.mkdirSync(_(['config']));
-    fs.mkdirSync(_(['crypto-config']))
-}catch{
-    //throw "Error trying create direcotries"
-}
-console.log('cryptogen generate --config=' + _(['crypto-config.yaml']))
-//execSync('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config'])); 
-exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config']) , (err, stdout, stederr) => {
-    if (err)
-        console.log('Error cryptogen');
-    else
-        exec('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
-            if (err) {
-                console.log('configtxgen -configPath '+process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
-                console.log('Error configtxgen');
-            }
-            else {
-                for (let channel of Network.getInstance().getChannels()){
-                    execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())
 
-                    for (let orgMsp of Network.getInstance().getChannelOrgs(channel))
-                        execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputAnchorPeersUpdate ' + _(['config', 'Org1MSPanchors.tx']) + ' -channelID ' + channel.getName() + ' -asOrg ' + orgMsp)
-                }
-                let networkYaml = gen(Network.getInstance());
-                fs.writeFileSync(_(['docker-compose.yaml']), networkYaml);
-                execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
-                execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' up -d ');
-                setTimeout(()=>{
-                    for (let channel of Network.getInstance().getChannels()){
-                        ChannelBuilder.initChannel(channel,Network.getInstance());
-                    }
-                },15)
-            }
-        })
-})
+// console.log('cryptogen generate --config=' + _(['crypto-config.yaml']))
+// //execSync('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config'])); 
+// exec('cryptogen generate --config=' + _(['crypto-config.yaml']) +' --output='+_(['crypto-config']) , (err, stdout, stederr) => {
+//     if (err)
+//         console.log('Error cryptogen');
+//     else
+//         exec('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']), (err, stdout, stederr) => {
+//             if (err) {
+//                 console.log('configtxgen -configPath '+process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+//                 console.log('Error configtxgen');
+//             }
+//             else {
+//                 for (let channel of Network.getInstance().getChannels()){
+//                     execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputCreateChannelTx ' + _(['config', 'channel.tx']) + ' -channelID ' + channel.getName())
+
+//                     for (let orgMsp of Network.getInstance().getChannelOrgs(channel))
+//                         execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgChannel -outputAnchorPeersUpdate ' + _(['config', 'Org1MSPanchors.tx']) + ' -channelID ' + channel.getName() + ' -asOrg ' + orgMsp)
+//                 }
+//                 let networkYaml = gen(Network.getInstance());
+//                 fs.writeFileSync(_(['docker-compose.yaml']), networkYaml);
+//                 execSync('configtxgen -configPath '+ process.env.DEST_DIRECTORY+' -profile OneOrgOrdererGenesis -outputBlock ' + _(['config', 'genesis.block']))
+//                 execSync('docker-compose -f ' + _(['docker-compose.yaml']) + ' up -d ');
+//                 setTimeout(()=>{
+//                     for (let channel of Network.getInstance().getChannels()){
+//                         ChannelBuilder.initChannel(channel,Network.getInstance());
+//                     }
+//                 },15)
+//             }
+//         })
+// })
 
 
 
