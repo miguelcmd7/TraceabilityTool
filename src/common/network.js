@@ -90,7 +90,7 @@ class Network {
         return this.channels;
     }
     getChannel(channelId){
-        return this.channels.filter((value,index,array)=>{
+        return this.channels.find((value)=>{
             return value.getName()==channelId;
         });
     }

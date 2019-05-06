@@ -24,7 +24,7 @@ services:
       
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/{{casId}}.{{domain}}.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/{{key}} -b admin:adminpw --cfg.identities.allowremove --cfg.affiliations.allowremove -d'
     volumes:
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
@@ -91,6 +91,7 @@ services:
       # match the username and password set for the associated CouchDB.
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    command: peer node start
     ports:
       - {{ExtPort}}:{{IntPort}}
       - {{ExtGossipPort}}:{{IntGossipPort}}

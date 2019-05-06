@@ -65,12 +65,19 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], [
 //nuevo["PeerID"]="ostra";
 //console.log(nuevo);
 
+// console.log(Network.getInstance().getChannels())
 
-// modelNetwork.build().then(()=>{
-//     modelNetwork.launch()
-// })
+// console.log(Network.getInstance().getChannel('mycc'))
 
-modelNetwork.launch()
+modelNetwork.build().then(()=>{
+     return modelNetwork.launch().then(()=>{
+        modelNetwork.installChaincode('digibank.mired.com','mycc')
+    
+    
+     })
+ })
+
+//modelNetwork.launch()
 //  constructor(name,extPort, intPort, extra){
 
 
