@@ -1,10 +1,13 @@
 const Organization = require('../common/organization.js');
 const Network = require('../common/network.js');
+/**
+ * {para}
+ */
 var network = null;
 
 function getInstance(){
-    if (network==null)
-        network = Network.getInstance()
+
+    network = Network.getInstance()
     if (network==null)
         throw "Network not created"
     return network

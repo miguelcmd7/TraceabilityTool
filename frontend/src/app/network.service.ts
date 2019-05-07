@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class NetworkService {
 
   private networkUrl = 'http://localhost:8080/network';
-  private buildkUrl = 'http://localhost:8080/build';
+  private buildUrl = 'http://localhost:8080/build';
   private directoryUrl = 'http://localhost:8080/directory';
   private domain:string ;
   lastRequest: Subject<{}>;
@@ -23,27 +23,17 @@ export class NetworkService {
   }
 
   getDomain(){
-    if (this.domain ==null){
-        this.http.get<any>(this.networkUrl,{}).subscribe((response)=>{
-            this.domain = response.domain;
-        },
-        (err)=>{
-
-        })
-    }
+    return this.domain;
 
   }
   createNetwork(network){
-    let request =this.http.post<any> (this.networkUrl,network,{})
-    request.subscribe((data)=>{
-      this.domain = data.domain;
-    })
-    
-    return request; 
+    return this.http.post<any>(this.networkUrl,network,{}).toPromise().then((data)=>{
+                                                                            this.domain = data.netDomain
+                                                                            return data})
 
   }
 
   build(){
-    return this.http.post(this.buildkUrl,{},{})
+    return this.http.post(this.buildUrl,{},{})
   }
 }

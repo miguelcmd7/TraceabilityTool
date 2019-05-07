@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { OrgService } from '../org.service';
+import { NetworkService } from '../network.service';
 //import { MustMatch } from "./_helpers/must-match.validator";
 
 @Component({
@@ -11,17 +12,22 @@ import { OrgService } from '../org.service';
 export class AddOrgComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
+  netDomain : String;
 
-  constructor(private formBuilder: FormBuilder,private orgService:OrgService) {}
+  constructor(private formBuilder: FormBuilder,private orgService:OrgService, private netService:NetworkService) {
+    this.netDomain = null;
+
+  }
 
   ngOnInit() {
-    this.registerForm = this.formBuilder.group(
+    this.netDomain = this.netService.getDomain();
+   this.registerForm = this.formBuilder.group(
       {
-        orgId: ["asdf", Validators.required],
-        domain: ["asdf", Validators.required],
-        mspId: ["asdf", [Validators.required]],
-        name: ["aaaaa", [Validators.required]],
-        ca_name: ["fffff", Validators.required]
+        orgId: ["digibank", Validators.required],
+        domain: ["digibank", Validators.required],
+        mspId: ["digiMSP", [Validators.required]],
+        name: ["Digibank", [Validators.required]],
+        ca_name: ["digiCA", Validators.required]
       }
     );
   }
@@ -32,7 +38,7 @@ export class AddOrgComponent implements OnInit {
 
   onSubmit() {
    console.log(this.registerForm.value);
-    this.orgService.addOrg(this.registerForm.value).subscribe((data)=>{
+    this.orgService.addOrg(this.registerForm.value).then((data)=>{
       this.submitted= true;
       alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
     },(err)=>{

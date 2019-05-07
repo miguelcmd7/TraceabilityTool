@@ -62,6 +62,7 @@ app.post('/directory', NetworkCtrl.setDestDirectory);
 app.post('/build',NetworkCtrl.build);
 app.post('/network',NetworkCtrl.createNetwork)
 app.get('/network',NetworkCtrl.getNetworkDomain)
+app.delete('/network',NetworkCtrl.deleteNetwork)
 app.use('/orgs', orgs);
 app.use('/channels', channels);
 
@@ -85,3 +86,5 @@ app.use('/channels', channels);
 app.listen(port, function() {
   console.log("Node server running on http://localhost:"+port)
 });
+
+module.exports = app;

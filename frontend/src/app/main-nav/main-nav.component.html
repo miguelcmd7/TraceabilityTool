@@ -21,10 +21,23 @@
                 Add Orderer 
                </a>
             </mat-expansion-panel>
-          </mat-accordion>  
-      <a mat-list-item href="#">Link 1</a>
-      <a mat-list-item href="#">Link 2</a>
-      <a mat-list-item href="#">Link 3</a>
+         
+        </mat-accordion>  
+        <mat-accordion>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Organizations
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul *ngIf= "orgs.length>0">
+              <li ng-repeat = "org in orgs" routerLink="/addOrg">{{org.orgId}}</li>
+          </ul>
+          <a  routerLink="/addOrg" >
+            Add Organization
+           </a>
+        </mat-expansion-panel>
+      </mat-accordion>  
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

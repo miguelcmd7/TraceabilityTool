@@ -29,8 +29,11 @@ export class PeerService {
         });
     }
   }
-  getOrgsSubject() {
+  getPeersSubject() {
     return this.lastRequest;
     //return this.http.post(this.startInventoryUrl,{});
+  }
+  addPeer(peer:Peer, orgId){
+   return  this.http.post(this.orgUrl+"/"+orgId+"/peers",peer)
   }
 }

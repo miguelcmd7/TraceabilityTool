@@ -5,11 +5,8 @@ let caConf = require('../../lib/common/caConfigGenerator');
 class Network {
     /** 
      *@param {string} name 
-     *@param {Map<string, Organization>} orgs
-     * 
-     * 
-     * 
      * @param {string} domain
+     * @returns {Network}
      **/
 
     constructor(name, domain) {
@@ -30,13 +27,33 @@ class Network {
         return this;
     
     }
+    /**
+     * @returns {Network}
+     */
+    
     static getInstance(){
         if (!!Network.instance) {
             return Network.instance;
         }else
             return null
     }
-    
+    static deleteInstance(){
+        if(!!Network.instance){
+            Network.instance.clean()
+            Network.instance=null
+        }
+        return true
+        
+
+    }
+    clean(){
+        this.peers.clear()
+        this.peerByOrgs.clear()
+        this.orgs.clear()
+        this.orderers.clear()
+    }
+
+
     getName() {
         return this.name;
     }
@@ -47,6 +64,9 @@ class Network {
     getPeers() {
         return this.peers.values();
 
+    }
+    getAllOrgs(){
+        return this.orgs.values()
     }
     getPeer(peerId){
         return this.peers.get(peerId);

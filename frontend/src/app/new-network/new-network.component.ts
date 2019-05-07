@@ -25,8 +25,8 @@ export class NewNetworkComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       directory: ["/home/miguel/Hyperledger/ejemplo", Validators.required],
-      domain: ["asdf", Validators.required],
-      name: ["asdf", [Validators.required]]
+      domain: ["mired", Validators.required],
+      name: ["mired", [Validators.required]]
     });
   }
   get f() {
@@ -36,11 +36,11 @@ export class NewNetworkComponent implements OnInit {
   onSubmit() {
     console.log(this.registerForm.value);
 
-    this.networkService.createNetwork(this.registerForm.value).subscribe(
-      data => {
+    this.networkService.createNetwork(this.registerForm.value).then(
+      (data) => {
         this.submitted = true;
         this.domain = data.domain;
-        // TODO navigate to main page
+        console.log("Network "+data.netDomain+" Created")
       },
       err => {
         alert("Error creating network!! :-)\n\n" + err);

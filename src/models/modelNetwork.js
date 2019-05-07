@@ -15,22 +15,37 @@ exports.setOutPutDir= function(){
 }
 
 exports.getNetwork= function(){
-    return network.toJSON()
+    network = Network.getInstance()
+    if (network!=null)
+        return network.toJSON()
+    else 
+        throw "Network doesn't exist"
 }
 exports.getDomain = function(){
-    return {domain:network.getDomain()};
+    network = Network.getInstance()
+    if (network!=null)
+         return {domain:network.getDomain()};
+    else 
+        throw "Network doesn't exist"
 }
 
 exports.createNetwork = function(name, domain) {
-    if (network == null)
+    network = Network.getInstance()
+    if(network ==null){
         network = new Network(name,domain)
-    if(network !=null)
         return network.toJSON();
+    }
     else 
-        throw ("Error creando la red")
+        throw "A network exists"
     
     
 }
+exports.deleteNetwork = function(){
+    
+    return Network.deleteInstance()
+
+}
+        
 exports.build = function (){
     let net = Network.getInstance()
     if (net != null){

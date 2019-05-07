@@ -14,7 +14,7 @@
                   <div class="form-group">
                       <label>Organization Id</label>
                       <input type="text" formControlName="orgId" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.orgId.errors }" />
-                      <div *ngIf="submitted && f.orgid.errors" class="invalid-feedback">
+                      <div *ngIf="submitted && f.orgId.errors" class="invalid-feedback">
                           <div *ngIf="f.orgId.errors.required">Organization Id is required</div>
                       </div>
                   </div>
@@ -22,7 +22,7 @@
                       <label>Domain</label>
                       <div class="row">
                           <input type="text" formControlName="domain" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.domain.errors }" />
-                        <label>example.es</label>
+                        <label>.{{netDomain}}</label>
                       </div>
                       
                       <div *ngIf="submitted && f.domain.errors" class="invalid-feedback">
