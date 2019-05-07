@@ -47,5 +47,27 @@ describe('Create a network',()=>{
         domain:"miredseg.com"
 
     }
+    it('should create a org', (done) => {
+        // orgName: this.name,
+        //     domain: this.orgId+'.'+this.domain,
+        //     cas: [{
+        //         casId: this.ca_name,
+        //         caName: this.ca_name
+        //     }],
+        //     orgId:this.orgId,
+        //     orgMSP: this.mspId
+        chai.request(url)
+			.post('/orgs')
+			.send(org)
+			.end( function(err,res){
+				//console.log(res.body)
+                expect(res).to.have.status(200);
+                expect(res.body).to.have.property('domain').equal('org1.miredseg.com')
+                expect(res.body).to.have.property('orgName').equal('Org1')
+                expect(res.body).to.have.property('orgMSP').equal('orgMSP')
+                expect(res.body).to.have.property('orgId').equal('org1')
+				done();
+			});
+    });
+  });
 
-});
