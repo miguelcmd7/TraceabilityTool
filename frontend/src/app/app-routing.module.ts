@@ -11,7 +11,7 @@ import { OrgDetailComponent } from './org-detail/org-detail.component';
 import { NewNetworkComponent } from './new-network/new-network.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/addOrg', pathMatch: 'full' },
+  { path: '', redirectTo: '/newNetwork', pathMatch: 'full' },
   { path: 'addPeer', component: AddPeerComponent },
   { path: 'addChannel', component: AddChannelComponent },
   { path: 'addOrderer', component: AddOrdererComponent },

@@ -21,10 +21,9 @@ export class AddOrgComponent implements OnInit {
 
   ngOnInit() {
     this.netDomain = this.netService.getDomain();
-   this.registerForm = this.formBuilder.group(
+    this.registerForm = this.formBuilder.group(
       {
         orgId: ["digibank", Validators.required],
-        domain: ["digibank", Validators.required],
         mspId: ["digiMSP", [Validators.required]],
         name: ["Digibank", [Validators.required]],
         ca_name: ["digiCA", Validators.required]
@@ -45,7 +44,9 @@ export class AddOrgComponent implements OnInit {
       alert("Error!! :-)\n\n" + err);
     }
       
-    )
+    ).catch((err=>{
+      console.log(err);
+    }))
 
   }
 }

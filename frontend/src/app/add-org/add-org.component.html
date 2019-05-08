@@ -19,18 +19,6 @@
                       </div>
                   </div>
                   <div class="form-group">
-                      <label>Domain</label>
-                      <div class="row">
-                          <input type="text" formControlName="domain" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.domain.errors }" />
-                        <label>.{{netDomain}}</label>
-                      </div>
-                      
-                      <div *ngIf="submitted && f.domain.errors" class="invalid-feedback">
-                          <div *ngIf="f.domain.errors.required">Domain is required</div>
-                          <div *ngIf="f.domain.errors.domain">Email must be a valid domain address</div>
-                      </div>
-                  </div>
-                  <div class="form-group">
                       <label>MSP Id</label>
                       <input type="text" formControlName="mspId" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mspId.errors }" />
                       <div *ngIf="submitted && f.mspId.errors" class="invalid-feedback">

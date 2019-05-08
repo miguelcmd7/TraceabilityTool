@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Subject, Observable, of } from "rxjs";
-import { Peer } from "./peer";
+import { Peer } from "./models/peer";
 @Injectable({
   providedIn: "root"
 })

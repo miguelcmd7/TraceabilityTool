@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Subject, Observable, of } from 'rxjs';
-import {Org} from './org'
+import {Subject, Observable, of, throwError } from 'rxjs';
+
+import {Org} from './models/org'
+import { OrgSimple } from './models/orgSimple';
 @Injectable({
   providedIn: 'root'
 })
 export class OrgService {
-  private orgs:Array<{orgId:String}>;
+  private orgs:OrgSimple[];
   private orgUrl = 'http://localhost:8080/orgs';
-  private lastRequest:Subject<Array<{orgId:String}>>;
+  private lastRequest:Subject<OrgSimple[]>;
 
   constructor(private http: HttpClient) { 
     this.orgs = null;
@@ -17,36 +19,38 @@ export class OrgService {
 
   getOrgs(){
     
-    return  this.http.get<Org[]>(this.orgUrl,{}).toPromise().then((data)=>{
-      this.orgs=null;
-      data.forEach((valie,index,array)=>{
-        this.orgs.push({orgId:valie.id})
+    return  this.http.get<any>(this.orgUrl,{}).toPromise().then((data)=>{
+      this.orgs=[];
+      data.orgs.forEach((valie,index,array)=>{
+        this.orgs.push(new OrgSimple(valie.orgId))
       })
       this.lastRequest.next(this.orgs)
       return data;  
     }
     )
   }
+
   getOrgsSubject(){
-    return this.lastRequest ;
+    return this.lastRequest;
     //return this.http.post(this.startInventoryUrl,{});
 
   }
 
   addOrg(org){
     console.log(org)
-    return  this.http.post<Org>(this.orgUrl,org).toPromise().then((data)=>{
+    return  this.http.post<any>(this.orgUrl,org).toPromise().then((data)=>{
       if (this.orgs ==null)
-        this.orgs = [{orgId:data.id}]
+        this.orgs = [new OrgSimple (data.orgId)]
       else 
-        this.orgs.push({orgId:data.id});
+        this.orgs.push(new OrgSimple (data.orgId));
       this.lastRequest.next(this.orgs);
       return data
     },
     (err)=>{
       console.log(err)
       this.lastRequest.error(err);
-      return err;
+      throw err;
+      //return err;
     })
 
     

@@ -12,7 +12,7 @@ class PeerConf {
      * @memberof PeerConf
      * @constructor
      */
-    constructor({extPort, intPort = extPort, extGossipPort = intPort +1,intGossipPort = extGossipPort,anchor = false, extra=''}){
+    constructor({extPort, intPort = 7050, extGossipPort = intPort +1,intGossipPort = 7053,anchor = false, extra=''}){
         this.anchor= anchor;
         this.extGossipPort = extGossipPort
         this.intGossipPort = intGossipPort

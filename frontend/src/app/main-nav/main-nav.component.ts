@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OrgService } from '../org.service';
 import { NetworkService } from '../network.service';
+import { OrgSimple } from '../models/orgSimple';
 
 @Component({
   selector: 'app-main-nav',
@@ -13,7 +14,7 @@ import { NetworkService } from '../network.service';
 export class MainNavComponent implements OnInit {
 
 
-  private orgs = [];
+  private orgs: OrgSimple[] = [];
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -27,11 +28,15 @@ export class MainNavComponent implements OnInit {
   ngOnInit(): void {
     this.orgService.getOrgsSubject().subscribe((data)=>
     {
-      console.log("LAS ORganizaciones son:"+ data)
+      console.log(data)
       this.orgs= data;
+    },(err)=>{
+      console.log("Error subscribing to Orgs"+ err)
     })
 
-    this.orgService.getOrgs();
+    this.orgService.getOrgs().catch((err)=>{
+      console.log("Error getting org from main-nav"+err)
+    });
   }
 
 }

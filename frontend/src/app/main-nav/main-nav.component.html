@@ -30,8 +30,10 @@
               Organizations
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <ul *ngIf= "orgs.length>0">
-              <li ng-repeat = "org in orgs" routerLink="/addOrg">{{org.orgId}}</li>
+          <ul *ngIf= "orgs.length >0">
+            <li *ngFor="let org of orgs"> 
+              {{ org.orgId }}
+            </li>
           </ul>
           <a  routerLink="/addOrg" >
             Add Organization

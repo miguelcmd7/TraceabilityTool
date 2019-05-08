@@ -6,6 +6,7 @@ const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
 const {build, launch} = require('../../lib/util/builder');
 const installChaincode = require('../../lib/util/chaincodeInstaller');
+const ErrorWithCode = require('../../lib/error/error')
 var fs = require('fs');
 var network = null;
 
@@ -21,6 +22,7 @@ exports.getNetwork= function(){
     else 
         throw "Network doesn't exist"
 }
+
 exports.getDomain = function(){
     network = Network.getInstance()
     if (network!=null)

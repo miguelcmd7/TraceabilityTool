@@ -1,11 +1,16 @@
 
 const ModelPeer = require('../../src/models/modelPeer.js')
+const ErrorWithCode = require('../../lib/error/error')
 //GET - Return all Homestates in the DB
 exports.findAllPeers = function(req, res) {
     try {
         res.status(200).send(ModelPeer.getAllPeers())
     }catch(err){
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 };
 
@@ -14,16 +19,25 @@ exports.findPeer = function(req, res) {
 	try {
         res.status(200).send(ModelPeer.getPeer(req.params.orgId,req.params.peerId))
     }catch(err){
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 };
 
 //POST - Insert a new HomeState in the DB
 exports.createPeer = function(req, res) {
 	try{
-        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body.orgId,req.body.domain,req.body.config))
+
+        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body.orgId,req.body.config))
     }catch(err){
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 
 	
@@ -33,7 +47,11 @@ exports.updatePeer = function(req, res) {
 	try{
         res.status(200).send(ModelPeer.createPeer(req.body.id,req.body-orgId,req.body.domain,req.body.config))
     }catch(err){
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 
 	
@@ -44,7 +62,11 @@ exports.deletePeer = function(req, res) {
 	try{
         res.status(200).send(ModelPeer.createPeer(req.body.id,req.body-orgId,req.body.domain,req.body.config))
     }catch(err){
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 
 	

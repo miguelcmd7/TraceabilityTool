@@ -4,9 +4,9 @@ class Organization {
 
     /**
      * @param  {string} name
-     * @param  {Peer[]} peers
-     * @param  {} ca_name
-     * @param  {} mspId
+     * 
+     * @param  {string} ca_name
+     * @param  {string} mspId
      */
     constructor(name, orgId, ca_name, mspId, domain) {
         this.name = name;
@@ -22,13 +22,13 @@ class Organization {
         return this.orgId;
     }
     getDomain() {
-        return this.orgId+'.'+this.domain;
+        return this.domain;
     }
     getCa_name() {
         return this.ca_name;
     }
     getAllId() {
-        return this.orgId + '.' + this.domain
+        return  this.domain
     }
 
     getMspId() {
@@ -50,7 +50,7 @@ class Organization {
     toJSON() {
         return {
             orgName: this.name,
-            domain: this.orgId+'.'+this.domain,
+            domain: this.domain,
             cas: [{
                 casId: this.ca_name,
                 caName: this.ca_name

@@ -36,4 +36,8 @@ export class NetworkService {
   build(){
     return this.http.post(this.buildUrl,{},{})
   }
+
+  deleteNetwork(){
+    return this.http.delete(this.networkUrl).toPromise();
+  }
 }

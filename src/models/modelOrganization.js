@@ -1,7 +1,8 @@
 const Organization = require('../common/organization.js');
 const Network = require('../common/network.js');
+
 /**
- * {para}
+ * @type {Network} 
  */
 var network = null;
 
@@ -22,35 +23,37 @@ exports.getPeersByOrgs= function(){
 exports.getAllOrgs= function(){
     getInstance()
     var json={}
-    for (org of network.getAllOrgs()){
-        Object.assign(json,org.toJSON())
+    let orgs = []
+    for (let org of network.getAllOrgs()){
+        orgs.push(org.toJSON())
     }
-    
+    json={orgs}
     return json
 }
 
 exports.getOrg= function(orgId){
     getInstance()
-    return network.getOrg(orgId).toJSON();
+    return network.getOrg(orgId+'.'+network.getDomain()).toJSON();
 
 }
 
-//constructor(name, orgId, ca_name, mspId, domain)
-exports.createOrg= function(name, orgId, ca_name, mspId, domain){
+
+exports.createOrg= function(name, orgId, ca_name, mspId){
     getInstance()
-    org = new Organization(name, orgId, ca_name, mspId, domain)
-    console.log('Creating org...'+orgId)
+    let org = new Organization(name, orgId, ca_name, mspId, orgId+'.'+network.getDomain())
+    console.log('Creating org...'+org.getAllId())
     network.addOrg(org);
     return org.toJSON()
-
+        
 
 }
 exports.updateOrg = function(orgId,orgName,org_ca,orgMspId){
     getInstance()
-    return network.updateOrg(orgId,orgName,org_ca,orgMspId).toJSON()
+    return network.updateOrg(orgId+'.'+network.getDomain(),orgName,org_ca,orgMspId).toJSON()
 
 }
+
 exports.deleteOrg = function(orgId){
     getInstance()
-    network.deleteOrg(orgId);
+    network.deleteOrg(orgId+'.'+network.getDomain());
 }

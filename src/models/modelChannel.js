@@ -4,6 +4,7 @@ const Peer = require('../common/peer.js');
 const PeerConf = require('../common/peerConf.js');
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
+const ErrorWithCode = require('../../lib/error/error')
 var network = null;
 
 function getInstance(){

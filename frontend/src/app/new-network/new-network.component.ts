@@ -35,8 +35,7 @@ export class NewNetworkComponent implements OnInit {
 
   onSubmit() {
     console.log(this.registerForm.value);
-
-    this.networkService.createNetwork(this.registerForm.value).then(
+    this.networkService.deleteNetwork().then(()=>{this.networkService.createNetwork(this.registerForm.value).then(
       (data) => {
         this.submitted = true;
         this.domain = data.domain;
@@ -45,7 +44,8 @@ export class NewNetworkComponent implements OnInit {
       err => {
         alert("Error creating network!! :-)\n\n" + err);
       }
-    );
+    );})
+      
   }
 
   selectFolder(e) {

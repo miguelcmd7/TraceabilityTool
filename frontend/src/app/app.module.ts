@@ -4,7 +4,7 @@ import { APP_BASE_HREF } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
+
 import { AddPeerComponent } from './add-peer/add-peer.component';
 import { AddOrgComponent } from './add-org/add-org.component';
 import { AddOrdererComponent } from './add-orderer/add-orderer.component';
@@ -24,7 +24,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
 @NgModule({
   declarations: [
     AppComponent,
-    SidebarComponent,
     AddPeerComponent,
     AddOrgComponent,
     AddOrdererComponent,
