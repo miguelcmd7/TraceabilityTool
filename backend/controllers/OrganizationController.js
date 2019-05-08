@@ -8,9 +8,11 @@ exports.findAllOrgs = function(req, res) {
         res.status(200).send(ModelOrg.getAllOrgs())
         console.log("Getting All Orgs")
     }catch(err){
-        console.log("Error Getting All Orgs")
         console.log(err)
-        res.status(500).send(err);
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
         
     }
 };
@@ -23,11 +25,9 @@ exports.findOrg = function(req, res) {
     }catch(err){
         
         console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null){
-            
+        if (err instanceof ErrorWithCode)     
             res.status(err.cod).send(err.error_message);
-    
-        }else 
+        else 
             res.status(500).send(err);
         
     }
@@ -39,9 +39,11 @@ exports.peersByOrg = function(req,res){
         res.status(200).send(ModelOrg.getPeersByOrgs());
         console.log("Getting Peers by Orgs");
     }catch(err){
-        console.log(err);
-        res.status(500).send(err);
-        console.log("Error Peers by Orgs");
+        console.log(err)
+        if (err instanceof ErrorWithCode )     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 }
 
@@ -56,8 +58,11 @@ exports.createOrg = function(req, res) {
             console.log("Org Created")
         }
     }catch(err){
-        console.log(err);
-        res.status(500).send(err);
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
 
     }
 
@@ -67,11 +72,14 @@ exports.createOrg = function(req, res) {
 exports.updateOrg = function(req, res) {
 	try{
         
-        res.status(200).send(ModelOrg.updateOrg(req.body.name,req.body.orgId,req.body.domain,req.body.config))
-        console.log("Updatign ORG"+ req.body.orgId)
+        res.status(200).send(ModelOrg.updateOrg(req.params.orgId,req.body.name,req.body.ca_name,req.body.mspId))
+        console.log("Updatign ORG"+ req.params.orgId)
     }catch(err){
-        res.status(500).send(err);
-        console.log("Error Updatign ORG"+ req.body.orgId)
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
     }
 
 	
@@ -80,11 +88,15 @@ exports.updateOrg = function(req, res) {
 //TODOOO
 exports.deleteOrg = function(req, res) {
 	try{
-        console.log("Deletinf  ORG"+ req.param.orgId)
-        res.status(200).send(ModelOrg.deleteOrg(req.param.orgIds))
+        console.log("Deletinf  ORG"+ req.params.orgId)
+        res.status(200).send(ModelOrg.deleteOrg(req.params.orgId))
     }catch(err){
-        res.status(500).send(err);
-        console.log("Error Deletinf  ORG"+ req.param.orgId)
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null)     
+            res.status(err.cod).send(err.error_message);
+        else 
+            res.status(500).send(err);
+        //console.log("Error Deletinf  ORG"+ req.param.orgId)
     }
 
 	
