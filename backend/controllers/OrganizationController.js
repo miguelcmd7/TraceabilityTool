@@ -1,5 +1,6 @@
 
 const ModelOrg = require('../../src/models/modelOrganization')
+const ErrorWithCode = require('../../lib/error/error')
 //GET - Return all Homestates in the DB
 exports.findAllOrgs = function(req, res) {
     try {
@@ -20,8 +21,15 @@ exports.findOrg = function(req, res) {
         res.status(200).send(ModelOrg.getOrg(req.params.orgId))
         console.log("Getting Org"+req.params.orgId)
     }catch(err){
-        res.status(500).send(err);
-        console.log("Error Getting Org"+req.params.orgId)
+        
+        console.log(err)
+        if (err instanceof ErrorWithCode &&err.error_message!=null){
+            
+            res.status(err.cod).send(err.error_message);
+    
+        }else 
+            res.status(500).send(err);
+        
     }
 };
 
@@ -40,10 +48,13 @@ exports.peersByOrg = function(req,res){
 //POST - Insert a new HomeState in the DB
 exports.createOrg = function(req, res) {
     try{
-        console.log("Trying to create Org")   
-
-        res.status(200).send(ModelOrg.createOrg(req.body.name,req.body.orgId,req.body.ca_name,req.body.mspId,req.body.domain))
-        console.log("Org Created")
+        if (req.body.name ==null ||req.body.name=='' || req.body.orgId== null ||req.body.orgId== ''|| req.body.ca_name==null || req.body.ca_name=='' ||req.body.mspId== null|| req.body.mspId== null){
+            res.status(400).send("Name, orgId, caName, and mspId requires");
+        
+        }else{
+            res.status(200).send(ModelOrg.createOrg(req.body.name,req.body.orgId,req.body.ca_name,req.body.mspId))
+            console.log("Org Created")
+        }
     }catch(err){
         console.log(err);
         res.status(500).send(err);
