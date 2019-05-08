@@ -14,17 +14,21 @@ function getInstance(){
 }
 
 
-exports.getAllPeers= function(){
+exports.getAllPeersForOrg= function(orgId){
     getInstance()
     let peers=[]
-    for (let peer of network.gerPeers())
+    for (let peer of network.getAllPeersForOrg(orgId+'.'+network.getDomain()))
         peers.push(peer.toJSON())
     return {peers:peers}
 }
 
-exports.getPeer= function(peerId){
+exports.getPeer= function(peerId,orgId){
     getInstance()
-    return network.getPeer(peerId).toJSON()
+    let peer = network.getPeer(peerId+'.'+orgId+'.'+network.getDomain())
+    if (peer == null)
+        throw new ErrorWithCode(404, "Peer "+peerId+" or Org "+orgId+" not found")
+    else
+        return peer.toJSON()
 }
 exports.createPeer =function (id,orgId,config) {
     getInstance() 

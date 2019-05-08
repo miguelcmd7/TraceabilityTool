@@ -99,6 +99,17 @@ class Network {
      */
     getPeers() {
         return this.peers.values();
+    }
+
+    getAllPeersForOrg(orgId){
+        let peerIds = this.peerByOrgs.get(orgId)
+        if (peerIds!= null){
+            let peers = []
+            for(let peerid of peerIds)
+                peers.push(this.peers.get(peerid))
+            return peers;
+        }else
+            throw this.createError(404,"Org "+orgId+"not found")
 
     }
     
@@ -110,7 +121,7 @@ class Network {
     }
 
     /**
-     *  @param {string} peerId
+     * @param {string} peerId
      * @returns {Peer} 
      */
     getPeer(peerId){

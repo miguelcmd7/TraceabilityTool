@@ -47,7 +47,7 @@ orgs.route('/peers').
 get(OrgCtrl.peersByOrg);
 
 orgs.route('/:orgId/peers')
-  .get(PeerCtrl.findAllPeers)
+  .get(PeerCtrl.findAllPeersForOrg)
   .post(PeerCtrl.createPeer);
 
 channels.route('/:channelId')

@@ -2,9 +2,9 @@
 const ModelPeer = require('../../src/models/modelPeer.js')
 const ErrorWithCode = require('../../lib/error/error')
 //GET - Return all Homestates in the DB
-exports.findAllPeers = function(req, res) {
+exports.findAllPeersForOrg = function(req, res) {
     try {
-        res.status(200).send(ModelPeer.getAllPeers())
+        res.status(200).send(ModelPeer.getAllPeersForOrg(req.params.orgId))
     }catch(err){
         console.log(err)
         if (err instanceof ErrorWithCode &&err.error_message!=null)     
@@ -17,7 +17,7 @@ exports.findAllPeers = function(req, res) {
 //GET - Return a HomeState with specified ID
 exports.findPeer = function(req, res) {
 	try {
-        res.status(200).send(ModelPeer.getPeer(req.params.orgId,req.params.peerId))
+        res.status(200).send(ModelPeer.getPeer(req.params.peerId,req.params.orgId))
     }catch(err){
         console.log(err)
         if (err instanceof ErrorWithCode &&err.error_message!=null)     
