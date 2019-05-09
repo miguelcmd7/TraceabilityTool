@@ -36,17 +36,20 @@ export class AddOrgComponent implements OnInit {
   }
 
   onSubmit() {
-   console.log(this.registerForm.value);
-    this.orgService.addOrg(this.registerForm.value).then((data)=>{
-      this.submitted= true;
-      alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
-    },(err)=>{
-      alert("Error!! :-)\n\n" + err);
+    this.submitted = true;
+    console.log("Valid "+this.registerForm.valid)
+    console.log("Pending "+this.registerForm.pending)
+    console.log("Invalid "+this.registerForm.invalid)
+    if(this.registerForm.valid &&!this.registerForm.pending){
+      console.log(this.registerForm.value);
+      this.orgService.addOrg(this.registerForm.value).then((data)=>{
+        
+        alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
+      },(err)=>{
+        alert("Error1!! :-)\n\n" + err);
+      })
+    }else{
+      console.log("Form is invalid")
     }
-      
-    ).catch((err=>{
-      console.log(err);
-    }))
-
   }
 }

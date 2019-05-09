@@ -34,6 +34,9 @@ orderers.route('/:ordererId')
 orgs.route('/').post(OrgCtrl.createOrg)
 .get(OrgCtrl.findAllOrgs)
 
+// orgs.route('/peers').
+// get(OrgCtrl.peersByOrg);
+
 orgs.route('/:orgId').put(OrgCtrl.updateOrg)
 .get(OrgCtrl.findOrg)
 .delete(OrgCtrl.deleteOrg);
@@ -43,8 +46,7 @@ orgs.route('/:orgId/peers/:peerId')
     .put(PeerCtrl.updatePeer)
     .delete(PeerCtrl.deletePeer);
 
-orgs.route('/peers').
-get(OrgCtrl.peersByOrg);
+
 
 orgs.route('/:orgId/peers')
   .get(PeerCtrl.findAllPeersForOrg)
@@ -62,6 +64,7 @@ channels.route('/')
 app.post('/directory', NetworkCtrl.setDestDirectory);
 app.post('/build',NetworkCtrl.build);
 app.post('/network',NetworkCtrl.createNetwork)
+app.get('/peers',OrgCtrl.peersByOrg)
 app.get('/network',NetworkCtrl.getNetworkDomain)
 app.delete('/network',NetworkCtrl.deleteNetwork)
 app.use('/orgs', orgs);

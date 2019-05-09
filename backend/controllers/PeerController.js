@@ -45,7 +45,7 @@ exports.createPeer = function(req, res) {
 //TODOO
 exports.updatePeer = function(req, res) {
 	try{
-        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body-orgId,req.body.domain,req.body.config))
+        res.status(200).send(ModelPeer.updatePeer(req.params.peerId,req.params.orgId,req.body.config))
     }catch(err){
         console.log(err)
         if (err instanceof ErrorWithCode &&err.error_message!=null)     
@@ -60,7 +60,7 @@ exports.updatePeer = function(req, res) {
 //TODOOO
 exports.deletePeer = function(req, res) {
 	try{
-        res.status(200).send(ModelPeer.createPeer(req.body.id,req.body-orgId,req.body.domain,req.body.config))
+        res.status(200).send(ModelPeer.deletePeer(req.params.peerId,req.params.orgId))
     }catch(err){
         console.log(err)
         if (err instanceof ErrorWithCode &&err.error_message!=null)     

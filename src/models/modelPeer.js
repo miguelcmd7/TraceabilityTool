@@ -42,10 +42,11 @@ exports.createPeer =function (id,orgId,config) {
 //updatePeer(peerId,peerConf,anchor)
 exports.updatePeer = function(peerId, orgId ,config){
     getInstance()
+    console.log(config)
     let peerConf = new PeerConf(config) 
     let orgAllId = orgId+'.'+network.getDomain()
     let peerAllId = peerId +'.'+orgAllId;
-    return network.updatePeer(peerAllId,orgAllId,peerConf).toJSON()
+    return network.updatePeer(peerAllId,peerConf).toJSON()
     
 }
 exports.deletePeer = function(peerId,orgId){

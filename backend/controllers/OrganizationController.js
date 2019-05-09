@@ -35,7 +35,7 @@ exports.findOrg = function(req, res) {
 
 exports.peersByOrg = function(req,res){
     try{
-        
+        console.log("Trying get peers by org");
         res.status(200).send(ModelOrg.getPeersByOrgs());
         console.log("Getting Peers by Orgs");
     }catch(err){

@@ -129,21 +129,21 @@ class Network {
     }
 
     getPeersByOrg(){
-        var json={}
-        for ( [key, value] of this.peerByOrgs.entries()) {
-            json.peerByOrgs = []
-            var org = this.orgs.get(key).toJSON()
+        let json={}
+        json.orgs = []
+        for ( let [key, value] of this.peerByOrgs.entries()) { 
+            let org = this.orgs.get(key).toJSON()
             org.peers = []
             // if (value != []){
             //     networkJson.peerByOrgs[key].peers=[]
             // }
             for (var peerInOrg of value) {
                 var peer = this.peers.get(peerInOrg);
-
-                org.peers.push(Object.assign(peer.toJSON(), peerConf(peer, Array.from(this.orderers.keys()))))
+                org.peers.push(peer.toJSON())
             }
-            json.peerByOrgs.push(org);
+            json.orgs.push(org);
         }
+        return json
     }
 
     /**
@@ -256,10 +256,10 @@ class Network {
     updatePeer(peerAllId,peerConf){
         let peer=this.peers.get(peerAllId) 
         if(peer!=null){
-            peer.setPeerConf(peerConf);
+            peer.setConfig(peerConf);
             return peer;
         }else{
-            throw this.createError(404, "Peer "+peerId+" doesn't exist")
+            throw this.createError(404, "Peer "+peerAllId+" doesn't exist")
         }
     }
 

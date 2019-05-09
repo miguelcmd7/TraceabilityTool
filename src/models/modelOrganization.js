@@ -1,5 +1,6 @@
 const Organization = require('../common/organization.js');
 const Network = require('../common/network.js');
+const ErrorWithCode = require('../../lib/error/error')
 
 /**
  * @type {Network} 
@@ -15,10 +16,8 @@ function getInstance(){
 }
 exports.getPeersByOrgs= function(){
     getInstance()
-    var json= {};
-    for (org of network.getAllOrgs()){
-        Object.assign(json,org.toJSON())
-    }
+    return  network.getPeersByOrg()
+
 }
 exports.getAllOrgs= function(){
     getInstance()
