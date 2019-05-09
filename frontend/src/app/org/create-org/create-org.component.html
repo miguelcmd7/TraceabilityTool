@@ -1,0 +1,38 @@
+
+          <div class="container">
+              <h3>Add Organization</h3>
+              <form [formGroup]="registerForm" [style.fontSize.px]=17 (ngSubmit)="onSubmit()">
+                  <div class="field" >
+                    <mat-form-field  class="example-full-width">
+                      <mat-label>Name</mat-label>
+                      <input matInput type="text" formControlName="name"  />
+                      <mat-error *ngIf="f.name.invalid">{{getNameErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field  class="example-full-width" required>
+                        <mat-label>Identifier</mat-label>
+                        <!-- <input matInput type="text" formControlName="orgId" [value]="f.orgId.value.untouched ? (f.orgId.setValue(f.name.value | lowercase))  : f.orgId.setValue(f.orgId.value) " > -->
+                        <input matInput type="text" formControlName="orgId"  >
+                        <mat-error *ngIf="f.orgId.invalid">{{getOrgIdErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                      <mat-form-field  class="example-full-width">
+                          <mat-label>MSP Identifier</mat-label>
+                          <input matInput type="text" formControlName="mspId"  />
+                          <mat-error *ngIf="f.mspId.invalid">{{getMspIdErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="field">
+                        <mat-form-field  class="example-full-width">
+                            <mat-label>CA Name</mat-label>
+                            <input matInput type="text" formControlName="ca_name"  />
+                            <mat-error *ngIf="f.ca_name.invalid">{{getCaNameErrorMessage()}}</mat-error>
+                          </mat-form-field>
+                      </div>
+                  <div class="form-group">
+                      <button class="btn btn-primary" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                  </div>
+              </form>
+          </div>

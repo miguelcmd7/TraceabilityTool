@@ -1,0 +1,50 @@
+
+          <div class="container">
+              <h3>Add Peer</h3>
+              <form [formGroup]="registerForm" [style.fontSize.px]=17 (ngSubmit)="onSubmit()">
+                  <div class="field" >
+                    <mat-form-field  class="example-full-width">
+                      <mat-label>Identifier</mat-label>
+                      <input matInput type="text" formControlName="id"  />
+                      <mat-error *ngIf="f.id.invalid">{{getIdErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                      <mat-form-field>
+                        <mat-label>Organization</mat-label>
+                        <mat-select required formControlName="orgId">
+                          <!-- <mat-option *ngFor="org in orgs" value="option">org.orgId</mat-option> -->
+                          <mat-option  >--None--</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="f.orgId.invalid">{{getOrgIdErrorMessage()}}</mat-error>
+                        
+                      </mat-form-field>
+                  </div>
+                  <div class="field">
+                      
+                          
+                          <mat-checkbox formControlName="orgId">Anchor</mat-checkbox>
+                          
+                     
+
+                  </div>
+
+                  <div class="field">
+                      <mat-form-field  class="example-full-width">
+                          <mat-label>External Port</mat-label>
+                          <input matInput type="number" max="65535" formControlName="extPort"  />
+                          <mat-error *ngIf="f.extPort.invalid">{{getExtPortErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="field">
+                        <mat-form-field  class="example-full-width">
+                            <mat-label>Internal Port</mat-label>
+                            <input matInput type="number"  max="65535" formControlName="intPort"  />
+                            <mat-error *ngIf="f.intPort.invalid">{{getIntPortErrorMessage()}}</mat-error>
+                          </mat-form-field>
+                      </div>
+                  <div class="form-group">
+                      <button class="btn btn-primary">Register</button>
+                  </div>
+              </form>
+          </div>

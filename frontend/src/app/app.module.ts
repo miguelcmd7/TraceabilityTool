@@ -21,6 +21,8 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule ,MatCardModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { OrgModule } from './org/org.module';
+import { PeerModule } from './peer/peer.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -42,13 +44,14 @@ import {MatExpansionModule} from '@angular/material/expansion';
     HttpClientModule,
     LayoutModule,
     MatToolbarModule,
-    MatButtonModule,
     MatSidenavModule,
     MatIconModule,
     MatListModule,
     BrowserAnimationsModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    OrgModule,
+    PeerModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent]
