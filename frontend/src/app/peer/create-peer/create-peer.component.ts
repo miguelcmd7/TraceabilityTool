@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PeerService } from '../peer.service';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { OrgService } from 'src/app/org/org.service';
+import { OrgSimple } from 'src/app/models/orgSimple';
 
 @Component({
   selector: 'app-create-peer',
@@ -13,9 +14,11 @@ export class CreatePeerComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   netDomain : String;
+  orgs : OrgSimple[]
 
   constructor(private formBuilder: FormBuilder,private orgService:OrgService, private peerService:PeerService) {
     this.netDomain = null;
+    this.orgs = null;
 
   }
 
@@ -30,6 +33,15 @@ export class CreatePeerComponent implements OnInit {
         anchor: [false, Validators.required]
       }
     );
+      
+    this.orgService.getOrgs().then((orgs)=>{
+      this.orgs=orgs
+    },(err)=>{
+      //TODO call our 
+      console.log(err)
+      this.orgs =[]
+    })
+
   }
 
   get f() {

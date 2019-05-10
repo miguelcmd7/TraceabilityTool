@@ -177,7 +177,13 @@ class Network {
      * @returns {Orderer} 
      */
     getOrderer(ordererId){
-        return this.orderers.get(ordererId);
+        let orderer= this.orderers.get(ordererId)
+        if (orderer!=null){
+            return orderer;
+        }else{
+            throw this.createError(404, "Orderer "+ordererId+" not found");
+        }
+        
     }
 
     getOrgsMsp(){
@@ -388,7 +394,13 @@ class Network {
      * @param {Orderer} orderer 
      */
     addOrderer(orderer) {
-        this.orderers.set(orderer.getId() + '.' + this.domain, orderer)
+        if (this.orderers.get(orderer.getAllId())==null){
+            this.orderers.set(orderer.getAllId(), orderer)
+            return orderer
+        }else{
+            throw this.createError(409, "Orderer "+orderer.getAllId()+"  Already exist")
+        }
+        
     }
 
     /**
@@ -399,14 +411,24 @@ class Network {
      * @param {number} extPort 
      * @param {string} extra 
      */
-    updateOrderer(ordererId, name, intPort,extPort,extra=''){
-        var orderer = this.orderers.get(ordererId+'.'+this.domain);
-        orderer.setName(name);
-        orderer.setIntPort(intPort);
-        orderer.setExtPort(extPort);
-        orderer.setExtra(extra)
+    updateOrderer(ordererId, name, intPort,extPort,extra){
+        
+        
+        var orderer = this.orderers.get(ordererId);
+        if (orderer!=null){
+            if(name!= null)
+                orderer.setName(name);
+            if(intPort!= null)
+                orderer.setIntPort(intPort);
+            if(extPort!= null)    
+                orderer.setExtPort(extPort);
+            if(extra!= null)        
+                orderer.setExtra(extra)
 
         return orderer;
+        }else{
+            throw this.createError(404, "Orderer "+ordererId+" not found")
+        }
 
     }
 
@@ -415,7 +437,10 @@ class Network {
      * @param {string} ordererId 
      */
     deleteOrderer(ordererId){
-        this.orderers.delete(ordererId+'.'+this.domain);
+        if (this.orderers.get(ordererId)!=null)
+            this.orderers.delete(ordererId);
+        else
+            throw this.createError(404,"Orderer "+ordererId+" doesn't exists")
     }
 
     configtxJSON() {

@@ -29,7 +29,9 @@ var orderers = express.Router();
 orderers.route('/').post(OrdererCtrl.createOrderer)
 .get(OrdererCtrl.findAllOrderers)
 
-orderers.route('/:ordererId')
+orderers.route('/:ordererId').get(OrdererCtrl.findOrderer)
+.put(OrdererCtrl.updateOrderer)
+.delete(OrdererCtrl.deleteOrderer)
 
 orgs.route('/').post(OrgCtrl.createOrg)
 .get(OrgCtrl.findAllOrgs)
@@ -69,6 +71,7 @@ app.get('/network',NetworkCtrl.getNetworkDomain)
 app.delete('/network',NetworkCtrl.deleteNetwork)
 app.use('/orgs', orgs);
 app.use('/channels', channels);
+app.use('/orderers',orderers)
 
 // app.post('/', function(req, res) {
 //   	number=req.body.number;

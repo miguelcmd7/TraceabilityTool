@@ -31,6 +31,15 @@ class Orderer extends Base {
     getAllId() {
         return this.id + '.' + this.domain;
     }
+    setIntPort(IntPort){
+        this.intPort=IntPort
+    }
+    setExtPort(ExtPort){
+        this.extPort= ExtPort
+    }
+    setExtra(extra){
+        this.extra = extra
+    }
 
     toJSON() {
         return {

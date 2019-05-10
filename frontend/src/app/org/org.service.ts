@@ -3,6 +3,7 @@ import { OrgSimple } from '../models/orgSimple';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Org } from '../models/org';
+import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -18,16 +19,21 @@ export class OrgService {
   }
 
   getOrgs(){
-    
-    return  this.http.get<any>(this.orgUrl,{}).toPromise().then((data)=>{
-      this.orgs=[];
-      data.orgs.forEach((valie,index,array)=>{
-        this.orgs.push(new OrgSimple(valie.orgId))
+    if (this.orgs!=null)
+      return new Promise<OrgSimple[]>((resolve)=>{
+        resolve(this.orgs)
       })
-      this.lastRequest.next(this.orgs)
-      return data;  
-    }
-    )
+    else
+        return this.http.get<any>(this.orgUrl,{}).toPromise().then((data)=>{
+            this.orgs=[];
+            data.orgs.forEach((valie,index,array)=>{
+              this.orgs.push(new OrgSimple(valie.orgId))
+            })
+            this.lastRequest.next(this.orgs)
+            return this.orgs;  
+        },(err)=>{
+          throw err;
+        })
   }
 
   getOrgsSubject(){

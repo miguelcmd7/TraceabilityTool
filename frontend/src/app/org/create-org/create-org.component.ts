@@ -41,13 +41,13 @@ export class CreateOrgComponent implements OnInit {
     console.log(this.registerForm.controls.orgId)
     
     if(this.registerForm.valid &&!this.registerForm.pending){
-      // console.log(this.registerForm.value);
-      // this.orgService.addOrg(this.registerForm.value).then((data)=>{
+      console.log(this.registerForm.value);
+      this.orgService.addOrg(this.registerForm.value).then((data)=>{
         
-      //   alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
-      // },(err)=>{
-      //   alert("Error1!! :-)\n\n" + err);
-      // })
+        alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
+      },(err)=>{
+        alert("Error1!! :-)\n\n" + err);
+      })
     }else{
       console.log("Form is invalid")
     }

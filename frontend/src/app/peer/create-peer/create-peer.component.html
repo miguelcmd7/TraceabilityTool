@@ -13,20 +13,16 @@
                       <mat-form-field>
                         <mat-label>Organization</mat-label>
                         <mat-select required formControlName="orgId">
-                          <!-- <mat-option *ngFor="org in orgs" value="option">org.orgId</mat-option> -->
-                          <mat-option  >--None--</mat-option>
+                          <mat-option >--None--</mat-option>
+                          <mat-option *ngFor="let org of orgs" value="option">{{org.orgId}}</mat-option>
+                          
                         </mat-select>
                         <mat-error *ngIf="f.orgId.invalid">{{getOrgIdErrorMessage()}}</mat-error>
                         
                       </mat-form-field>
                   </div>
-                  <div class="field">
-                      
-                          
+                  <div class="field">                      
                           <mat-checkbox formControlName="orgId">Anchor</mat-checkbox>
-                          
-                     
-
                   </div>
 
                   <div class="field">
