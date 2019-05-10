@@ -23,6 +23,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { OrgModule } from './org/org.module';
 import { PeerModule } from './peer/peer.module';
+import { OrdererModule } from './orderer/orderer.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,7 +52,8 @@ import { PeerModule } from './peer/peer.module';
     MatExpansionModule,
     MatCardModule,
     OrgModule,
-    PeerModule
+    PeerModule,
+    OrdererModule
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent]

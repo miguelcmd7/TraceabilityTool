@@ -27,7 +27,7 @@ export class CreatePeerComponent implements OnInit {
     this.registerForm = this.formBuilder.group(
       {
         orgId: [null, Validators.required],
-        intPort: [7050, [Validators.required]],
+        intPort: [7051, [Validators.required]],
         extPort: [null, [Validators.required]],
         id: ["peer", Validators.required],
         anchor: [false, Validators.required]

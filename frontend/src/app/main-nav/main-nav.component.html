@@ -12,10 +12,8 @@
                   Orderers
                 </mat-panel-title>
               </mat-expansion-panel-header>
-              <ul>
-                  <li>Coffe</li>
-                  <li>Tea</li>
-                  <li>Milk</li>
+              <ul *ngIf= "orderers.length >0">
+                <li *ngFor="let orderer of orderers"> {{ orderer.ordererId }} </li>
               </ul>
               <a  routerLink="/addOrderer" >
                 Add Orderer 
@@ -31,9 +29,7 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul *ngIf= "orgs.length >0">
-            <li *ngFor="let org of orgs"> 
-              {{ org.orgId }}
-            </li>
+            <li *ngFor="let org of orgs"> {{ org.orgId }} </li>
           </ul>
           <a  routerLink="/addOrg" >
             Add Organization

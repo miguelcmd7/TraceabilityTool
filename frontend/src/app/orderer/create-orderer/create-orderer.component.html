@@ -1,0 +1,42 @@
+
+          <div class="container">
+            <mat-card>
+                <mat-card-title>
+              <h3>Add Orderer</h3>
+                </mat-card-title>
+              <form [formGroup]="registerForm" [style.fontSize.px]=17 (ngSubmit)="onSubmit()">
+                  <div class="field" >
+                    <mat-form-field  class="example-full-width">
+                      <mat-label>Name</mat-label>
+                      <input matInput type="text" formControlName="name"  />
+                      <mat-error *ngIf="f.name.invalid">{{getNameErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field  class="example-full-width" required>
+                        <mat-label>Identifier</mat-label>
+                        <!-- <input matInput type="text" formControlName="orgId" [value]="f.orgId.value.untouched ? (f.orgId.setValue(f.name.value | lowercase))  : f.orgId.setValue(f.orgId.value) " > -->
+                        <input matInput type="text" formControlName="id"  >
+                        <mat-error *ngIf="f.id.invalid">{{getIdErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field  class="example-full-width">
+                        <mat-label>External Port</mat-label>
+                        <input matInput type="number" max="65535" formControlName="extPort"  />
+                        <mat-error *ngIf="f.extPort.invalid">{{getExtPortErrorMessage()}}</mat-error>
+                      </mat-form-field>
+                  </div>
+                  <div class="field">
+                      <mat-form-field  class="example-full-width">
+                          <mat-label>Internal Port</mat-label>
+                          <input matInput type="number"  max="65535" formControlName="intPort"  />
+                          <mat-error *ngIf="f.intPort.invalid">{{getIntPortErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <mat-card-actions>
+                      <button mat-button [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                    </mat-card-actions>
+              </form>
+            </mat-card>
+        </div>

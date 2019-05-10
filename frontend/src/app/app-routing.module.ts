@@ -11,12 +11,13 @@ import { OrgDetailComponent } from './org-detail/org-detail.component';
 import { NewNetworkComponent } from './new-network/new-network.component';
 import { CreateOrgComponent } from './org/create-org/create-org.component';
 import { CreatePeerComponent } from './peer/create-peer/create-peer.component';
+import { CreateOrdererComponent } from './orderer/create-orderer/create-orderer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/newNetwork', pathMatch: 'full' },
   { path: 'addPeer', component: CreatePeerComponent },
   { path: 'addChannel', component: AddChannelComponent },
-  { path: 'addOrderer', component: AddOrdererComponent },
+  { path: 'addOrderer', component: CreateOrdererComponent },
   { path: 'addOrg', component: CreateOrgComponent },
   { path: 'assd', component: PeerDetailComponent },
   { path: 'retire-element', component: OrdererDetailComponent },

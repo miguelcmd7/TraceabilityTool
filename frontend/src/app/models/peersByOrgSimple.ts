@@ -1,10 +1,13 @@
-export class peersByOrgSimple {
+import { OrgSimple } from './orgSimple';
+import { PeerSimple } from './peerSimple';
+
+export class PeersByOrgSimple {
     
-    map: Map<>;
+    map: Map<OrgSimple, PeerSimple>;
     
 
     constructor(){
-      this.map =new 
+      this.map =new Map<OrgSimple, PeerSimple>();
     }
 
 
