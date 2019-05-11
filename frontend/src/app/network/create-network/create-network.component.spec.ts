@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OrdererDetailComponent } from './orderer-detail.component';
+import { CreateNetworkComponent } from './create-network.component';
 
-describe('OrdererDetailComponent', () => {
-  let component: OrdererDetailComponent;
-  let fixture: ComponentFixture<OrdererDetailComponent>;
+describe('CreateNetworkComponent', () => {
+  let component: CreateNetworkComponent;
+  let fixture: ComponentFixture<CreateNetworkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrdererDetailComponent ]
+      declarations: [ CreateNetworkComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OrdererDetailComponent);
+    fixture = TestBed.createComponent(CreateNetworkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

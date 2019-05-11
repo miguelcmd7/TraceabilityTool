@@ -1,16 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormBuilder, Validators, FormGroup } from "@angular/forms";
-
-import { NetworkService } from "../network.service";
-
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { NetworkService } from 'src/app/network.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-new-network",
-  templateUrl: "./new-network.component.html",
-  styleUrls: ["./new-network.component.css"]
+  selector: 'app-create-network',
+  templateUrl: './create-network.component.html',
+  styleUrls: ['./create-network.component.css']
 })
-export class NewNetworkComponent implements OnInit {
+export class CreateNetworkComponent implements OnInit {
+
   registerForm: FormGroup;
   submitted = false;
   private domain: string;
@@ -75,13 +74,4 @@ export class NewNetworkComponent implements OnInit {
     alert(relativePath);
   }
 
-  // browse() {
-  //   remote.dialog.showOpenDialog({title: 'Select a folder', properties: ['openDirectory']}, (folderPath) => {
-  //       if (folderPath === undefined){
-  //           console.log("You didn't select a folder");
-  //           return;
-  //       }
-  //       this.folder = folderPath.toString();
-  //   });
-  // }
 }

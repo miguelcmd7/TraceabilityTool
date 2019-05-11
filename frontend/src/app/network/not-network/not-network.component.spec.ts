@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PeerDetailComponent } from './peer-detail.component';
+import { NotNetworkComponent } from './not-network.component';
 
-describe('PeerDetailComponent', () => {
-  let component: PeerDetailComponent;
-  let fixture: ComponentFixture<PeerDetailComponent>;
+describe('NotNetworkComponent', () => {
+  let component: NotNetworkComponent;
+  let fixture: ComponentFixture<NotNetworkComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PeerDetailComponent ]
+      declarations: [ NotNetworkComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PeerDetailComponent);
+    fixture = TestBed.createComponent(NotNetworkComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
