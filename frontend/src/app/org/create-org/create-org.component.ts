@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { OrgService } from 'src/app/org.service';
 import { NetworkService } from 'src/app/network.service';
-
+import {errorManager,successManager} from 'src/app/utils/util';
+import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-create-org',
   templateUrl: './create-org.component.html',
@@ -14,7 +15,7 @@ export class CreateOrgComponent implements OnInit {
   submitted = false;
   netDomain : String;
 
-  constructor(private formBuilder: FormBuilder,private orgService:OrgService, private netService:NetworkService) {
+  constructor(private formBuilder: FormBuilder,private orgService:OrgService, private netService:NetworkService, private toastr: ToastrService) {
     this.netDomain = null;
 
   }
@@ -44,9 +45,9 @@ export class CreateOrgComponent implements OnInit {
       console.log(this.registerForm.value);
       this.orgService.addOrg(this.registerForm.value).then((data)=>{
         
-        alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
+        successManager(this.toastr, "Organization "+ this.registerForm.value.name+" created", null)
       },(err)=>{
-        alert("Error1!! :-)\n\n" + err);
+        errorManager(this.toastr,err)
       })
     }else{
       console.log("Form is invalid")

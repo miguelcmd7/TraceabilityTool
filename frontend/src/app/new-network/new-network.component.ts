@@ -3,6 +3,8 @@ import { FormBuilder, Validators, FormGroup } from "@angular/forms";
 
 import { NetworkService } from "../network.service";
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: "app-new-network",
   templateUrl: "./new-network.component.html",
@@ -13,21 +15,29 @@ export class NewNetworkComponent implements OnInit {
   submitted = false;
   private domain: string;
   folder: string;
+  
 
   constructor(
     private formBuilder: FormBuilder,
-    private networkService: NetworkService
+    private networkService: NetworkService,
+    private toastr: ToastrService
   ) {
     this.domain = null;
     this.folder = null;
+
   }
 
   ngOnInit() {
+
     this.registerForm = this.formBuilder.group({
       directory: ["/home/miguel/Hyperledger/ejemplo", Validators.required],
       domain: ["mired", Validators.required],
       name: ["mired", [Validators.required]]
     });
+    
+    
+  
+
   }
   get f() {
     return this.registerForm.controls;
@@ -35,16 +45,23 @@ export class NewNetworkComponent implements OnInit {
 
   onSubmit() {
     console.log(this.registerForm.value);
-    this.networkService.deleteNetwork().then(()=>{this.networkService.createNetwork(this.registerForm.value).then(
-      (data) => {
-        this.submitted = true;
-        this.domain = data.domain;
-        console.log("Network "+data.netDomain+" Created")
-      },
-      err => {
-        alert("Error creating network!! :-)\n\n" + err);
-      }
-    );})
+   // if(confirm("Are you sure to create Network "+this.registerForm.value.name+"?")){
+        this.networkService.deleteNetwork().then(()=>{
+          this.networkService.createNetwork(this.registerForm.value).then(
+            (data) => {
+              this.submitted = true;
+              this.domain = data.domain;
+              this.toastr.success("Network "+data.netDomain+" Created", null,
+                {timeOut: 2000});;
+              console.log("Network "+data.netDomain+" Created")
+            },
+            err => {
+              this.toastr.error("Network creating network", null,
+                  {timeOut: 2000});;
+            }
+          );
+        })
+ // }
       
   }
 

@@ -24,6 +24,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { OrgModule } from './org/org.module';
 import { PeerModule } from './peer/peer.module';
 import { OrdererModule } from './orderer/orderer.module';
+import { ToastrModule } from 'ngx-toastr';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +55,9 @@ import { OrdererModule } from './orderer/orderer.module';
     MatCardModule,
     OrgModule,
     PeerModule,
-    OrdererModule
+    OrdererModule,
+    ToastrModule.forRoot()
+
   ],
   providers: [{provide: APP_BASE_HREF, useValue: '/'}],
   bootstrap: [AppComponent]

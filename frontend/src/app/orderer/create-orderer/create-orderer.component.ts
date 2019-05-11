@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { OrdererService } from '../orderer.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NetworkService } from 'src/app/network.service';
+import { ToastrService } from 'ngx-toastr';
+import {errorManager,successManager} from 'src/app/utils/util';
 
 @Component({
   selector: 'app-create-orderer',
@@ -14,7 +16,7 @@ export class CreateOrdererComponent implements OnInit {
   submitted = false;
   netDomain : String;
 
-  constructor(private formBuilder: FormBuilder,private oredererService:OrdererService, private netService:NetworkService) {
+  constructor(private formBuilder: FormBuilder,private oredererService:OrdererService, private netService:NetworkService,private toastr:ToastrService) {
     this.netDomain = null;
 
   }
@@ -44,9 +46,9 @@ export class CreateOrdererComponent implements OnInit {
       console.log(this.registerForm.value);
       this.oredererService.addOrderer(this.registerForm.value).then((data)=>{
         
-        alert("SUCCESS!! :-)\n\n" + JSON.stringify(data));
+        successManager(this.toastr, "Orderer "+ this.registerForm.value.name+" created", null)
       },(err)=>{
-        alert("Error1!! :-)\n\n" + err);
+        errorManager(this.toastr,err)
       })
     }else{
       console.log("Form is invalid")

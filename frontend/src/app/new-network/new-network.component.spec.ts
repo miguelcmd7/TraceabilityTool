@@ -21,5 +21,6 @@ describe('NewNetworkComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    
   });
 });
