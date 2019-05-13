@@ -1,16 +1,13 @@
 
 const ModelOrderer = require('../../src/models/modelOrderer.js')
 const ErrorWithCode = require('../../lib/error/error')
+const Errors = require('../utils/errorManager');
 //GET - Return all Homestates in the DB
 exports.findAllOrderers = function(req, res) {
     try {
         res.status(200).send(ModelOrderer.getAllOrderers())
     }catch(err){
-        console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null)     
-            res.status(err.cod).send(err.error_message);
-        else 
-            res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -19,11 +16,7 @@ exports.findOrderer = function(req, res) {
 	try {
         res.status(200).send(ModelOrderer.getOrderer(req.params.ordererId))
     }catch(err){
-        console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null)     
-            res.status(err.cod).send(err.error_message);
-        else 
-            res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -38,11 +31,7 @@ exports.createOrderer = function(req, res) {
             res.status(200).send(ModelOrderer.createOrderer(req.body.name,req.body.id,req.body.extPort,req.body.intPort,req.body.extra))
         }
     }catch(err){
-        console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null)     
-            res.status(err.cod).send(err.error_message);
-        else 
-            res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	
@@ -55,11 +44,7 @@ exports.updateOrderer = function(req, res) {
         //console.log(orderJSON)
         res.status(200).send(orderJSON)
     }catch(err){
-        console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null)     
-            res.status(err.cod).send(err.error_message);
-        else 
-            res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	
@@ -70,11 +55,7 @@ exports.deleteOrderer = function(req, res) {
 	try{
         res.status(200).send(ModelOrderer.deleteOrderer(req.params.ordererId))
     }catch(err){
-        console.log(err)
-        if (err instanceof ErrorWithCode &&err.error_message!=null)     
-            res.status(err.cod).send(err.error_message);
-        else 
-            res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	

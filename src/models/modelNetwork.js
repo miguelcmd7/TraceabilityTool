@@ -84,5 +84,9 @@ exports.installChaincode = function(orgid,channel){
     
     installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
 }
+
+exports.isInstanciated= function(){
+    return Network.getInstance()!=null?{isInstanciated: true,netName:Network.getInstance().getName()}:{isInstanciated:false};
+}
 //this.createNetwork('myred','mired.com');
 //module.exports=[createChannel,createNetwork,createOrderer,createOrg,createPeer]

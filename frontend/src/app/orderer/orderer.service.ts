@@ -81,5 +81,9 @@ export class OrdererService {
     })
 
   }
+  reset(){
+    this.orderers=[]
+    this.lastRequest.next(this.orderers);
+  }
 
 }

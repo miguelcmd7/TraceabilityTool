@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NetworkService } from 'src/app/network.service';
+import { NetworkService } from 'src/app/network/network.service';
 import { ToastrService } from 'ngx-toastr';
+import { OrdererService } from 'src/app/orderer/orderer.service';
+import { PeerService } from 'src/app/peer/peer.service';
+import { OrgService } from 'src/app/org/org.service';
 
 @Component({
   selector: 'app-create-network',
@@ -19,7 +22,10 @@ export class CreateNetworkComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private networkService: NetworkService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private ordererService:OrdererService,
+    private peerService:PeerService,
+    private orgService:OrgService
   ) {
     this.domain = null;
     this.folder = null;
@@ -46,6 +52,9 @@ export class CreateNetworkComponent implements OnInit {
     console.log(this.registerForm.value);
    // if(confirm("Are you sure to create Network "+this.registerForm.value.name+"?")){
         this.networkService.deleteNetwork().then(()=>{
+          this.orgService.reset();
+          this.ordererService.reset();
+          this.peerService.reset();
           this.networkService.createNetwork(this.registerForm.value).then(
             (data) => {
               this.submitted = true;

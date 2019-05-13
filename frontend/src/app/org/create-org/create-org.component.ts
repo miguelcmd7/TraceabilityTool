@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { OrgService } from 'src/app/org.service';
-import { NetworkService } from 'src/app/network.service';
+import { OrgService } from 'src/app/org/org.service';
+import { NetworkService } from 'src/app/network/network.service';
 import {errorManager,successManager} from 'src/app/utils/util';
 import { ToastrService } from 'ngx-toastr';
+import { OrgSimple } from 'src/app/models/orgSimple';
+import { ActivatedRoute } from '@angular/router';
+import { NullTemplateVisitor } from '@angular/compiler';
 @Component({
   selector: 'app-create-org',
   templateUrl: './create-org.component.html',
@@ -14,22 +17,42 @@ export class CreateOrgComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
   netDomain : String;
-
-  constructor(private formBuilder: FormBuilder,private orgService:OrgService, private netService:NetworkService, private toastr: ToastrService) {
+  updating: boolean = false;
+  @Input()
+  orgId: string = null;
+  
+  constructor(private formBuilder: FormBuilder,private orgService:OrgService, private netService:NetworkService, private toastr: ToastrService,private _Activatedroute:ActivatedRoute) {
     this.netDomain = null;
+    this.updating = false;
 
   }
 
   ngOnInit() {
+    this._Activatedroute.params.subscribe((params)=>{ this.orgId = params['id'];
+  console.log(params)
+  console.log(this.orgId)})
+    //this._Activatedroute.url.subscribe((data)=>{console.log(data.pop())})
     this.netDomain = this.netService.getDomain();
+    if (this.orgId!= null  )
+      this.orgService.getOrg(this.orgId).then((data)=>{
+        this.updating =true;
+        this.registerForm = this.formBuilder.group(
+          {
+            orgId: [{value: data.orgId, disabled: true}, Validators.required],
+            mspId: [data.orgMSP, [Validators.required]],
+            name: [data.orgName, [Validators.required]],
+            ca_name: [data.cas[0].casId, Validators.required]
+          })
+      })
+    else
     this.registerForm = this.formBuilder.group(
       {
         orgId: ["", Validators.required],
         mspId: ["digiMSP", [Validators.required]],
         name: ["Digibank", [Validators.required]],
         ca_name: ["digiCA", Validators.required]
-      }
-    );
+      })
+   
   }
 
   get f() {
@@ -52,6 +75,12 @@ export class CreateOrgComponent implements OnInit {
     }else{
       console.log("Form is invalid")
     }
+  }
+  onUpdate(){
+    console.log("Updating...")
+  }
+  onDelete(){
+    console.log("DEleting...")
   }
   getNameErrorMessage(){
       return this.f.name.hasError('required') ? 'You must enter a value' :

@@ -1,7 +1,8 @@
 
           <div class="container">
               <h3>Add Organization</h3>
-              <form [formGroup]="registerForm" [style.fontSize.px]=17 (ngSubmit)="onSubmit()">
+              <div  *ngIf ="registerForm!= null ">
+              <form  [formGroup]="registerForm" [style.fontSize.px]=17 >
                   <div class="field" >
                     <mat-form-field  class="example-full-width">
                       <mat-label>Name</mat-label>
@@ -13,7 +14,7 @@
                     <mat-form-field  class="example-full-width" required>
                         <mat-label>Identifier</mat-label>
                         <!-- <input matInput type="text" formControlName="orgId" [value]="f.orgId.value.untouched ? (f.orgId.setValue(f.name.value | lowercase))  : f.orgId.setValue(f.orgId.value) " > -->
-                        <input matInput type="text" formControlName="orgId"  >
+                        <input matInput type="text" formControlName="orgId" >
                         <mat-error *ngIf="f.orgId.invalid">{{getOrgIdErrorMessage()}}</mat-error>
                     </mat-form-field>
                   </div>
@@ -32,7 +33,10 @@
                           </mat-form-field>
                       </div>
                   <div class="form-group">
-                      <button class="btn btn-primary" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                      <button *ngIf="orgId==null" class="btn btn-primary" (click) = "onSubmit()" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                      <button *ngIf="orgId!=null" class="btn btn-primary" (click)= "onUpdate()" [disabled]="registerForm.invalid||registerForm.pending||!registerForm.dirty  ">Update</button>
+                      <button *ngIf="orgId!=null" class="btn btn-danger" (click) = "onDelete()" [disabled]="registerForm.invalid||registerForm.pending">Delete</button>
                   </div>
               </form>
+            </div>
           </div>

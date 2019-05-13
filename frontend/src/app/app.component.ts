@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NetworkService } from './network.service';
+import { NetworkService } from './network/network.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 

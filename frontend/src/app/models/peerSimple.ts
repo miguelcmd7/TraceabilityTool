@@ -6,5 +6,4 @@ export class PeerSimple {
       this.peerId = peerId;
     }
 
-
   }

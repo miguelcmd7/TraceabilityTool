@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OrdererService } from '../orderer.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { NetworkService } from 'src/app/network.service';
+import { NetworkService } from 'src/app/network/network.service';
 import { ToastrService } from 'ngx-toastr';
 import {errorManager,successManager} from 'src/app/utils/util';
 

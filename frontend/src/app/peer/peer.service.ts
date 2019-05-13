@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { PeerSimple } from '../models/peerSimple';
 import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { ValueConverter } from '@angular/compiler/src/render3/view/template';
+import { Peer } from '../models/peer';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +11,15 @@ import { HttpClient } from '@angular/common/http';
 export class PeerService {
 
   private peers:PeerSimple[];
+  private orgsUrl = 'http://localhost:8080/orgs';
   private peerUrl = 'http://localhost:8080/peers';
-  private lastRequest:Subject<PeerSimple[]>;
+  private lastRequest:Subject<Map<string,PeerSimple[]>>;
+  private peersByOrg:Map<string,PeerSimple[]>;
 
   constructor(private http: HttpClient) { 
     this.peers = null;
     this.lastRequest  =  new Subject();
+    this.peersByOrg = new Map<string,PeerSimple[]>()
   }
 
   getPeers(){
@@ -24,12 +29,17 @@ export class PeerService {
       })
     else
         return this.http.get<any>(this.peerUrl,{}).toPromise().then((data)=>{
-            this.peers=[];
-            data.peers.forEach((valie,index,array)=>{
-              this.peers.push(new PeerSimple(valie.peerId))
+            this.peersByOrg.clear()
+            data.orgs.forEach((org,index,array)=>{
+              let peersSim:PeerSimple[]=[];
+              org.peers.forEach((peer,indexp,arrayp)=>{
+                  peersSim.push(new PeerSimple(peer.PeerId))
+              })
+              
+              this.peersByOrg.set(org.orgId,peersSim)
             })
-            this.lastRequest.next(this.peers)
-            return this.peers;  
+            this.lastRequest.next(this.peersByOrg)
+            return this.peersByOrg;  
         },(err)=>{
           throw err;
         })
@@ -41,14 +51,19 @@ export class PeerService {
 
   }
 
-  addPeer(peer){
+  addPeer(peer, orgId){
     console.log(peer)
-    return  this.http.post<any>(this.peerUrl,peer).toPromise().then((data)=>{
-      if (this.peers ==null)
-        this.peers = [new PeerSimple (data.peerId)]
-      else 
-        this.peers.push(new PeerSimple (data.peerId));
-      this.lastRequest.next(this.peers);
+    return  this.http.post<any>(this.orgsUrl+'/'+orgId+'/peers',peer.toJSON()).toPromise().then((data)=>{
+      let peersForOrg = this.peersByOrg.get(orgId)
+      
+      if(peersForOrg !=null) 
+          peersForOrg.push(new PeerSimple(peer.id)) 
+       else 
+        peersForOrg=[new PeerSimple(peer.id)]
+      this.peersByOrg.set(orgId,peersForOrg)
+      console.log("Calling add peer")
+      console.log(this.peersByOrg.get(orgId))
+      this.lastRequest.next(this.peersByOrg);
       return data
     },
     (err)=>{
@@ -72,13 +87,26 @@ export class PeerService {
 
   }
 
-  deletePeer(peerId){
-    return this.http.delete(this.peerUrl+"/"+peerId).toPromise().then((data)=>{
-      this.peers = this.peers.filter((value:any,index,array)=>{
-            return value.peerId !=peerId;
-      })
+  deletePeer(peer, orgId){
+    return this.http.delete(this.orgsUrl+"/"+orgId+'/peers/'+peer.peerId).toPromise().then((data)=>{
+      this.peersByOrg.set( orgId, this.peersByOrg.get(orgId).filter((value:any,index,array)=>{
+            return value.peerId !=peer.peerId;
+      }))
+      this.lastRequest.next(this.peersByOrg)
       return data;
     })
 
   }
+
+  deleteOrg(orgId){
+    this.peersByOrg.delete(orgId);
+    this.lastRequest.next(this.peersByOrg)
+  }
+
+  reset(){
+    this.peersByOrg.clear()
+    this.lastRequest.next(this.peersByOrg);
+  }
+
+
 }

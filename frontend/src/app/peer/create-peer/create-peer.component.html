@@ -14,7 +14,7 @@
                         <mat-label>Organization</mat-label>
                         <mat-select required formControlName="orgId">
                           <mat-option >--None--</mat-option>
-                          <mat-option *ngFor="let org of orgs" value="option">{{org.orgId}}</mat-option>
+                          <mat-option *ngFor="let org of orgs" value="{{org.orgId}}">{{org.orgId}}</mat-option>
                           
                         </mat-select>
                         <mat-error *ngIf="f.orgId.invalid">{{getOrgIdErrorMessage()}}</mat-error>

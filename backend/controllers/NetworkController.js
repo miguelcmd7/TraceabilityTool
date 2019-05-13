@@ -1,4 +1,5 @@
 const ModelNetwork = require('../../src/models/modelNetwork.js')
+const Errors = require('../utils/errorManager');
 //GET - Return all Homestates in the DB
 exports.createNetwork = function(req, res) {
     try {
@@ -15,7 +16,7 @@ exports.createNetwork = function(req, res) {
             
         }
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 exports.deleteNetwork = function(req, res) {
@@ -26,8 +27,7 @@ exports.deleteNetwork = function(req, res) {
         else
             res.status(500).send("Error deleting network")
     }catch(err){
-        console.log("Error deleting"+ err)
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 }
 exports.getNetworkDomain= function(req, res) {
@@ -36,8 +36,7 @@ exports.getNetworkDomain= function(req, res) {
         res.status(200).send(ModelNetwork.getDomain())
         console.log("Getting domain")
     }catch(err){
-        console.log("Error Getting domain"+err)
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -46,7 +45,7 @@ exports.build = function(req, res) {
 	try {
         res.status(200).send(ModelChannel.build())
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -57,9 +56,15 @@ exports.setDestDirectory = function(req, res) {
         console.log("Setting directory...")
         res.status(200).send(ModelNetwork.setDestDirectory(req.body.directory))
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
-
-
+};
+exports.isInstanciated = function(req, res) {
+    
+    try{
+        res.status(200).send(ModelNetwork.isInstanciated())
+    }catch(err){
+        Errors.errorManager(res,err);
+    }
 };
 

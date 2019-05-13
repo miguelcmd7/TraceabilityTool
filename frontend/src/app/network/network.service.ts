@@ -9,6 +9,7 @@ export class NetworkService {
   private networkUrl = 'http://localhost:8080/network';
   private buildUrl = 'http://localhost:8080/build';
   private directoryUrl = 'http://localhost:8080/directory';
+  private isinstanceUrl = 'http://localhost:8080/isInstanciated';
   private domain:string ;
   lastRequest: Subject<{}>;
 
@@ -36,5 +37,9 @@ export class NetworkService {
 
   deleteNetwork(){
     return this.http.delete(this.networkUrl).toPromise();
+  }
+
+  isInstanciated(){
+    return this.http.get<any>(this.isinstanceUrl).toPromise();
   }
 }

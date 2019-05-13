@@ -35,6 +35,9 @@ export class OrgService {
           throw err;
         })
   }
+  getOrg(orgId:string){
+    return this.http.get<any>(this.orgUrl+'/'+orgId).toPromise().then((data)=> {return data},(err)=>{throw err})
+  }
 
   getOrgsSubject(){
     return this.lastRequest;
@@ -81,6 +84,10 @@ export class OrgService {
       return data;
     })
 
+  }
+  reset(){
+    this.orgs=[]
+    this.lastRequest.next(this.orgs);
   }
 
 

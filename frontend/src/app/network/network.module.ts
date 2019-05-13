@@ -10,6 +10,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,SharedMaterialModule,ReactiveFormsModule,
   ],
-  exports:[SharedMaterialModule]
+  exports:[SharedMaterialModule,NotNetworkComponent]
 })
 export class NetworkModule { }

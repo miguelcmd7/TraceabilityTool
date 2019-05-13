@@ -5,7 +5,8 @@
       [opened]="!(isHandset$ | async)">
     <mat-toolbar  >Menu</mat-toolbar>
     <mat-nav-list>
-        <mat-accordion>
+        <mat-accordion >
+        <!-- <mat-accordion *ngIf="isInstanciated"> -->
         <mat-expansion-panel>
               <mat-expansion-panel-header>
                 <mat-panel-title>
@@ -21,7 +22,8 @@
             </mat-expansion-panel>
          
         </mat-accordion>  
-        <mat-accordion>
+        <mat-accordion >
+          <!-- <mat-accordion *ngIf="isInstanciated"> -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -29,10 +31,36 @@
             </mat-panel-title>
           </mat-expansion-panel-header>
           <ul *ngIf= "orgs.length >0">
-            <li *ngFor="let org of orgs"> {{ org.orgId }} </li>
+            <div *ngFor="let org of orgs">
+            <mat-icon aria-label="Side nav toggle icon">domain</mat-icon> 
+            <a  [routerLink]= "['/org',  org.orgId]" >  {{ org.orgId }} </a>
+          </div>
           </ul>
           <a  routerLink="/addOrg" >
             Add Organization
+           </a>
+        </mat-expansion-panel>
+      </mat-accordion>  
+      <mat-accordion >
+          <!-- <mat-accordion *ngIf="isInstanciated"> -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Peers
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ul *ngIf= "peersByOrg!=null">
+            <div *ngFor="let org of peersByOrg">
+            <li  [routerLink]= "['/org',  org.orgId]" >  {{ org.orgId }} </li>
+            <ul>
+                <div *ngFor="let peer of org.peers">
+                <a  [routerLink]= "['/peer',  peer.peerId]" >  {{ peer.peerId }} </a>
+                </div>                 
+            </ul>
+          </div>
+          </ul>
+          <a  routerLink="/addPeer" >
+            Add Peer
            </a>
         </mat-expansion-panel>
       </mat-accordion>  
@@ -72,5 +100,10 @@
 
     </mat-toolbar>
     <ng-content></ng-content>
+
+    <!-- <div *ngIf="isInstanciated  ; then thenBlock else elseBlock"></div>
+    <ng-template  #thenBlock><ng-content></ng-content></ng-template>
+    
+     <ng-template #elseBlock> <app-not-network ></app-not-network></ng-template> -->
   </mat-sidenav-content>
 </mat-sidenav-container>

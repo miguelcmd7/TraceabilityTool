@@ -1,6 +1,6 @@
 export class OrgSimple {
     
-    orgId: String;
+    orgId: string;
     
 
     constructor(orgId:string){

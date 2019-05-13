@@ -1,11 +1,12 @@
 
 const ModelChannel = require('../../src/models/modelChannel.js')
+const Errors = require('../utils/errorManager');
 //GET - Return all Homestates in the DB
 exports.findAllChannels = function(req, res) {
     try {
         res.status(200).send(ModelChannel.getAllChannels())
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -14,7 +15,7 @@ exports.findChannel = function(req, res) {
 	try {
         res.status(200).send(ModelChannel.getChannel(req.param.channelId))
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 };
 
@@ -33,8 +34,7 @@ exports.createChannel = function(req, res) {
 
         
     }catch(err){
-        console.log(err)
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	
@@ -46,8 +46,7 @@ exports.updateChannel = function(req, res) {
 
         res.status(200).send(ModelChannel.createChannel(req.body.name,req.body.consortium,req.body.orgs,req.body.peers,req.body.orderers))
     }catch(err){
-        console.log(err)
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	
@@ -58,7 +57,7 @@ exports.deleteChannel = function(req, res) {
 
         res.status(200).send(ModelChannel.createChannel(req.body.name,req.body.consortium,req.body.orgs,req.body.peers,req.body.orderers))
     }catch(err){
-        res.status(500).send(err);
+        Errors.errorManager(res,err);
     }
 
 	
