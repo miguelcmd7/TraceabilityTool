@@ -47,6 +47,7 @@ services:
       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_{{netName}}
     #  - ORDERER_GENERAL_TLS_ENABLED=true
     #  - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/crypto/{{ordererId}}/tls/server.key
     #  - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/crypto/{{ordererId}}/tls/server.crt
@@ -83,7 +84,10 @@ services:
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
-     # - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_basic
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_{{netName}}
+      #- CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=ejemplo_myred
+       ## the following setting redirects chaincode container logs to the peer container logs
+      - CORE_VM_DOCKER_ATTACHSTDOUT=true
      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD

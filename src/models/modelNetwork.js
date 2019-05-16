@@ -82,7 +82,12 @@ exports.installChaincode = function(orgid,channel){
     let chan = Network.getInstance().getChannel(channel)
     console.log('CANAAAAAAAAAAL'+chan)
     
-    installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
+   // installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
+
+   installChaincode(orgid,Network.getInstance(),chan,'fabcar','fabcar-master','v1','golang',)
+
+
+    
 }
 
 exports.isInstanciated= function(){
