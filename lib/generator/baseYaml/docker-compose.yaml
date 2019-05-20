@@ -88,6 +88,13 @@ services:
       #- CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=ejemplo_myred
        ## the following setting redirects chaincode container logs to the peer container logs
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
+      # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
+      # provide the credentials for ledger to connect to CouchDB.  The username and password must
+      # match the username and password set for the associated CouchDB.
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
      # - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
@@ -95,12 +102,15 @@ services:
       # match the username and password set for the associated CouchDB.
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
      # - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
       - {{ExtPort}}:{{IntPort}}
       - {{ExtGossipPort}}:{{IntGossipPort}}
     volumes:
       - /var/run/:/host/var/run/
+   #   - $GOPATH:$GOPATH
+   #   - /usr/local/go:/usr/local/go
       {{#volumes}}
       - {{{external}}}:{{{internal}}}
       {{/volumes}}
@@ -112,3 +122,16 @@ services:
     {{/depends_on}}
     {{/peers}}
     {{/peerByOrgs}}
+
+  couchdb:
+    container_name: couchdb
+    image: hyperledger/fabric-couchdb
+    # Populate the COUCHDB_USER and COUCHDB_PASSWORD to set an admin user and password
+    # for CouchDB.  This will prevent CouchDB from operating in an "Admin Party" mode.
+    environment:
+      - COUCHDB_USER=
+      - COUCHDB_PASSWORD=
+    ports:
+      - 5984:5984
+    networks:
+      - {{netName}}

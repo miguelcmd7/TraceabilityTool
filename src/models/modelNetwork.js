@@ -5,7 +5,8 @@ const PeerConf = require('../common/peerConf.js');
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
 const {build, launch} = require('../../lib/util/builder');
-const installChaincode = require('../../lib/util/chaincodeInstaller');
+const {installChaincode,instanciateChaincode} = require('../../lib/util/chaincodeInstaller');
+const queryChaincode = require('../../lib/util/chaincodeQuery')
 const ErrorWithCode = require('../../lib/error/error')
 var fs = require('fs');
 var network = null;
@@ -84,10 +85,25 @@ exports.installChaincode = function(orgid,channel){
     
    // installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
 
-   installChaincode(orgid,Network.getInstance(),chan,'fabcar','fabcar-master','v1','golang',)
+  return installChaincode(orgid,Network.getInstance(),chan,'fabcar','fabcar-master','v1','golang',)
 
 
     
+}
+exports.instanciateChaincode = function(orgid,channel){
+    let chan = Network.getInstance().getChannel(channel)
+    console.log('Instanciando...'+chan)
+    
+   // installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
+
+   return instanciateChaincode(orgid,Network.getInstance(),chan,'fabcar','fabcar-master','v1','golang',)    
+}
+
+exports.queryChaincode = function(orgid,channel){
+    let chan = Network.getInstance().getChannel(channel)
+    queryChaincode(orgid,Network.getInstance(),chan,'fabcar','initLedger','a').then(()=>{
+        queryChaincode(orgid,Network.getInstance(),chan,'fabcar','queryAllCars','a')  
+    })
 }
 
 exports.isInstanciated= function(){

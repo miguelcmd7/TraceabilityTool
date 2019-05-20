@@ -70,12 +70,20 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], [
 // console.log(Network.getInstance().getChannel('mycc'))
 
 modelNetwork.build().then(()=>{
-     return modelNetwork.launch().then(()=>{
-        modelNetwork.installChaincode('digibank.mired.com','mycc')
-    
-    
+     return modelNetwork.launch().then( ()=>{
+         modelNetwork.installChaincode('digibank.mired.com','mycc').then(()=>{
+            modelNetwork.instanciateChaincode('digibank.mired.com','mycc').then(()=>{
+                setTimeout(()=>{
+                 modelNetwork.queryChaincode('digibank.mired.com','mycc')
+                },1500)
+                 
+              })
+         })
+       
+         
      })
  })
+ 
 
 //modelNetwork.launch()
 //  constructor(name,extPort, intPort, extra){
