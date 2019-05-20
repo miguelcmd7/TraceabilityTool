@@ -74,7 +74,10 @@ modelNetwork.build().then(()=>{
          modelNetwork.installChaincode('digibank.mired.com','mycc').then(()=>{
             modelNetwork.instanciateChaincode('digibank.mired.com','mycc').then(()=>{
                 setTimeout(()=>{
-                 modelNetwork.queryChaincode('digibank.mired.com','mycc')
+                 modelNetwork.invokeChaincode('digibank.mired.com','mycc').then(()=>{
+                    modelNetwork.queryChaincode('digibank.mired.com','mycc')
+
+                 })
                 },1500)
                  
               })

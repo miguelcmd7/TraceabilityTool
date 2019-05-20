@@ -117,6 +117,7 @@ services:
     networks: 
       - {{netName}}
     depends_on:
+      - couchdb
     {{#depends_on}}
       - {{.}}
     {{/depends_on}}

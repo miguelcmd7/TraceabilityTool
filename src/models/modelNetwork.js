@@ -7,6 +7,7 @@ const Network = require('../common/network.js');
 const {build, launch} = require('../../lib/util/builder');
 const {installChaincode,instanciateChaincode} = require('../../lib/util/chaincodeInstaller');
 const queryChaincode = require('../../lib/util/chaincodeQuery')
+const invokeChaincode = require('../../lib/util/chaincodeInvoke')
 const ErrorWithCode = require('../../lib/error/error')
 var fs = require('fs');
 var network = null;
@@ -101,9 +102,15 @@ exports.instanciateChaincode = function(orgid,channel){
 
 exports.queryChaincode = function(orgid,channel){
     let chan = Network.getInstance().getChannel(channel)
-    queryChaincode(orgid,Network.getInstance(),chan,'fabcar','initLedger','a').then(()=>{
-        queryChaincode(orgid,Network.getInstance(),chan,'fabcar','queryAllCars','a')  
+    queryChaincode(orgid,Network.getInstance(),chan,'fabcar','queryAllCars','a').then(()=>{
+        setTimeout(()=>{ queryChaincode(orgid,Network.getInstance(),chan,'fabcar','queryCar',['CAR0'])  },1500)
+       
     })
+}
+
+exports.invokeChaincode = function(orgid,channel){
+    let chan = Network.getInstance().getChannel(channel)
+   return invokeChaincode(orgid,Network.getInstance(),chan,'fabcar','initLedger','a')
 }
 
 exports.isInstanciated= function(){
