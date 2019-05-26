@@ -5,33 +5,69 @@ const PeerConf = require('../common/peerConf.js');
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
 const ErrorWithCode = require('../../lib/error/error')
+/**
+ * @type {Network}
+ */
 var network = null;
 
 function getInstance(){
     network = Network.getInstance()
     if (network==null)
-        throw "Network not created"
+        throw new ErrorWithCode(500,"Network not created");
 }
 
+function createChannel(name,consortium,orderers, peersByOrg){
+    let allIdspeersByOrg = new Map()
 
-exports.createChannel= function (name,consortium,orgs=[],peers=[],orderers=[]){
-    if(network == null)
-        getInstance();
+    peersByOrg.forEach((values,key)=>{
+        key = key+'.'+network.getDomain();
+        let peersAllId =[]
+        values.forEach((value)=>{
+            peersAllId.push(value+'.'+key);
+        })
+        allIdspeersByOrg.set(key,peersAllId);
+    })
+
+    orderers = orderers.map((value)=>{
+        return value+'.'+network.getDomain()
+    })
     
-    channel  = new Channel(name,consortium,orgs,peers,orderers);
-    if (network !=null){
-        network.addChannel(channel);
-        return channel
-    }else   
-        throw "Network not created"
+    return new Channel(name,consortium,orderers,allIdspeersByOrg);
+}
+
+exports.createChannel= function (name,consortium,orderers=[], peersByOrg = new Map()){
+    getInstance();
+    let channel = createChannel(name,consortium,orderers, peersByOrg )
+    network.addChannel(channel);
+    return channel.toJSON()
+
 
 }
 
-exports.updateChannel = function(){
+exports.updateChannel = function(name,consortium,orderers=[], peersByOrg = new Map()){
+    getInstance();
+    let channel = createChannel(name,consortium,orderers, peersByOrg )
+    network.updateChannel(channel);
+    return channel.toJSON()
+}
 
+
+exports.deleteChannel = function(channelName){
+    getInstance();
+    return network.deleteChannel(channelName)
     
 }
-exports.deleteChannel = function(){
+exports.getChannel = function(channelName){
+    getInstance();
+    return network.getChannel(channelName).toJSON();
+    
+}
+exports.getAllChannels = function(){
+    getInstance();
+    let channels = []
+    for (let channel of network.getChannels())
+        channels.push(channel.toJSON())
 
+    return {channels:channels}
     
 }

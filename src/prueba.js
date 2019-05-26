@@ -1,7 +1,7 @@
-const Peer = require ('./peer')
+// const Peer = require ('./peer')
 
-const PeerConf = require('./peerConf')
-var prueba = new Map();
+// const PeerConf = require('./peerConf')
+// var prueba = new Map();
 
 // var peer1=new Peer('peer1','meta.com',4583,5698);
 
@@ -23,8 +23,27 @@ var prueba = new Map();
 // hola.nuevo={}
 // hola.nuevo.nuevo2 = 6
 //hola['nuevo']['nuevo']=6
-var peerConf  = new PeerConf({anchor:true});
-console.log(peerConf.anchor)
+let mapa = new Map ()
+let AllIdsMaps = new Map()
+let peers = ['peer1','peer2','peer3'];
+mapa.set('org1',['peer1','peer2','peer3']);
+mapa.forEach((values,key)=>{
+     key = key+'.domain.con'
+    let peersAllId =[]
+    values.forEach((value)=>{
+        peersAllId.push(value+'.'+key);
+    })
+    AllIdsMaps.set(key,peersAllId);
+    
+})
+
+
+peers =peers.map((value)=>{
+    return value+ '.domain.es'
+})
+
+console.log(peers);
+//console.log(AllIdsMaps);
 // console.log(prueba);
 // var mapIter = prueba.entries();
 

@@ -44,6 +44,14 @@ class Network {
         this.orderers = new Map();
         
         /**
+         * @type {Map<string,string[]>} 
+         */
+        this.channelsByOrg = new Map();
+                /**
+         * @type {Map<string,string[]>} 
+         */
+        this.channelsByOrderer = new Map();
+        /**
          * @type {Channel[]} 
          */
         this.channels = [];
@@ -205,9 +213,13 @@ class Network {
      * @returns {Channel}
      */
     getChannel(channelId){
-        return this.channels.find((value)=>{
+        let channel =  this.channels.find((value)=>{
             return value.getName()==channelId;
         });
+        if (channel == null)
+            throw this.createError(404, "Channel "+channelId+ " not found")
+        else
+            return channel
     }
 
 
@@ -289,6 +301,18 @@ class Network {
                     } 
                 })
                 if (isIn){
+                    for (let [key,channels] of this.channelsByOrg.entries()){
+                        if(key == orgId){
+                            this.channels.forEach((value)=>{
+                               if (channels.includes(value.getName())){
+                                    console.log("Removing peer "+peerId+ " in channel "+value.getName()) 
+                                    value.removePeer(peerId,orgId)
+                               }
+                                   
+                               
+                            })
+                        }
+                    }
                     this.peerByOrgs.set(orgId, neworgs)
                     this.peers.delete(peerId);
                 }else
@@ -347,34 +371,97 @@ class Network {
             let peers = this.peerByOrgs.get(orgId)
             for (var peerId of peers)
                 this.peers.delete(peerId);
+            let channelsNames= this.channelsByOrg.get(orgId);
+            if (channelsNames != null){
+                for(let channel of this.channels)
+                    if (channelsNames.includes(channel.getName())   )
+                        channel.removeOrg(orgId)
+            
+                this.channelsByOrg.delete(orgId)
+            }
             this.peerByOrgs.delete(orgId);
             this.orgs.delete(orgId)
         }
         else
-            throw this.createError(404, "Organization "+orgId+"doesn't exist")
+            throw this.createError(404, "Organization "+orgId+" doesn't exist")
     }
+    /**
+     * 
+     * @param {Channel} channel 
+     */
+     checkChannel(channel){
+        for (let orgId of channel.getOrgs()){Channel
+            if (this.orgs.get(orgId)==null)
+                 throw this.createError(404, "Organization "+orgId +" doesn't exist")
+        }
+        for (let peerId of channel.getPeers()){
+            if (this.peers.get(peerId)==null)
+                 throw this.createError(404, "Peer "+peerId+" doesn't exist")
+        }
+        for (let ordererId of channel.getOrderers()){
+            if (this.orderers.get(ordererId)==null)
+                 throw this.createError(404, "Orderer "+ordererId+" doesn't exist")
+        }
+    }
+    /**
+     * 
+     * @param {Channel} channel 
+     */
+    addChannelAndDependencies(channel){
+        this.channels.push(channel);
 
+            for (let orgId of  channel.getOrgs()){
+                let channelsNames = this.channelsByOrg.get(orgId)
+                if (channelsNames== null)
+                    this.channelsByOrg.set(orgId,[channel.getName()])
+                else{
+                    channelsNames.push(channel.getName())
+                    this.channelsByOrg.set(orgId,channelsNames)
+                }
+                    
+            }
+            for (let ordererId of  channel.getOrderers()){
+                let channelsNames = this.channelsByOrderer.get(ordererId)
+                if (channelsNames== null)
+                    this.channelsByOrderer.set(ordererId,[channel.getName()])
+                else{
+                    channelsNames.push(channel.getName())
+                    this.channelsByOrderer.set(ordererId,channelsNames)
+                }
+                    
+            }
+    }
     /**
      * 
      * @param {Channel} channel 
      */
     addChannel(channel){
-        if(!this.channels.includes(channel)){
-            this.channels.push(channel);
+
+        if(!this.channels.some((value)=>{
+            return value.getName()==channel.getName()
+        })){
+            this.checkChannel(channel)
+            this.addChannelAndDependencies(channel)
+        }else{
+            throw this.createError(409,'Channel '+channel.getName() +' already exists')
         }
 
     }
     /**
      * 
-     * @param {string} channelid 
+     * @param {Channel} channel 
      */
-    updateChannel(channelid){
-        if(this.channels.includes(channel)){
-
-        }else{
-            throw "This channel doesn't exist"
-        }
-
+    updateChannel(channel){
+        
+        
+        if(!this.channels.some((value, index)=>{
+            return value.getName() == channel.getName()
+            })){
+                throw this.createError(404, "Channel "+channel.getName() +" doesn't exist")
+            }
+        this.checkChannel(channel)
+        this.deleteChannel(channel.getName())  
+        this.addChannelAndDependencies(channel)
     }
 
     /**
@@ -382,10 +469,35 @@ class Network {
      * @param {string} channelName 
      */
     deleteChannel(channelName){
-
+        console.log('Deleting'+ channelName )
+        let channel = null;
         this.channels = this.channels.filter((value,index,arra)=>{
-            return value.getName() != channelName;
+            console.log('Valor parametro '+channelName+' valor array '+value.getName() +' Valor condicion '+(value.getName() != channelName))
+            if((value.getName() == channelName)){
+                channel= value
+            }
+            return (value.getName() != channelName);
         })
+        if (channel ==null)
+            throw this.createError(404, "Channel "+channelName +" doesn't exist")
+        else{
+            let orgs = channel.getOrgs()
+            console.log(orgs)
+            console.log(this.channelsByOrg.get(orgs[1]))
+            for (let [key,channels] of this.channelsByOrg.entries()){
+                if (orgs.includes(key))
+                    this.channelsByOrg.set(key,channels.filter((value)=>{
+                        return value != channelName
+                    }))
+            }
+            let orederers = channel.getOrderers()
+            for (let [key,channels] of this.channelsByOrderer.entries()){
+                if (orederers.includes(key))
+                    this.channelsByOrderer.set(key,channels.filter((value)=>{
+                        return value != channelName
+                    }))
+            }
+        }
 
     }
 
@@ -413,7 +525,6 @@ class Network {
      */
     updateOrderer(ordererId, name, intPort,extPort,extra){
         
-        
         var orderer = this.orderers.get(ordererId);
         if (orderer!=null){
             if(name!= null)
@@ -437,8 +548,18 @@ class Network {
      * @param {string} ordererId 
      */
     deleteOrderer(ordererId){
-        if (this.orderers.get(ordererId)!=null)
+
+        if (this.orderers.get(ordererId)!=null){
+            let channelsNames= this.channelsByOrderer.get(ordererId);
+            if (channelsNames != null){
+                for(let channel of this.channels)
+                    if (channelsNames.includes(channel.getName())   )
+                        channel.removeOrderer(ordererId)
+            
+                this.channelsByOrderer.delete(ordererId)
+            }
             this.orderers.delete(ordererId);
+        }
         else
             throw this.createError(404,"Orderer "+ordererId+" doesn't exists")
     }
@@ -521,7 +642,6 @@ class Network {
             //console.log(networkJson)
             networkJson.casByOrg.push(Object.assign(value.toJSON(), caConf(value.getDomain())))
         }
-
         for ( [key, value] of this.peerByOrgs.entries()) {
             networkJson.peerByOrgs = []
             var org = this.orgs.get(key).toJSON()

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "cd test && mocha testNet.js testOrgs.js  testPeers.js testOrderers.js "
+    "test": "cd test && mocha testNet.js testOrgs.js  testPeers.js testOrderers.js testChannels.js"
   },
   "author": "Miguel Gomez Rodriguez",
   "license": "ISC",
