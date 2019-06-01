@@ -1,7 +1,11 @@
 
           <div class="container">
-              <h3>Add Peer</h3>
-              <form [formGroup]="registerForm" [style.fontSize.px]=17 (ngSubmit)="onSubmit()">
+            <mat-card>
+              <mat-card-title>
+                <h3>Add Peer</h3>
+              </mat-card-title>  
+              <div  *ngIf ="registerForm!= null ">
+              <form [formGroup]="registerForm" [style.fontSize.px]=17 >
                   <div class="field" >
                     <mat-form-field  class="example-full-width">
                       <mat-label>Identifier</mat-label>
@@ -22,7 +26,7 @@
                       </mat-form-field>
                   </div>
                   <div class="field">                      
-                          <mat-checkbox formControlName="orgId">Anchor</mat-checkbox>
+                          <mat-checkbox formControlName="anchor">Anchor</mat-checkbox>
                   </div>
 
                   <div class="field">
@@ -39,8 +43,12 @@
                             <mat-error *ngIf="f.intPort.invalid">{{getIntPortErrorMessage()}}</mat-error>
                           </mat-form-field>
                       </div>
-                  <div class="form-group">
-                      <button class="btn btn-primary">Register</button>
-                  </div>
+                      <div class="form-group">
+                          <button *ngIf="orgId==null" class="btn btn-primary" (click) = "onSubmit()" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                          <button *ngIf="orgId!=null" class="btn btn-primary" (click)= "onUpdate()" [disabled]="registerForm.invalid||registerForm.pending||!registerForm.dirty  ">Update</button>
+                          <button *ngIf="orgId!=null" class="btn btn-danger" (click) = "onDelete()" [disabled]="registerForm.invalid||registerForm.pending">Delete</button>
+                      </div>
               </form>
+              </div> 
+            </mat-card>
           </div>

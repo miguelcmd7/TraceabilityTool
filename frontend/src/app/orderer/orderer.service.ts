@@ -60,6 +60,14 @@ export class OrdererService {
 
     
   }
+
+//   let orderupdate={
+//     name:"orderNuevo",
+//     intPort:8050,
+//     extPort : 6060,
+//     extra :"extra"
+// }
+
   updateOrderer(orderer){
     return  this.http.put<any>(this.ordererUrl+"/"+orderer.ordererId,orderer).toPromise().then((data)=>{
      return data;

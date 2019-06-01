@@ -1,6 +1,10 @@
 
           <div class="container">
-              <h3>Add Organization</h3>
+              <mat-card>
+                  <mat-card-title>
+                      <h3>Add Organization</h3>
+                  </mat-card-title>  
+              
               <div  *ngIf ="registerForm!= null ">
               <form  [formGroup]="registerForm" [style.fontSize.px]=17 >
                   <div class="field" >
@@ -39,4 +43,5 @@
                   </div>
               </form>
             </div>
+            </mat-card>
           </div>

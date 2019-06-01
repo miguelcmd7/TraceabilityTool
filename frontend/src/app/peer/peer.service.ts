@@ -4,11 +4,13 @@ import { Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ValueConverter } from '@angular/compiler/src/render3/view/template';
 import { Peer } from '../models/peer';
+import { PeerConfig } from '../models/peerConfig';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PeerService {
+  
 
   private peers:PeerSimple[];
   private orgsUrl = 'http://localhost:8080/orgs';
@@ -50,6 +52,10 @@ export class PeerService {
     //return this.http.post(this.startInventoryUrl,{});
 
   }
+  
+  getPeer(peerId: string, orgId: string) {
+    return this.http.get<any>(this.orgsUrl+'/'+orgId+'/peers/'+peerId).toPromise().then((data)=> {return data},(err)=>{throw err})
+  }
 
   addPeer(peer, orgId){
     console.log(peer)
@@ -75,8 +81,8 @@ export class PeerService {
 
     
   }
-  updatePeer(peer){
-    return  this.http.put<any>(this.peerUrl+"/"+peer.peerId,peer).toPromise().then((data)=>{
+  updatePeer(peerId: string, orgId: string, peerConf:PeerConfig){
+    return  this.http.put<any>(this.orgsUrl+'/'+orgId+'/peers/'+peerId,{config:peerConf.toJSON()}).toPromise().then((data)=>{
      return data;
     },
     (err)=>{
@@ -87,10 +93,10 @@ export class PeerService {
 
   }
 
-  deletePeer(peer, orgId){
-    return this.http.delete(this.orgsUrl+"/"+orgId+'/peers/'+peer.peerId).toPromise().then((data)=>{
+  deletePeer(peerId: string, orgId: string){
+    return this.http.delete(this.orgsUrl+"/"+orgId+'/peers/'+peerId).toPromise().then((data)=>{
       this.peersByOrg.set( orgId, this.peersByOrg.get(orgId).filter((value:any,index,array)=>{
-            return value.peerId !=peer.peerId;
+            return value.peerId !=peerId;
       }))
       this.lastRequest.next(this.peersByOrg)
       return data;

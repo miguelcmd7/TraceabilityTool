@@ -12,6 +12,7 @@ const routes: Routes = [
   { path: 'addOrderer', component: CreateOrdererComponent },
   { path: 'addOrg', component: CreateOrgComponent },
   { path: 'org/:id', component: CreateOrgComponent },
+  { path: 'orgs/:orgId/peers/:peerId', component: CreatePeerComponent  },
  // { path: 'assd', component: PeerDetailComponent },
  // { path: 'retire-element', component: OrdererDetailComponent },
  // { path: 'retire-element', component: ChannelDetailComponent },

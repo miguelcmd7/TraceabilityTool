@@ -54,7 +54,7 @@
             <li  [routerLink]= "['/org',  org.orgId]" >  {{ org.orgId }} </li>
             <ul>
                 <div *ngFor="let peer of org.peers">
-                <a  [routerLink]= "['/peer',  peer.peerId]" >  {{ peer.peerId }} </a>
+                <a  [routerLink]= "['orgs/'+org.orgId+'/peers',  peer.peerId]" >  {{ peer.peerId }} </a>
                 </div>                 
             </ul>
           </div>
