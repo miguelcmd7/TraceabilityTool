@@ -14,7 +14,8 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <ul *ngIf= "orderers.length >0">
-                <li *ngFor="let orderer of orderers"> {{ orderer.ordererId }} </li>
+                <!-- <li *ngFor="let orderer of orderers"> {{ orderer.ordererId }} </li> -->
+                <a *ngFor="let orderer of orderers" [routerLink]= "['/orderers',  orderer.ordererId]" >  {{ orderer.ordererId }} </a>
               </ul>
               <a  routerLink="/addOrderer" >
                 Add Orderer 
@@ -40,7 +41,8 @@
             Add Organization
            </a>
         </mat-expansion-panel>
-      </mat-accordion>  
+      </mat-accordion> 
+      
       <mat-accordion >
           <!-- <mat-accordion *ngIf="isInstanciated"> -->
         <mat-expansion-panel>
@@ -63,7 +65,25 @@
             Add Peer
            </a>
         </mat-expansion-panel>
-      </mat-accordion>  
+      </mat-accordion> 
+      <mat-accordion >
+        <!-- <mat-accordion *ngIf="isInstanciated"> -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Channels
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul *ngIf= "channels.length >0">
+          <div *ngFor="let channelName of channels">
+          <a  [routerLink]= "['/channel',  channelName]" >  {{ channelName }} </a>
+        </div>
+        </ul>
+        <a  routerLink="/addChannel" >
+          Add Channel
+         </a>
+      </mat-expansion-panel>
+    </mat-accordion>    
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -87,14 +107,14 @@
           <span class="glyphicon glyphicon-folder-open"></span>
       </a>
       <a  routerLink="/addOrg" >
-          Add Org 
+        <span class="glyphicon glyphicon-plus"></span> Org 
       </a>
       <a  routerLink="/addPeer" >
-          Add Peer 
+        <span class="glyphicon glyphicon-plus"></span> Peer 
       </a>
      
       <a  routerLink="/addChannel" >
-          Add addChannel 
+        <span class="glyphicon glyphicon-plus"></span> Channel 
     </a>
            
 

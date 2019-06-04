@@ -4,14 +4,16 @@ import { CreateOrgComponent } from './org/create-org/create-org.component';
 import { CreatePeerComponent } from './peer/create-peer/create-peer.component';
 import { CreateOrdererComponent } from './orderer/create-orderer/create-orderer.component';
 import { CreateNetworkComponent } from './network/create-network/create-network.component';
+import { CreateChannelComponent } from './channel/create-channel/create-channel.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/newNetwork', pathMatch: 'full' },
   { path: 'addPeer', component: CreatePeerComponent },
-//  { path: 'addChannel', component:  },
+  { path: 'addChannel', component: CreateChannelComponent  },
   { path: 'addOrderer', component: CreateOrdererComponent },
   { path: 'addOrg', component: CreateOrgComponent },
   { path: 'org/:id', component: CreateOrgComponent },
+  { path: 'orderers/:ordererId', component: CreateOrdererComponent },
   { path: 'orgs/:orgId/peers/:peerId', component: CreatePeerComponent  },
  // { path: 'assd', component: PeerDetailComponent },
  // { path: 'retire-element', component: OrdererDetailComponent },

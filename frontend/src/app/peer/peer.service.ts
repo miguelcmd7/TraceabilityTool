@@ -25,9 +25,9 @@ export class PeerService {
   }
 
   getPeers(){
-    if (this.peers!=null)
-      return new Promise<PeerSimple[]>((resolve)=>{
-        resolve(this.peers)
+    if (this.peersByOrg.size>0)
+      return new Promise<Map<string,PeerSimple[]>>((resolve)=>{
+        resolve(this.peersByOrg)
       })
     else
         return this.http.get<any>(this.peerUrl,{}).toPromise().then((data)=>{

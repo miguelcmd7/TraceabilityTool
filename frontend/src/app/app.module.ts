@@ -18,6 +18,7 @@ import { PeerModule } from './peer/peer.module';
 import { OrdererModule } from './orderer/orderer.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NetworkModule } from './network/network.module';
+import { ChannelModule } from './channel/channel.module';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NetworkModule } from './network/network.module';
     PeerModule,
     OrdererModule,
     NetworkModule,
+    ChannelModule,
     ToastrModule.forRoot()  
 
   ],

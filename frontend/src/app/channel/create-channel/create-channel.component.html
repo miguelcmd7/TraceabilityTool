@@ -1,0 +1,60 @@
+
+          <div class="container">
+            <mat-card>
+              <mat-card-title>
+                <h3>Add Channel</h3>
+              </mat-card-title>  
+              <div  *ngIf ="registerForm!= null ">
+              <form [formGroup]="registerForm" [style.fontSize.px]=17 >
+                  <div class="field" >
+                    <mat-form-field  class="example-full-width">
+                      <mat-label>Name</mat-label>
+                      <input matInput type="text" formControlName="name"  />
+                      <mat-error *ngIf="f.name.invalid">{{getNameErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field" >
+                    <mat-form-field  class="example-full-width">
+                      <mat-label>Consortium</mat-label>
+                      <input matInput type="text" formControlName="consortium"  />
+                      <mat-error *ngIf="f.consortium.invalid">{{getConsortiumErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="field">
+                    <mat-form-field>
+                      <mat-label>Orderer</mat-label>
+                      <mat-select required formControlName="orderer">
+                        <mat-option >--None--</mat-option>
+                        <mat-option *ngFor="let orderer of orderers" value="{{orderer.ordererId}}">{{orderer.ordererId}}</mat-option>
+                        
+                      </mat-select>
+                      <mat-error *ngIf="f.orderer.invalid">{{getOrdererErrorMessage()}}</mat-error>
+                      
+                    </mat-form-field>
+                </div>
+                  <div class="field"  *ngFor="let controlName of peersString ;let i = index">
+                    <mat-form-field >
+                      <mat-label>Peers</mat-label>
+                      <mat-select required formControlName="{{controlName}}">
+                        <mat-option >--None--</mat-option>
+                        <mat-optgroup *ngFor="let org of peersByOrg" [label]="org.orgId">
+                          <mat-option *ngFor="let peer of org.peers" [value]="org.orgId+' '+ peer.peerId">
+                            {{ peer.peerId }}
+                          </mat-option>
+                        </mat-optgroup>  
+                      </mat-select>
+                      <mat-error *ngIf="f[controlName].invalid">{{getPeerErrorMessage()}}</mat-error>
+                    </mat-form-field>
+                   
+                    </div>  
+                   
+                    <button  class="btn btn-primary" (click) = "addPeer()" >AddPeer</button>
+                    <div class="form-group">
+                        <button *ngIf="orgId==null" class="btn btn-primary" (click) = "onSubmit()" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                        <button *ngIf="orgId!=null" class="btn btn-primary" (click)= "onUpdate()" [disabled]="registerForm.invalid||registerForm.pending||!registerForm.dirty  ">Update</button>
+                        <button *ngIf="orgId!=null" class="btn btn-danger" (click) = "onDelete()" [disabled]="registerForm.invalid||registerForm.pending">Delete</button>
+                    </div>
+              </form>
+              </div> 
+            </mat-card>
+          </div>

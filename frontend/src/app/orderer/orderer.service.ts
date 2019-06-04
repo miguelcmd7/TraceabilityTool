@@ -8,6 +8,7 @@ import { OrdererSimple } from '../models/ordererSimple';
 })
 export class OrdererService {
 
+
   private orderers:OrdererSimple[];
   private ordererUrl = 'http://localhost:8080/orderers';
   private lastRequest:Subject<OrdererSimple[]>;
@@ -40,6 +41,9 @@ export class OrdererService {
     //return this.http.post(this.startInventoryUrl,{});
 
   }
+  getOrderer(ordererId: string) {
+    return this.http.get<any>(this.ordererUrl+'/'+ordererId).toPromise().then((data)=> {return data},(err)=>{throw err})
+  }
 
   addOrderer(orderer){
     console.log(orderer)
@@ -68,8 +72,8 @@ export class OrdererService {
 //     extra :"extra"
 // }
 
-  updateOrderer(orderer){
-    return  this.http.put<any>(this.ordererUrl+"/"+orderer.ordererId,orderer).toPromise().then((data)=>{
+  updateOrderer(ordererId,orderer){
+    return  this.http.put<any>(this.ordererUrl+"/"+ordererId,orderer).toPromise().then((data)=>{
      return data;
     },
     (err)=>{

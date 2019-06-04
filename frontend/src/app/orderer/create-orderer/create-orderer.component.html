@@ -4,6 +4,7 @@
                 <mat-card-title>
               <h3>Add Orderer</h3>
                 </mat-card-title>
+            <div  *ngIf ="registerForm!= null ">
               <form [formGroup]="registerForm" [style.fontSize.px]=17 >
                   <div class="field" >
                     <mat-form-field  class="example-full-width">
@@ -35,8 +36,11 @@
                         </mat-form-field>
                     </div>
                     <mat-card-actions>
-                      <button mat-button [disabled]="registerForm.invalid||registerForm.pending">Register</button>
+                      <button mat-button *ngIf="ordererId==null" [disabled]="registerForm.invalid||registerForm.pending" (click)= "onSubmit()" >Register</button>
+                      <button  mat-button *ngIf="ordererId!=null" class="btn btn-primary" (click)= "onUpdate()" [disabled]="registerForm.invalid||registerForm.pending||!registerForm.dirty  ">Update</button>
+                      <button mat-button *ngIf="ordererId!=null" class="btn btn-danger" (click) = "onDelete()" [disabled]="registerForm.invalid||registerForm.pending">Delete</button>
                     </mat-card-actions>
               </form>
+            </div>
             </mat-card>
         </div>
