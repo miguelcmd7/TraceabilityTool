@@ -58,7 +58,7 @@ let orderer = modelOrderer.createOrderer('Orderer', 'orderer',  5247, 7060);
 
 var peer1 = modelPeer.createPeer('peer1','digibank',  configPeer);
 var peer2 = modelPeer.createPeer('peer2','digibank',  configPeer2);
-ModelChannel.createChannel('mycc', 'SampleConsortium', ['digibank.mired.com'], ['peer1.digibank.mired.com', 'peer2.digibank.mired.com'], ['orderer.mired.com'])
+ModelChannel.createChannel('mycc', 'SampleConsortium', ['orderer'], new Map().set('digibank',['peer1','peer2']) )
 //console.log(peer1.toJSON());
 //let channel = Model.createChannel('mycc','SampleConsortium',['digibank.mired.com'],['peer1.digibank.mired.com','peer2.digibank.mired.com'],['orderer.mired.com'])
 //var nuevo={};
