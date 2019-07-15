@@ -6,7 +6,7 @@ const fs = require('fs');
 
 let f1 = new Function("findCar",true)
 let f2 = new Function("getAllColors",false)
-let f3 = new Function("getAllModels",true)
+let f3 = new Function("getAllCilindros",true)
 let f4 = new Function("getAllCars",true)
 
 console.log(f1.toJSON())
@@ -15,7 +15,7 @@ let atributes = [
     {name:"matricula",type:"int"},
     {name:"color",type:"string"},
     {name:"numPuertas",type:"int"},
-    {name:"caballos",type:"int"},
+    {name:"cilindrada",type:"int"},
     {name:"modelo",type:"int"},
     {name:"marca",type:"int"},
     {name:"ano",type:"int"}

@@ -22,6 +22,8 @@ class Network {
         Network.instance = this;
         this.name = name;
         this.domain = domain;
+        this.isBuildingVar = false;
+        this.buildState = {description:'',error:false}
         
         /**
          * @type {Map<string,Peer>} 
@@ -80,6 +82,29 @@ class Network {
 
     createError(number, message){
         return new ErrorWithCode(number,message)
+    }
+
+    isBuilding(){
+        return this.isBuildingVar;
+    }
+    /**
+     * 
+     * @param {Boolean} boolean 
+     */
+    setIsBuilding(boolean){
+        this.isBuildingVar=boolean;
+    }
+
+    getBuildState(){
+        return this.buildState;
+    }
+    /**
+     * 
+     * @param {boolean} error 
+     * @param {string} description 
+     */
+    setState(error,description){
+        this.buildState= {error:error,description:description}
     }
     clean(){
         this.peers.clear()

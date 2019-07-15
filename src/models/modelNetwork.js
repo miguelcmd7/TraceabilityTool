@@ -58,6 +58,22 @@ exports.build = function (){
         throw "Network not created!"
     }
 }
+
+exports.buildState = function (){
+    let net = Network.getInstance()
+    if (net != null){
+        if (net.isBuilding()){
+            console.log('Obtener estado:'+net.getBuildState())
+            return net.getBuildState()
+        }
+            
+        else   
+            return null
+    }else{
+        throw "Network not created!"
+    }
+}
+
 exports.launch = function (){
     let net = Network.getInstance()
     if (net != null){
@@ -66,6 +82,8 @@ exports.launch = function (){
         throw "Network not created!"
     }
 }
+
+
 
 exports.setDestDirectory= function(directory){
     console.log("El directorio es "+directory)

@@ -43,7 +43,18 @@ exports.getNetworkDomain= function(req, res) {
 //GET - Return a HomeState with specified ID
 exports.build = function(req, res) {
 	try {
-        res.status(200).send(ModelChannel.build())
+        console.log('Build call')
+        let state = ModelNetwork.buildState()
+        if (state == null){
+            ModelNetwork.build()
+            console.log("No build state:")
+            res.status(200).send()
+        }else{
+            console.log("Sending build state:")
+            res.status(200).send(state)
+        }
+            
+        
     }catch(err){
         Errors.errorManager(res,err);
     }
