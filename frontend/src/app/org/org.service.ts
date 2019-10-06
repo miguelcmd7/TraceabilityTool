@@ -64,8 +64,8 @@ export class OrgService {
 
     
   }
-  updateOrg(org){
-    return  this.http.put<Org>(this.orgUrl+"/"+org.orgId,org).toPromise().then((data)=>{
+  updateOrg(orgId,org){
+    return  this.http.put<Org>(this.orgUrl+"/"+orgId,org).toPromise().then((data)=>{
      return data;
     },
     (err)=>{
@@ -81,6 +81,7 @@ export class OrgService {
       this.orgs = this.orgs.filter((value:any,index,array)=>{
             return value.orgId !=orgId;
       })
+      this.lastRequest.next(this.orgs);
       return data;
     })
 

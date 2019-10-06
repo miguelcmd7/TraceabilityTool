@@ -113,7 +113,7 @@ export class CreateChannelComponent implements OnInit {
       data => {
         successManager(
           this.toastr,
-          "Peer " + this.registerForm.value.name + " created",
+          "Channel " + this.registerForm.value.name + " created",
           null
         );
       },
@@ -129,20 +129,45 @@ export class CreateChannelComponent implements OnInit {
     // console.log(config.toJSON())
     // this.peerService.updatePeer(this.peerId,this.orgId, config)
     console.log("Updating");
+    this.channelService.updateChannel(this.channelId,this.registerForm.value).then(
+      data => {
+        successManager(
+          this.toastr,
+          "Channel " + this.registerForm.value.name + " Updated",
+          null
+        );
+      },
+      err => {
+        errorManager(this.toastr, err);
+      }
+    );
   }
   onDelete() {
-    console.log("DEleting...");
+    console.log("Deleting...");
+    this.channelService.deleteChannel(this.channelId).then(
+      data => {
+        successManager(
+          this.toastr,
+          "Channel " + this.channelId + " deleted",
+          null
+        );
+      },
+      err => {
+        errorManager(this.toastr, err);
+      }
+    );
   }
   getNameErrorMessage() {
-    return ''
+    return 'A Name must be specified'
   }
-  getConsortiumErrorMessage() {
-    return ''
+  
+  getConsortiumErrorMessage(){
+    return 'A Consortium must be specified'
   }
   getOrdererErrorMessage() {
-    return ''
+    return 'A Orederer must be specified'
   }
   getPeerErrorMessage() {
-    return ''
+    return 'A Peer must be specified'
   }
 }

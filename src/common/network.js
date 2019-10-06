@@ -23,17 +23,14 @@ class Network {
         this.name = name;
         this.domain = domain;
         this.isBuildingVar = false;
-        this.buildState = {description:'',error:false}
+        this.buildState = {description:'',code:0,error:false}
         
         /**
          * @type {Map<string,Peer>} 
          */
         this.peers = new Map();
         
-        /**
-         * @type {Map<string,string>} 
-         */
-        this.peerByOrgs = new Map();
+        
         
         /**
          * @type {Map<string,Organization>} 
@@ -44,12 +41,17 @@ class Network {
          * @type {Map<string,Orderer>} 
          */
         this.orderers = new Map();
-        
+
+        /**
+         * @type {Map<string,string[]>} 
+         */
+        this.peerByOrgs = new Map();
         /**
          * @type {Map<string,string[]>} 
          */
         this.channelsByOrg = new Map();
-                /**
+        
+        /**
          * @type {Map<string,string[]>} 
          */
         this.channelsByOrderer = new Map();
@@ -84,17 +86,6 @@ class Network {
         return new ErrorWithCode(number,message)
     }
 
-    isBuilding(){
-        return this.isBuildingVar;
-    }
-    /**
-     * 
-     * @param {Boolean} boolean 
-     */
-    setIsBuilding(boolean){
-        this.isBuildingVar=boolean;
-    }
-
     getBuildState(){
         return this.buildState;
     }
@@ -103,8 +94,8 @@ class Network {
      * @param {boolean} error 
      * @param {string} description 
      */
-    setState(error,description){
-        this.buildState= {error:error,description:description}
+    setState(error,code,description){
+        this.buildState= {error:error,code:code,description:description}
     }
     clean(){
         this.peers.clear()

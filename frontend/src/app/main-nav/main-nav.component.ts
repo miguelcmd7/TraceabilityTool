@@ -8,6 +8,7 @@ import { OrgSimple } from "../models/orgSimple";
 import { OrdererSimple } from "../models/ordererSimple";
 import { OrdererService } from "../orderer/orderer.service";
 import { Router, ActivatedRoute } from "@angular/router";
+import { ToastrService } from 'ngx-toastr';
 import { PeerService } from "../peer/peer.service";
 import { PeerSimple } from "../models/peerSimple";
 import { ChannelService } from '../channel/channel.service';
@@ -24,6 +25,7 @@ export class MainNavComponent implements OnInit {
   private netName: string;
   private peersByOrg = [];
   private channels: string[] = [];
+  private buildVar = false;
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches));
@@ -35,12 +37,14 @@ export class MainNavComponent implements OnInit {
     private ordererService: OrdererService,
     private peerService: PeerService,
     private channelService:ChannelService,
-    private _Activatedroute: ActivatedRoute
+    private _Activatedroute: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.orgs = [];
     this.orderers = [];
     this.peersByOrg = null;
     this.channels = [];
+    this.buildVar = false;
     ///this.peersByOrg.keys
     //this.isInstanciated=true;
     //this.netName=null;
@@ -110,5 +114,20 @@ export class MainNavComponent implements OnInit {
     this.channelService.getChannels().catch(err => {
       console.log("Error getting channels from main-nav" + err);
     });
+  }
+
+  build(){
+
+    this.buildVar = true;
+    this.netService.build().then((data)=>{
+      if(data.error == false)
+        this.toastr.success(data.description, null,
+        {timeOut: 2000});
+      else 
+        this.toastr.error(data.description, null,
+        {timeOut: 2000});;
+      this.buildVar = false;
+    })
+    
   }
 }

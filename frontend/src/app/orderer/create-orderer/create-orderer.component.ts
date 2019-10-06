@@ -87,7 +87,9 @@ export class CreateOrdererComponent implements OnInit {
     console.log("Updating");
   }
   onDelete() {
-    console.log("DEleting...");
+    console.log("Deleting "+this.ordererId)
+    this.oredererService.deleteOrderer(this.ordererId)
+    
   }
   getNameErrorMessage() {
     return this.f.name.hasError("required") ? "You must enter a value" : "";

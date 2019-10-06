@@ -113,10 +113,21 @@
         <span class="glyphicon glyphicon-plus"></span> Peer 
       </a>
      
-      <a  routerLink="/addChannel" >
+      <a  routerLink="/addChanne" >
         <span class="glyphicon glyphicon-plus"></span> Channel 
     </a>
-           
+    <a  routerLink="/chaincodes" >
+      <span class="glyphicon glyphicon-plus"></span> Chaincode 
+  </a>
+      <button
+      type="button"
+      [disabled]="buildVar"
+      aria-label="Toggle sidenav"
+      mat-icon-button
+      (click)="build()">
+      <mat-icon aria-label="Side nav toggle icon">Build</mat-icon>
+    </button>
+      
 
     </mat-toolbar>
     <ng-content></ng-content>

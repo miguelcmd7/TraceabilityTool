@@ -50,7 +50,7 @@ exports.deleteNetwork = function(){
 
 }
         
-exports.build = function (){
+exports.build = async function (){
     let net = Network.getInstance()
     if (net != null){
         return build(net)
@@ -62,13 +62,10 @@ exports.build = function (){
 exports.buildState = function (){
     let net = Network.getInstance()
     if (net != null){
-        if (net.isBuilding()){
-            console.log('Obtener estado:'+net.getBuildState())
-            return net.getBuildState()
-        }
-            
-        else   
-            return null
+       
+        console.log('Obtener estado:'+ JSON.stringify(net.getBuildState()))
+        return net.getBuildState()
+        
     }else{
         throw "Network not created!"
     }
@@ -100,7 +97,6 @@ exports.setDestDirectory= function(directory){
 
 exports.installChaincode = function(orgid,channel){
     let chan = Network.getInstance().getChannel(channel)
-    console.log('CANAAAAAAAAAAL'+chan)
     
    // installChaincode(orgid,Network.getInstance(),chan,'end2endnodesdk','example_cc','v0','golang', )
 

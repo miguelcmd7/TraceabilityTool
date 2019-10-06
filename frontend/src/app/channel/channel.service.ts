@@ -9,11 +9,11 @@ import { HttpClient } from '@angular/common/http';
 export class ChannelService {
   
 
-  private peers:PeerSimple[];
-  private orgsUrl = 'http://localhost:8080/orgs';
+  
   private channelUrl = 'http://localhost:8080/channels';
   private lastRequest:Subject<string[]>;
- 
+  private peers =[]
+  private orderers = []
   private channelsNames:string[]; //Cache tu store the names of channels 
   constructor(private http: HttpClient) { 
     this.peers = null;
@@ -55,7 +55,7 @@ export class ChannelService {
     return this.http.get<any>(this.channelUrl+'/'+channelName).toPromise().then((data)=> {return data},(err)=>{throw err})
   }
 
-  addChannel(form){
+  formToBodyRequest(form){
     let orgsPeer = []; 
     let success = false
      for( let key in form ){
@@ -76,7 +76,7 @@ export class ChannelService {
   
      }
      console.log(orgsPeer);
-     let bodyRequest = {
+     return {
 
         name: form.name,
         consortium:form.consortium,
@@ -84,6 +84,10 @@ export class ChannelService {
         orderers : [form.orderer]
 
      }
+  }
+
+  addChannel(form){
+    let bodyRequest = this.formToBodyRequest(form)
      return  this.http.post<any>(this.channelUrl+'/',bodyRequest).toPromise().then((data)=>{
      
       this.channelsNames.push(data.name)
@@ -98,4 +102,34 @@ export class ChannelService {
     })
   }
   
+  updateChannel(channelName,form){
+    let bodyRequest = this.formToBodyRequest(form)
+
+    return  this.http.put<any>(this.channelUrl+"/"+channelName,bodyRequest).toPromise().then((data)=>{
+     return data;
+    },
+    (err)=>{
+      console.log(err)
+      this.lastRequest.error(err);
+      return err;
+    })
+
+  }
+
+  deleteChannel(ChannelName){
+    return this.http.delete(this.channelUrl+"/"+ChannelName).toPromise().then((data)=>{
+      this.channelsNames = this.channelsNames.filter((value:any,index,array)=>{
+            return value !=ChannelName;
+      })
+      return data;
+    })
+
+  }
+  reset(){
+    this.orderers=[]
+    this.lastRequest.next(this.orderers);
+  }
+
+
+
 }

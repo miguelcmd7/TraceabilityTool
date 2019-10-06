@@ -83,9 +83,36 @@ export class CreateOrgComponent implements OnInit {
   }
   onUpdate(){
     console.log("Updating...")
+    console.log(this.registerForm.controls.orgId)
+    
+    if(this.registerForm.valid &&!this.registerForm.pending){
+      
+      this.orgService.updateOrg(this.orgId ,this.registerForm.value).then((data)=>{
+        
+        successManager(this.toastr, "Organization "+this.orgId +" was updated ", null)
+      },(err)=>{
+        errorManager(this.toastr,err)
+      })
+    }else{
+      console.log("Form is invalid")
+    }
   }
   onDelete(){
-    console.log("DEleting...")
+    console.log("Deleting...")
+
+    console.log(this.registerForm.controls.orgId)
+    
+    if(this.registerForm.valid &&!this.registerForm.pending){
+      
+      this.orgService.deleteOrg(this.orgId).then((data)=>{
+        
+        successManager(this.toastr, "Organization "+this.orgId +" was deleted ", null)
+      },(err)=>{
+        errorManager(this.toastr,err)
+      })
+    }else{
+      console.log("Form is invalid")
+    }
   }
   getNameErrorMessage(){
       return this.f.name.hasError('required') ? 'You must enter a value' :

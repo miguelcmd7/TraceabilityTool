@@ -65,7 +65,6 @@ export class CreatePeerComponent implements OnInit {
       
     } 
       
-    
     this.orgService.getOrgs().then(
       orgs => {
         this.orgs = orgs;
@@ -119,7 +118,24 @@ export class CreatePeerComponent implements OnInit {
     console.log("Updating")
   }
   onDelete() {
-    console.log("DEleting...");
+    console.log("Deleting...");
+    
+      console.log(this.registerForm.value);
+      this.peerService
+        .deletePeer(this.peerId , this.orgId)
+        .then(
+          data => {
+            successManager(
+              this.toastr,
+              "Peer " + this.registerForm.value.name + " was deleted",
+              null
+            );
+          },
+          err => {
+            errorManager(this.toastr, err);
+          }
+        );
+
   }
 
   getIdErrorMessage() {

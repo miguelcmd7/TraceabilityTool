@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +32,8 @@ export class NetworkService {
   }
 
   build(){
-    return this.http.post(this.buildUrl,{},{})
+    return this.http.post<any>(this.buildUrl,{},{}).toPromise();
+    //return this.lastRequest;
   }
 
   deleteNetwork(){

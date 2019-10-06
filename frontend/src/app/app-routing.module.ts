@@ -5,6 +5,7 @@ import { CreatePeerComponent } from './peer/create-peer/create-peer.component';
 import { CreateOrdererComponent } from './orderer/create-orderer/create-orderer.component';
 import { CreateNetworkComponent } from './network/create-network/create-network.component';
 import { CreateChannelComponent } from './channel/create-channel/create-channel.component';
+import { CreateChaincodeComponent } from './chaincode/create-chaincode/create-chaincode.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/newNetwork', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'org/:id', component: CreateOrgComponent },
   { path: 'orderers/:ordererId', component: CreateOrdererComponent },
   { path: 'orgs/:orgId/peers/:peerId', component: CreatePeerComponent  },
+  { path: 'chaincodes', component: CreateChaincodeComponent },
  // { path: 'assd', component: PeerDetailComponent },
  // { path: 'retire-element', component: OrdererDetailComponent },
  // { path: 'retire-element', component: ChannelDetailComponent },

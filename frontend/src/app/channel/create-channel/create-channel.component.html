@@ -52,7 +52,7 @@
                     <div class="form-group">
                         <button *ngIf="orgId==null" class="btn btn-primary" (click) = "onSubmit()" [disabled]="registerForm.invalid||registerForm.pending">Register</button>
                         <button *ngIf="orgId!=null" class="btn btn-primary" (click)= "onUpdate()" [disabled]="registerForm.invalid||registerForm.pending||!registerForm.dirty  ">Update</button>
-                        <button *ngIf="orgId!=null" class="btn btn-danger" (click) = "onDelete()" [disabled]="registerForm.invalid||registerForm.pending">Delete</button>
+                        <button *ngIf="orgId!=null" class="btn btn-danger" (click) = "onDelete()" >Delete</button>
                     </div>
               </form>
               </div> 

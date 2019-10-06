@@ -25,7 +25,7 @@ let org2 = {
 }
 
 describe('Testing Organization Backend',()=>{
-    before(function() {
+    describe('Reseting..',()=>{
 
         it('should delete network', (done) => {
             chai.request(url)

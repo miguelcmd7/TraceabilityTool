@@ -1,4 +1,5 @@
 const ModelNetwork = require('../../src/models/modelNetwork.js')
+const ModelChaincode = require('../../src/chaincode/modelChaincodeTemp.js');
 const Errors = require('../utils/errorManager');
 //GET - Return all Homestates in the DB
 exports.createNetwork = function(req, res) {
@@ -9,6 +10,7 @@ exports.createNetwork = function(req, res) {
         }else{
             console.log("Creating...")
             let json = ModelNetwork.createNetwork(req.body.name,req.body.domain)
+            ModelChaincode.createChaincodeCreator(req.body.name)
             ModelNetwork.setDestDirectory(req.body.directory);
             
             res.status(200).send(json)
@@ -41,12 +43,30 @@ exports.getNetworkDomain= function(req, res) {
 };
 
 //GET - Return a HomeState with specified ID
-exports.build = function(req, res) {
+exports.build =  function(req, res) {
 	try {
         console.log('Build call')
         let state = ModelNetwork.buildState()
-        if (state == null){
+        if (state.error== true ||state.code == 0 ||state.code == 3 ){
             ModelNetwork.build()
+            console.log("No build state:")
+            res.status(200).send(ModelNetwork.buildState())
+        }else{
+            console.log("Sending build state:")
+            res.status(200).send(state)
+        }
+            
+        
+    }catch(err){
+        Errors.errorManager(res,err);
+    }
+};
+exports.launch = function(req, res) {
+	try {
+        console.log('Launch call')
+        let state = ModelNetwork.buildState()
+        if (state.error == false && state.code ==3  ){
+            ModelNetwork.launch()
             console.log("No build state:")
             res.status(200).send()
         }else{

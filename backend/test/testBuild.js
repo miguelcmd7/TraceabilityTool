@@ -3,29 +3,29 @@ const url= 'http://localhost:8080';
 let net ={
     directory:'/home/miguel/Hyperledger/ejemplo',
     domain:'mired.com',
-    name:'Mired'
+    name:'myred'
 }
 let org = {
-    orgId:"org1",
-    name:"Org1",
-    ca_name:"orgCA",
-    mspId:"orgMSP"
+    orgId:"digibank",
+    name:"Digibank",
+    ca_name:"digiCA",
+    mspId:"DigibankMSP"
 
 }
 let orderer = {
     //req.body.name,req.body.id,req.body.domain,req.body.extPort,req.body.extPort,req.body.intPort,req.body.extra
     name:"Orderer",
     id:"orderer",
-    extPort:7051,
-    intPort:7051
+    extPort:5247,
+    intPort:7060
 }
 
 let peer = {
     id : "peer1",
-    orgId: "org1",
+    orgId: "digibank",
     config : {
-        extPort:7050,
-        intPort : 7050,
+        extPort:7060,
+        intPort : 7051,
         extGossipPort : 7063 ,
         intGossipPort : 7063,
         anchor : true, 
@@ -34,10 +34,10 @@ let peer = {
 }
 let peer2 = {
     id : "peer2",
-    orgId: "org1",
+    orgId: "digibank",
     config : {
-        extPort:7060,
-        intPort : 7050,
+        extPort:7070,
+        intPort : 7051,
         extGossipPort : 7073 ,
         intGossipPort : 7063,
         anchor : true, 
@@ -61,7 +61,7 @@ function newChannelOrg(orgId,peers){
     }
 }
 
-let channel1 = newChannel('mychannel','Sampleconsortium',[newChannelOrg(org.orgId,['peer1','peer2'])],[orderer.id]) 
+let channel1 = newChannel('mycc','SampleConsortium',[newChannelOrg(org.orgId,['peer1','peer2'])],[orderer.id]) 
 
 requets.post(url+'/network',{ json: net})
 requets.post(url+'/orgs',{json:org})

@@ -19,7 +19,7 @@ import { OrdererModule } from './orderer/orderer.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NetworkModule } from './network/network.module';
 import { ChannelModule } from './channel/channel.module';
-
+import { ChaincodeModule } from './chaincode/chaincode.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +43,7 @@ import { ChannelModule } from './channel/channel.module';
     OrdererModule,
     NetworkModule,
     ChannelModule,
+    ChaincodeModule,
     ToastrModule.forRoot()  
 
   ],

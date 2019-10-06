@@ -76,6 +76,7 @@ channels
 
 app.post("/directory", NetworkCtrl.setDestDirectory);
 app.post("/build", NetworkCtrl.build);
+app.post("/launch", NetworkCtrl.launch);
 app.post("/network", NetworkCtrl.createNetwork);
 app.get("/peers", OrgCtrl.peersByOrg);
 app.get("/network", NetworkCtrl.getNetworkDomain);
