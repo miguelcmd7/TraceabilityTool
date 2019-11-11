@@ -70,21 +70,21 @@ ModelChannel.createChannel('mycc', 'SampleConsortium', ['orderer'], new Map().se
 // console.log(Network.getInstance().getChannel('mycc'))
 
 modelNetwork.build().then(()=>{
-     return modelNetwork.launch().then( ()=>{
-         modelNetwork.installChaincode('digibank.mired.com','mycc').then(()=>{
-            modelNetwork.instanciateChaincode('digibank.mired.com','mycc').then(()=>{
-                setTimeout(()=>{
-                 modelNetwork.invokeChaincode('digibank.mired.com','mycc').then(()=>{
-                    modelNetwork.queryChaincode('digibank.mired.com','mycc')
+    //  return modelNetwork.launch().then( ()=>{
+    //      modelNetwork.installChaincode('digibank.mired.com','mycc').then(()=>{
+    //         modelNetwork.instanciateChaincode('digibank.mired.com','mycc').then(()=>{
+    //             setTimeout(()=>{
+    //              modelNetwork.invokeChaincode('digibank.mired.com','mycc').then(()=>{
+    //                 modelNetwork.queryChaincode('digibank.mired.com','mycc')
 
-                 })
-                },1500)
+    //              })
+    //             },1500)
                  
-              })
-         })
+    //           })
+    //      })
        
          
-     })
+    //  })
  })
  
 

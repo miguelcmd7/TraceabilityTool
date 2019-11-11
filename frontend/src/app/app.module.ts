@@ -20,10 +20,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { NetworkModule } from './network/network.module';
 import { ChannelModule } from './channel/channel.module';
 import { ChaincodeModule } from './chaincode/chaincode.module';
+import {MainNavModule} from './main-nav/main-nav.module'
 @NgModule({
   declarations: [
-    AppComponent,
-    MainNavComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -44,6 +44,7 @@ import { ChaincodeModule } from './chaincode/chaincode.module';
     NetworkModule,
     ChannelModule,
     ChaincodeModule,
+    MainNavModule,
     ToastrModule.forRoot()  
 
   ],

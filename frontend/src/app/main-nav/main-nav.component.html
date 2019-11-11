@@ -130,8 +130,10 @@
       
 
     </mat-toolbar>
-    <ng-content></ng-content>
+    <ng-content *ngIf= "buildVar==null" ></ng-content>
+    <app-create-chaincode *ngIf= "buildVar!=null" >
 
+    </app-create-chaincode>
     <!-- <div *ngIf="isInstanciated  ; then thenBlock else elseBlock"></div>
     <ng-template  #thenBlock><ng-content></ng-content></ng-template>
     

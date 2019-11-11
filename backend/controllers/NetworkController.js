@@ -10,7 +10,7 @@ exports.createNetwork = function(req, res) {
         }else{
             console.log("Creating...")
             let json = ModelNetwork.createNetwork(req.body.name,req.body.domain)
-            ModelChaincode.createChaincodeCreator(req.body.name)
+            //ModelChaincode.createChaincodeCreator(req.body.name)
             ModelNetwork.setDestDirectory(req.body.directory);
             
             res.status(200).send(json)

@@ -32,6 +32,26 @@ exports.createChaincodeTemp= function(chaincodeName,assetName,atributes, funcs){
     return chaincodeCreator.addChaincode(chaincode)
 
 }
+
+exports.getChaincodes= function(){
+    getInstance()
+    let ccs = chaincodeCreator.getChaincodes()
+    let chaincodes = []
+    //Creates a function object for each function param
+    ccs.forEach(element => {
+        chaincodes.push(element.toJSON())
+        
+    });
+  
+    return chaincodes
+}
+exports.getChaincode= function(chaincodeName){
+    getInstance()
+    let cc =  chaincodeCreator.getChaincode(chaincodeName)
+    
+  
+    return cc
+}
 exports.createChaincodeCreator = function(name){
     chaincodeCreator =ChaincodeCreator.getInstance()
  

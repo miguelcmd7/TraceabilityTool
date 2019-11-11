@@ -74,6 +74,7 @@ class Network {
 
     static deleteInstance(){
         if(!!Network.instance){
+          //  console.log('Limpiando...')
             Network.instance.clean()
             Network.instance=null
         }
@@ -498,8 +499,8 @@ class Network {
             throw this.createError(404, "Channel "+channelName +" doesn't exist")
         else{
             let orgs = channel.getOrgs()
-            console.log(orgs)
-            console.log(this.channelsByOrg.get(orgs[1]))
+           // console.log(orgs)
+            //console.log(this.channelsByOrg.get(orgs[1]))
             for (let [key,channels] of this.channelsByOrg.entries()){
                 if (orgs.includes(key))
                     this.channelsByOrg.set(key,channels.filter((value)=>{
@@ -620,10 +621,11 @@ class Network {
     cryptoJSON() {
         var networkJson = {}
         networkJson.netDomain = this.domain
-        console.log(this.peerByOrgs.entries())
-        console.log(this.orgs.entries());
+        //console.log(this.peerByOrgs.entries())
+        //console.log(this.orgs.entries());
+        networkJson.peerByOrgs = []
         for ( [key, value] of this.peerByOrgs.entries()) {
-            networkJson.peerByOrgs = []
+          
             var org = this.orgs.get(key).toJSON()
             org.peers = []
             // if (value != []){

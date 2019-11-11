@@ -18,6 +18,7 @@ import { ChannelService } from '../channel/channel.service';
   templateUrl: "./main-nav.component.html",
   styleUrls: ["./main-nav.component.css"]
 })
+
 export class MainNavComponent implements OnInit {
   private orgs: OrgSimple[] = [];
   private orderers: OrdererSimple[] = [];
@@ -25,7 +26,8 @@ export class MainNavComponent implements OnInit {
   private netName: string;
   private peersByOrg = [];
   private channels: string[] = [];
-  private buildVar = false;
+  private buildVar = null;
+  
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(map(result => result.matches));
@@ -44,7 +46,7 @@ export class MainNavComponent implements OnInit {
     this.orderers = [];
     this.peersByOrg = null;
     this.channels = [];
-    this.buildVar = false;
+    this.buildVar = null;
     ///this.peersByOrg.keys
     //this.isInstanciated=true;
     //this.netName=null;
@@ -117,17 +119,17 @@ export class MainNavComponent implements OnInit {
   }
 
   build(){
-
-    this.buildVar = true;
-    this.netService.build().then((data)=>{
-      if(data.error == false)
-        this.toastr.success(data.description, null,
-        {timeOut: 2000});
-      else 
-        this.toastr.error(data.description, null,
-        {timeOut: 2000});;
-      this.buildVar = false;
-    })
+    this.buildVar= 1
+    // this.buildVar = true;
+    // this.netService.build().then((data)=>{
+    //   if(data.error == false)
+    //     this.toastr.success(data.description, null,
+    //     {timeOut: 2000});
+    //   else 
+    //     this.toastr.error(data.description, null,
+    //     {timeOut: 2000});;
+    //   this.buildVar = false;
+    // })
     
   }
 }

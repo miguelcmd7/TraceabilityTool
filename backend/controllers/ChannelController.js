@@ -1,7 +1,7 @@
 
 const ModelChannel = require('../../src/models/modelChannel.js')
 const Errors = require('../utils/errorManager');
-//GET - Return all Homestates in the DB
+//GET - Return all Channels in the DB
 exports.findAllChannels = function(req, res) {
     try {
         res.status(200).send(ModelChannel.getAllChannels())
@@ -10,7 +10,7 @@ exports.findAllChannels = function(req, res) {
     }
 };
 
-//GET - Return a HomeState with specified ID
+//GET - Return a Channel with specified ID
 exports.findChannel = function(req, res) {
 	try {
         res.status(200).send(ModelChannel.getChannel(req.params.channelId))
@@ -19,7 +19,7 @@ exports.findChannel = function(req, res) {
     }
 };
 
-//POST - Insert a new HomeState in the DB
+//POST - Insert a new Channel in the DB
 exports.createChannel = function(req, res) {
 	try{
 
@@ -68,7 +68,6 @@ exports.updateChannel = function(req, res) {
 
 	
 };
-//TODO
 exports.deleteChannel = function(req, res) {
 	try{
 

@@ -4,7 +4,7 @@ const fs = require('fs');
 
 class ChaincodeCreator {
 
-        /** 
+     /** 
      *@param {string} name 
      * @returns {ChaincodeCreator}
      **/
@@ -19,8 +19,6 @@ class ChaincodeCreator {
          * @type {Map<string,Chaincode>} 
          */
         this.chaincodes = new Map();
-
-
         return this
     }
 
@@ -61,6 +59,29 @@ class ChaincodeCreator {
         }
 
 
+
+    }
+
+    getChaincodes(){
+        return this.chaincodes.values()
+    }
+
+    getChaincode(chaincodeName){
+
+            let cc = this.chaincodes.get(chaincodeName)
+            if (cc!=null)
+                  return cc;
+            else {
+                throw this.createError(404,"Chaincode "+chaincodeName+' not found')
+            }
+
+    }
+
+    generateIoTTemplate(){
+        
+        console.log("Generating templates...")
+
+        return "Generating..."
 
     }
         

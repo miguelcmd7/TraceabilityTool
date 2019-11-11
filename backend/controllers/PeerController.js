@@ -1,7 +1,7 @@
 
 const ModelPeer = require('../../src/models/modelPeer.js')
 const Errors = require('../utils/errorManager');
-//GET - Return all Homestates in the DB
+//GET - Return all Peers in the DB
 exports.findAllPeersForOrg = function(req, res) {
     try {
         res.status(200).send(ModelPeer.getAllPeersForOrg(req.params.orgId))
@@ -10,7 +10,7 @@ exports.findAllPeersForOrg = function(req, res) {
     }
 };
 
-//GET - Return a HomeState with specified ID
+//GET - Return a Peer with specified ID
 exports.findPeer = function(req, res) {
 	try {
         res.status(200).send(ModelPeer.getPeer(req.params.peerId,req.params.orgId))
@@ -19,7 +19,7 @@ exports.findPeer = function(req, res) {
     }
 };
 
-//POST - Insert a new HomeState in the DB
+//POST - Insert a new Peer in the DB
 exports.createPeer = function(req, res) {
 	try{
 
@@ -30,7 +30,7 @@ exports.createPeer = function(req, res) {
 
 	
 };
-//TODOO
+
 exports.updatePeer = function(req, res) {
 	try{
         res.status(200).send(ModelPeer.updatePeer(req.params.peerId,req.params.orgId,req.body.config))
@@ -41,7 +41,7 @@ exports.updatePeer = function(req, res) {
 	
 };
 
-//TODOOO
+
 exports.deletePeer = function(req, res) {
 	try{
         res.status(200).send(ModelPeer.deletePeer(req.params.peerId,req.params.orgId))

@@ -2,7 +2,7 @@
 const ModelOrg = require('../../src/models/modelOrganization')
 const ErrorWithCode = require('../../lib/error/error')
 const Errors = require('../utils/errorManager');
-//GET - Return all Homestates in the DB
+//GET - Return all Orgs in the DB
 exports.findAllOrgs = function(req, res) {
     try {
         
@@ -13,7 +13,7 @@ exports.findAllOrgs = function(req, res) {
     }
 };
 
-//GET - Return a HomeState with specified ID
+//GET - Return a Org with specified ID
 exports.findOrg = function(req, res) {
 	try {
         res.status(200).send(ModelOrg.getOrg(req.params.orgId))
@@ -34,7 +34,7 @@ exports.peersByOrg = function(req,res){
     }
 }
 
-//POST - Insert a new HomeState in the DB
+//POST - Insert a new Org in the DB
 exports.createOrg = function(req, res) {
     try{
         if (req.body.name ==null ||req.body.name=='' || req.body.orgId== null ||req.body.orgId== ''|| req.body.ca_name==null || req.body.ca_name=='' ||req.body.mspId== null|| req.body.mspId== null){

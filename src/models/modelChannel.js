@@ -1,8 +1,4 @@
 const Channel = require('../common/channel.js');
-const Organization = require('../common/organization.js');
-const Peer = require('../common/peer.js');
-const PeerConf = require('../common/peerConf.js');
-const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
 const ErrorWithCode = require('../../lib/error/error')
 /**

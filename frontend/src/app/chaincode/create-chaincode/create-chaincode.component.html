@@ -26,17 +26,17 @@
                     <mat-form-field >
                       <mat-label>Function Name</mat-label>
                       <input matInput type="text" formControlName="{{funcprueba.get(keyq).functionName}}"  />
-                      <mat-error *ngIf="fF[controlName].invalid">{{getFuncNameErrorMessage()}}</mat-error>
+                      <mat-error *ngIf="fF[funcprueba.get(keyq).functionName].invalid">{{getFuncNameErrorMessage()}}</mat-error>
                     </mat-form-field>
                     
                     <mat-form-field >
                       <mat-label>Function Args</mat-label>
-                      <mat-select required formControlName="{{funcprueba.get(keyq).functionName}}">
+                      <mat-select required formControlName="{{funcprueba.get(keyq).args}}">
                         <mat-option >--None--</mat-option>
                         <mat-option >True</mat-option>
                         <mat-option >False</mat-option>
                       </mat-select>
-                      <mat-error *ngIf="fF[controlName].invalid">{{getFuncArgErrorMessage()}}</mat-error>
+                      <mat-error *ngIf="fF[funcprueba.get(keyq).functionName].invalid">{{getFuncArgErrorMessage()}}</mat-error>
                     </mat-form-field>
                    
                     </div>  

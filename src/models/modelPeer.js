@@ -33,7 +33,7 @@ exports.getPeer= function(peerId,orgId){
 exports.createPeer =function (id,orgId,config) {
     getInstance() 
     let orgAllId = orgId +'.'+network.getDomain() 
-    console.log(config);
+    //console.log(config);
     let peerConf = new PeerConf(config)
     let peer = new Peer(id,orgAllId,peerConf);
     return network.addPeer(peer,orgAllId).toJSON()

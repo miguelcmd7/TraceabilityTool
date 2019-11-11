@@ -9,6 +9,6 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,SharedMaterialModule,ReactiveFormsModule,
   ],
-  exports:[SharedMaterialModule]
+  exports:[SharedMaterialModule,CreateChaincodeComponent]
 })
 export class ChaincodeModule { }

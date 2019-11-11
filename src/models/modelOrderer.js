@@ -1,6 +1,6 @@
 const Orderer = require('../common/orderer.js');
 const Network = require('../common/network.js');
-const ErrorWithCode = require('../../lib/error/error')
+
 
 /**
  * @type {Network} 

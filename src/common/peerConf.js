@@ -24,36 +24,19 @@ class PeerConf {
         this.extra = extra;
     }
 
-    // get anchor(){
-    //     return this.anchor;
-    // }
-    // get extGossipPort(){
-    //     return extGossipPort;
-    // }
-    // get intGossipPort(){
-    //     return extGossipPort;
-    // }
-    // get extPort(){
-    //     return extGossipPort;
-    // }
+    getAnchor(){
+        return this.anchor;
+    }
+    getExtGossipPort(){
+        return this.extGossipPort;
+    }
+    getIntGossipPort(){
+        return this.extGossipPort;
+    }
+    getExtPort(){
+        return this.extGossipPort;
+    }
 
-    // set anchor(a){
-    //     this.anchor =a;
-    // }
-    // set extGossipPort(a){
-    //     this.extGossipPort =a;
-    // }
-
-    // set intGossipPort(a){
-    //     this.intGossipPort =a;
-    // }
-
-    // set intPort(a){
-    //     this.intPort =a;
-    // }
-    // set extPort(a){
-    //     this.extPort =a;
-    // }
 
 
 }

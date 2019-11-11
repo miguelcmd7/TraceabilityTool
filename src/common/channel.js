@@ -52,11 +52,11 @@ class Channel{
             return true;
         }
     }
-    addOrderer(OrdererId){
-        if(this.orderers.includes(OrdererId)){
+    addOrderer(ordererId){
+        if(this.orderers.includes(ordererId)){
             return false;
         }else{
-            this.orderers.push(OrdererId);
+            this.orderers.push(ordererId);
             return true;
         }
     }

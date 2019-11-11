@@ -2,7 +2,7 @@
 const ModelOrderer = require('../../src/models/modelOrderer.js')
 const ErrorWithCode = require('../../lib/error/error')
 const Errors = require('../utils/errorManager');
-//GET - Return all Homestates in the DB
+//GET - Return all Orderers in the network
 exports.findAllOrderers = function(req, res) {
     try {
         res.status(200).send(ModelOrderer.getAllOrderers())
@@ -11,7 +11,7 @@ exports.findAllOrderers = function(req, res) {
     }
 };
 
-//GET - Return a HomeState with specified ID
+//GET - Return a Orderer with specified ID
 exports.findOrderer = function(req, res) {
 	try {
         res.status(200).send(ModelOrderer.getOrderer(req.params.ordererId))
@@ -20,7 +20,7 @@ exports.findOrderer = function(req, res) {
     }
 };
 
-//POST - Insert a new HomeState in the DB
+//POST - Insert a new Orderer in the Network
 exports.createOrderer = function(req, res) {
 	try{
         //|| typeof req.body.extPort !== 'number'
