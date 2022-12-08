@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "method-override": "^2.1.2",
-    "body-parser": "^1.5.1",
+    "body-parser": "^1.20.1",
     "write-yaml": "^1.0.0",
     "read-yaml": "1.1.0",
     "mustache": "3.0.1"
